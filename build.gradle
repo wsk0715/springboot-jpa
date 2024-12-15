@@ -22,7 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter'
 	implementation "org.springframework.boot:spring-boot-starter-web"
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'  // API Documention
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'// API Documention
 
 	// Database
 	runtimeOnly 'com.mysql:mysql-connector-j'
