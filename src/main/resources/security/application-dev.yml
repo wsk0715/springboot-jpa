@@ -1,3 +1,6 @@
+server:
+  port: 8080
+  baseUrl: http://localhost:8080
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,3 +18,12 @@ spring:
       ddl-auto: validate
     database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: false
+security:
+  oauth:
+    google:
+      clientId: ${AUTH_GOOGLE_CLIENT_ID}
+      clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
+      redirectUri: ${AUTH_GOOGLE_REDIRECT_URI}
+      authUrl: https://accounts.google.com/o/oauth2/auth
+      tokenUrl: https://oauth2.googleapis.com/token
+      userInfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
