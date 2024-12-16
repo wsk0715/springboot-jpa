@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS oauth_google, user;
+DROP TABLE IF EXISTS oauth_google, oauth_kakao, user;
 CREATE TABLE user
 (
 	id         BIGINT       NOT NULL AUTO_INCREMENT,
@@ -20,5 +20,18 @@ CREATE TABLE oauth_google
 		REFERENCES user (id) ON DELETE CASCADE
 );
 
+CREATE TABLE oauth_kakao
+(
+	user_id    BIGINT       NOT NULL,
+	code       VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP(6) DEFAULT current_timestamp(6),
+	updated_at TIMESTAMP(6) DEFAULT NULL,
+	PRIMARY KEY (user_id),
+	CONSTRAINT fk_oauth_kakao_user FOREIGN KEY (user_id)
+		REFERENCES user (id) ON DELETE CASCADE
+);
+
 CREATE INDEX idx_user_nickname ON user (nickname);
 CREATE INDEX idx_oauth_google_code ON oauth_google (code);
+CREATE INDEX idx_oauth_kakao_code ON oauth_kakao (code);
+

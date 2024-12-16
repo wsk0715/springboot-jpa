@@ -27,3 +27,9 @@ security:
       authUrl: https://accounts.google.com/o/oauth2/auth
       tokenUrl: https://oauth2.googleapis.com/token
       userInfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
+    kakao:
+      clientId: ${AUTH_KAKAO_CLIENT_ID}
+      redirectUri: ${AUTH_KAKAO_REDIRECT_URI}
+      authUrl: https://kauth.kakao.com/oauth/authorize
+      tokenUrl: https://kauth.kakao.com/oauth/token
+      userInfoUrl: https://kapi.kakao.com/v2/user/me
