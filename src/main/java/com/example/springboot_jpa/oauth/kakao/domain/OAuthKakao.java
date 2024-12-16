@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.oauth.kakao.domain;
 
-import com.example.springboot_jpa.config.domain.BaseEntity;
+import com.example.springboot_jpa.common.domain.BaseEntity;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.response;
 
+import com.example.springboot_jpa.common.constants.ResponseType;
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.response.ResponseType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,7 +19,7 @@ public class OAuthResponse<T> extends BaseResponse<T> {
 		this.targetUrl = targetUrl;
 	}
 
-	
+
 	public static OAuthResponseBuilder ok() {
 		return OAuthResponse.builder()
 							.responseType(ResponseType.SUCCESS);

@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.user.domain;
 
-import com.example.springboot_jpa.config.domain.BaseEntity;
+import com.example.springboot_jpa.common.domain.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
