@@ -32,7 +32,7 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 	private final OAuthKakaoService OAuthKakaoService;
 
 
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<BaseResponse> authentication() {
 		String url = AUTHORIZATION_URL
 					 + "?client_id=" + CLIENT_ID

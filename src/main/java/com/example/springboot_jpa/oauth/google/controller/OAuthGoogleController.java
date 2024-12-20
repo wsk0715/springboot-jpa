@@ -34,7 +34,7 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 	private final OAuthGoogleService OAuthGoogleService;
 
 
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<BaseResponse> authentication() {
 		String url = AUTHORIZATION_URL
 					 + "?client_id=" + CLIENT_ID
