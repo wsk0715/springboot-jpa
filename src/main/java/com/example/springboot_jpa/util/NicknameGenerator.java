@@ -1,5 +1,6 @@
 package com.example.springboot_jpa.util;
 
+import com.example.springboot_jpa.common.constants.OAuthProvider;
 import java.security.SecureRandom;
 
 public class NicknameGenerator {
@@ -7,8 +8,8 @@ public class NicknameGenerator {
 	private static final int NUMBER_MAX_LENGTH = 20;
 
 
-	public static String generateRandomNickname(String prefix) {
-		StringBuilder sb = new StringBuilder(prefix).append("-");
+	public static String generateRandom(OAuthProvider provider) {
+		StringBuilder sb = new StringBuilder(provider.getName()).append("-");
 		int l = sb.length();
 
 		SecureRandom random = new SecureRandom();
