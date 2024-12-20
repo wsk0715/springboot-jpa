@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.response;
 
-import com.example.springboot_jpa.common.constants.ResponseType;
 import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.response.constants.ResponseType;
 import lombok.Builder;
 import lombok.Getter;
 

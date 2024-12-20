@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.common.domain;
+package com.example.springboot_jpa.config.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.util;
 
-import com.example.springboot_jpa.common.constants.OAuthProvider;
+import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import java.security.SecureRandom;
 
 public class NicknameGenerator {

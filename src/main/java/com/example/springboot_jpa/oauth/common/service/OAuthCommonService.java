@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.common.service;
 
-import com.example.springboot_jpa.common.constants.OAuthProvider;
 import com.example.springboot_jpa.exception.SpringbootJpaException;
+import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;

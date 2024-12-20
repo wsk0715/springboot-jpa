@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.common.constants;
+package com.example.springboot_jpa.response.constants;
 
 public enum ResponseType {
 	SUCCESS,  // http status - 2xx

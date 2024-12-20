@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.kakao.service;
 
-import com.example.springboot_jpa.common.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.common.service.OAuthCommonService;
+import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.kakao.domain.OAuthKakao;
 import com.example.springboot_jpa.oauth.kakao.repository.OAuthKakaoRepository;
 import com.example.springboot_jpa.user.domain.User;

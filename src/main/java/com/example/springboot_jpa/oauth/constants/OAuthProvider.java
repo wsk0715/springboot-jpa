@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.common.constants;
+package com.example.springboot_jpa.oauth.constants;
 
 import lombok.Getter;
 
