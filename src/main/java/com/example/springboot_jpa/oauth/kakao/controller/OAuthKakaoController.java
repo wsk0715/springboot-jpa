@@ -1,7 +1,6 @@
 package com.example.springboot_jpa.oauth.kakao.controller;
 
 import com.example.springboot_jpa.oauth.kakao.service.OAuthKakaoService;
-import com.example.springboot_jpa.oauth.response.OAuthResponse;
 import com.example.springboot_jpa.response.BaseResponse;
 import com.example.springboot_jpa.user.domain.Nickname;
 import lombok.RequiredArgsConstructor;
@@ -39,11 +38,11 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 					 + "&redirect_uri=" + REDIRECT_URI
 					 + "&response_type=code";
 
-		OAuthResponse res = OAuthResponse.redirect()
-										 .title("카카오 인증 요청")
-										 .description("targetUrl로 이동해 주세요.")
-										 .targetUrl(url)
-										 .build();
+		BaseResponse res = BaseResponse.redirect()
+									   .title("카카오 인증 요청")
+									   .description("data에 담긴 URL로 이동해 주세요.")
+									   .data(url)
+									   .build();
 		return ResponseEntity.ok(res);
 	}
 
@@ -52,19 +51,19 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 		if (!OAuthKakaoService.init(code)) {
 			String url = BASE_URL + "/auth";
 
-			OAuthResponse res = OAuthResponse.ok()
-											 .title("최초 로그인")
-											 .description("targetUrl에 nickname을 POST 요청해주세요.")
-											 .data(new Nickname("example01"))
-											 .targetUrl(url)
-											 .build();
+			BaseResponse res = BaseResponse.ok()
+										   .title("최초 로그인")
+										   .description("data에 담긴 URL에 nickname을 POST 요청해주세요.")
+										   .data(new Nickname("example01"))
+										   .data(url)
+										   .build();
 			return ResponseEntity.ok(res);
 		}
 
-		OAuthResponse res = OAuthResponse.ok()
-										 .title("로그인 성공")
-										 .description("메인 페이지로 이동해주세요.")
-										 .build();
+		BaseResponse res = BaseResponse.ok()
+									   .title("로그인 성공")
+									   .description("메인 페이지로 이동해주세요.")
+									   .build();
 		return ResponseEntity.ok(res);
 	}
 
