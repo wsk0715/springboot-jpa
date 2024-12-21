@@ -2,9 +2,11 @@ package com.example.springboot_jpa.oauth.google.service;
 
 import com.example.springboot_jpa.oauth.common.service.OAuthCommonService;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
+import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.google.domain.OAuthGoogle;
 import com.example.springboot_jpa.oauth.google.repository.OAuthGoogleRepository;
 import com.example.springboot_jpa.user.domain.User;
+import com.example.springboot_jpa.util.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,27 +19,34 @@ public class OAuthGoogleService {
 
 	private final OAuthGoogleRepository oAuthGoogleRepository;
 
+	private final JwtTokenProvider jwtTokenProvider;
+
 
 	@Transactional
-	public boolean init(String code) {
+	public OAuthResult init(String code) {
 		String accessToken = oAuthCommonService.getAccessToken(OAuthProvider.GOOGLE, code);
-		String googleSub = (String) oAuthCommonService.getUserInfo(OAuthProvider.GOOGLE, accessToken)
-													  .get(OAuthProvider.GOOGLE.getIdentifier());
+		String googleId = (String) oAuthCommonService.getUserInfo(OAuthProvider.GOOGLE, accessToken)
+													 .get(OAuthProvider.GOOGLE.getIdentifier());
 
-		// 소셜 로그인 정보 존재하지 않을 시
-		if (!oAuthGoogleRepository.existsByCode(googleSub)) {
+		// 최초 로그인 여부 확인
+		OAuthGoogle oauth = oAuthGoogleRepository.findByCode(googleId).orElse(null);
+		boolean isInitialLogin = oauth == null;
+
+		// 최초 로그인 시 = 소셜 로그인 정보 존재하지 않을 시
+		if (isInitialLogin) {
 			// 1. 임시 사용자 생성
-			User user = oAuthCommonService.createTempUser(OAuthProvider.GOOGLE);
-			Long userId = user.getId();  // 임시 사용자 id
+			User user = oAuthCommonService.createTempUser(OAuthProvider.GOOGLE);  // 임시 사용자
 
-			// 2. 임시 사용자와 구글 식별값 연결
-			OAuthGoogle oauth = OAuthGoogle.create(userId, googleSub);
+			// 2. 임시 사용자와 구글 식별값 연결, 데이터베이스에 저장
+			oauth = OAuthGoogle.create(user, googleId);
 			oAuthGoogleRepository.save(oauth);
-
-			return false;
 		}
 
-		return true;
+		// JWT 발급
+		User user = oauth.getUser();
+		String token = jwtTokenProvider.createToken(user);
+
+		return new OAuthResult(isInitialLogin, token);
 	}
 
 }

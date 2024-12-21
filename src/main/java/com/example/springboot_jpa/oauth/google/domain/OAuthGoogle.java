@@ -6,21 +6,25 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "oauth_google")
 @Getter
+@ToString
 @NoArgsConstructor
 public class OAuthGoogle extends BaseEntity {
 
 	@Id
 	private Long userId;
 
+	@MapsId
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -29,16 +33,15 @@ public class OAuthGoogle extends BaseEntity {
 	private String code;
 
 	@Builder
-	public OAuthGoogle(Long userId, User user, String code) {
-		this.userId = userId;
+	public OAuthGoogle(User user, String code) {
 		this.user = user;
 		this.code = code;
 	}
 
 
-	public static OAuthGoogle create(Long userId, String code) {
+	public static OAuthGoogle create(User user, String code) {
 		return OAuthGoogle.builder()
-						  .userId(userId)
+						  .user(user)
 						  .code(code)
 						  .build();
 	}

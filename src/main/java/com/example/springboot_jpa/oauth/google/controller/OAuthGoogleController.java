@@ -1,8 +1,8 @@
 package com.example.springboot_jpa.oauth.google.controller;
 
+import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.google.service.OAuthGoogleService;
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.user.domain.Nickname;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -51,13 +51,13 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 
 	@GetMapping("/callback")
 	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code) {
-		if (!OAuthGoogleService.init(code)) {
+		OAuthResult result = OAuthGoogleService.init(code);
+		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";
 
 			BaseResponse res = BaseResponse.ok()
 										   .title("최초 로그인")
 										   .description("data에 담긴 URL에 nickname을 POST 요청해주세요.")
-										   .data(new Nickname("example01"))
 										   .data(url)
 										   .build();
 			return ResponseEntity.ok(res);
@@ -65,7 +65,8 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그인 성공")
-									   .description("메인 페이지로 이동해주세요.")
+									   .description("토큰이 발급되었습니다.")
+									   .data(result.token())
 									   .build();
 		return ResponseEntity.ok(res);
 	}
