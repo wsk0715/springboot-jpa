@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class OAuthKakao extends BaseEntity {
 	@Id
 	private Long userId;
 
+	@MapsId
 	@OneToOne
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -29,16 +31,15 @@ public class OAuthKakao extends BaseEntity {
 	private String code;
 
 	@Builder
-	public OAuthKakao(Long userId, User user, String code) {
-		this.userId = userId;
+	public OAuthKakao(User user, String code) {
 		this.user = user;
 		this.code = code;
 	}
+	
 
-
-	public static OAuthKakao create(Long userId, String code) {
+	public static OAuthKakao create(User user, String code) {
 		return OAuthKakao.builder()
-						 .userId(userId)
+						 .user(user)
 						 .code(code)
 						 .build();
 	}

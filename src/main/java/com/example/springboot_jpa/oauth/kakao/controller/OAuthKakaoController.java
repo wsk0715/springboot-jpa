@@ -1,8 +1,8 @@
 package com.example.springboot_jpa.oauth.kakao.controller;
 
+import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.kakao.service.OAuthKakaoService;
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.user.domain.Nickname;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -48,13 +48,13 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 
 	@GetMapping("/callback")
 	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code) {
-		if (!OAuthKakaoService.init(code)) {
+		OAuthResult result = OAuthKakaoService.init(code);
+		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";
 
 			BaseResponse res = BaseResponse.ok()
 										   .title("최초 로그인")
 										   .description("data에 담긴 URL에 nickname을 POST 요청해주세요.")
-										   .data(new Nickname("example01"))
 										   .data(url)
 										   .build();
 			return ResponseEntity.ok(res);
@@ -63,8 +63,10 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그인 성공")
 									   .description("메인 페이지로 이동해주세요.")
+									   .data(result.token())
 									   .build();
 		return ResponseEntity.ok(res);
 	}
 
 }
+
