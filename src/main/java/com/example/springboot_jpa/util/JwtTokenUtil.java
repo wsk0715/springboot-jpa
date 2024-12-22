@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProvider {
+public class JwtTokenUtil {
 
 	@Value("${security.jwt.secretKey}")
 	private String JWT_SECRET_KEY;

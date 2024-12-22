@@ -6,7 +6,7 @@ import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.google.domain.OAuthGoogle;
 import com.example.springboot_jpa.oauth.google.repository.OAuthGoogleRepository;
 import com.example.springboot_jpa.user.domain.User;
-import com.example.springboot_jpa.util.JwtTokenProvider;
+import com.example.springboot_jpa.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +19,7 @@ public class OAuthGoogleService {
 
 	private final OAuthGoogleRepository oAuthGoogleRepository;
 
-	private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenUtil jwtTokenUtil;
 
 
 	@Transactional
@@ -44,7 +44,7 @@ public class OAuthGoogleService {
 
 		// JWT 발급
 		User user = oauth.getUser();
-		String token = jwtTokenProvider.createToken(user);
+		String token = jwtTokenUtil.createToken(user);
 
 		return new OAuthResult(isInitialLogin, token);
 	}
