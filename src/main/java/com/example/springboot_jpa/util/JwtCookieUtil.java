@@ -39,4 +39,23 @@ public class JwtCookieUtil {
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 
+	/**
+	 * 쿠키에 담긴 JWT 토큰을 만료시킨다.
+	 *
+	 * @param response HttpServeletResponse 객체
+	 */
+	public void expireJwtFromToken(HttpServletResponse response) {
+		String EMPTY_VALUE = "";
+		ResponseCookie cookie = ResponseCookie.from("jwt", EMPTY_VALUE)
+											  .httpOnly(COOKIE_HTTP_ONLY)
+											  .secure(COOKIE_IS_SECURE)
+											  .path("/")
+											  .maxAge(0)  // 만료시간을 0으로 설정 = 쿠키 만료
+											  .sameSite("Strict")
+											  .build();
+
+		// 2. 응답 헤더에 쿠키 삭제 명령 추가
+		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+	}
+
 }
