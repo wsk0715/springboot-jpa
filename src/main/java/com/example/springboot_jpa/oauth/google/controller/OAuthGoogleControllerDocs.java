@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 
@@ -22,6 +23,6 @@ public interface OAuthGoogleControllerDocs {
 			@ApiResponse(description = "최초 로그인", responseCode = "200"),
 			@ApiResponse(description = "사용자 확인 성공", responseCode = "200")
 	})
-	ResponseEntity<BaseResponse> callback(String code);
+	ResponseEntity<BaseResponse> callback(String code, HttpServletResponse response);
 
 }

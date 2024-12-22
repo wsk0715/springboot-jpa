@@ -3,6 +3,8 @@ package com.example.springboot_jpa.oauth.google.controller;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.google.service.OAuthGoogleService;
 import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.util.JwtCookieUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 
 	private final OAuthGoogleService OAuthGoogleService;
 
+	private final JwtCookieUtil jwtCookieUtil;
+
 
 	@GetMapping("")
 	public ResponseEntity<BaseResponse> authentication() {
@@ -50,7 +54,8 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 	}
 
 	@GetMapping("/callback")
-	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code) {
+	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code,
+												 HttpServletResponse response) {
 		OAuthResult result = OAuthGoogleService.init(code);
 		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";
@@ -62,6 +67,8 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 										   .build();
 			return ResponseEntity.ok(res);
 		}
+
+		jwtCookieUtil.addJwtToCookie(response, result.token());
 
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그인 성공")

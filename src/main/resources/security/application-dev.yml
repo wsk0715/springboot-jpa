@@ -22,6 +22,10 @@ security:
   jwt:
     secretKey: ${JWT_SECRET_KEY}
     expirationMs: 86400000  # ms 단위, 24시간
+  cookie:
+    httpOnly: true
+    isSecure: false
+    maxAge: 7200  # 초 단위, 2시간
   oauth:
     google:
       clientId: ${AUTH_GOOGLE_CLIENT_ID}

@@ -1,5 +1,6 @@
 package com.example.springboot_jpa.util;
 
+import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.exception.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -52,13 +53,28 @@ public class JwtTokenProvider {
 	}
 
 	private Claims getClaims(String token) {
+		if (token == null) {
+			throw new SpringbootJpaException("토큰이 존재하지 않습니다");
+		}
+
 		try {
 			return Jwts.parser()
 					   .setSigningKey(JWT_SECRET_KEY.getBytes())
 					   .parseClaimsJws(token)
 					   .getBody();
 		} catch (JwtException | IllegalArgumentException e) {
-			throw new UnauthorizedException("유효하지 않은 JWT 토큰입니다.");
+			throw new UnauthorizedException("유효하지 않은 토큰입니다.");
+		}
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			Jwts.parser()
+				.setSigningKey(JWT_SECRET_KEY.getBytes())
+				.parseClaimsJws(token);
+			return true;
+		} catch (JwtException | IllegalArgumentException e) {
+			return false;
 		}
 	}
 
