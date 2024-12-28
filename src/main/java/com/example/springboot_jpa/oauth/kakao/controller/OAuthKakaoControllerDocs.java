@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 
-@Tag(name = "Kakao Oauth Authentication", description = "Kakao Oauth Authentication API")
+@Tag(name = "Kakao Oauth", description = "Kakao Oauth 인증 관련 API")
 public interface OAuthKakaoControllerDocs {
 
 	@Operation(summary = "카카오 인증", description = "사용자가 카카오 계정을 통해 인증하도록 한다.")

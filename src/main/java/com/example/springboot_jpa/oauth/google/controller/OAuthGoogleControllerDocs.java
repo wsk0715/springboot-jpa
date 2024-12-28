@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 
 
-@Tag(name = "Google Oauth Authentication", description = "Google OAuth Authentication API")
+@Tag(name = "Google Oauth", description = "Google OAuth 인증 관련 API")
 public interface OAuthGoogleControllerDocs {
 
 	@Operation(summary = "구글 인증", description = "사용자가 구글 계정을 통해 인증하도록 한다.")
