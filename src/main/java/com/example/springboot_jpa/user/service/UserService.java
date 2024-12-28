@@ -4,6 +4,7 @@ import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.repository.UserRepository;
+import com.example.springboot_jpa.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
 	private final UserRepository userRepository;
+
+	private final JwtTokenUtil jwtTokenUtil;
 
 
 	public void save(User user) {
@@ -24,18 +27,22 @@ public class UserService {
 	}
 
 	@Transactional
-	public void updateNickname(Long userId, String nickname) {
-		User user = userRepository.findById(userId).orElse(null);
+	public void update(String token, User user) {
+		// 토큰을 통해 사용자 확인
+		Long currentUserId = jwtTokenUtil.getUserId(token);
+		User dbUser = userRepository.findById(currentUserId).orElse(null);
 
-		if (user == null) {
+		if (dbUser == null) {
 			throw new SpringbootJpaException("해당 사용자가 존재하지 않습니다.");
 		}
-		
-		if (userRepository.existsByNickname(new Nickname(nickname))) {
+
+		// 닉네임 변경
+		Nickname nickname = user.getNickname();
+		if (userRepository.existsByNickname(nickname)) {
 			throw new SpringbootJpaException("이미 존재하는 닉네임입니다.");
 		}
 
-		user.updateNickname(nickname);
+		dbUser.updateNickname(nickname);
 	}
 
 }

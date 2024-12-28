@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.user.contoller;
 
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.user.domain.Nickname;
+import com.example.springboot_jpa.user.contoller.request.UserRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,6 +17,6 @@ public interface UserControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "수정 성공", responseCode = "200"),
 	})
-	ResponseEntity<BaseResponse> modify(@RequestBody Nickname nickname, HttpServletRequest request);
+	ResponseEntity<BaseResponse> update(@RequestBody UserRequest userRequest, HttpServletRequest request);
 
 }

@@ -59,7 +59,8 @@ public class OAuthCommonService {
 		}
 
 		// 2. 임시 유저 생성
-		User user = User.create(tmpNickname);
+		Nickname nickname = new Nickname(tmpNickname);
+		User user = User.create(nickname);
 		userService.save(user);
 
 		return user;

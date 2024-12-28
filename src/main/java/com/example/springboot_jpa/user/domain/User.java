@@ -38,19 +38,19 @@ public class User extends BaseEntity {
 	private Boolean isDeleted = false;
 
 	@Builder
-	private User(String nickname) {
-		this.nickname = new Nickname(nickname);
+	private User(Nickname nickname) {
+		this.nickname = nickname;
 	}
 
 
-	public static User create(String nickname) {
+	public static User create(Nickname nickname) {
 		return User.builder()
 				   .nickname(nickname)
 				   .build();
 	}
 
-	public void updateNickname(String nickname) {
-		this.nickname = new Nickname(nickname);
+	public void updateNickname(Nickname nickname) {
+		this.nickname = nickname;
 	}
 
 }
