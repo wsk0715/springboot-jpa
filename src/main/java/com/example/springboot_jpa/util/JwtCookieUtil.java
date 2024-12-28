@@ -60,4 +60,22 @@ public class JwtCookieUtil {
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 
+	/**
+	 * 쿠키에 담긴 JWT 토큰을 얻는다.
+	 *
+	 * @param request HttpServeletRequest 객체
+	 * @return JWT 토큰 값
+	 */
+	public String getJwtFromCookies(HttpServletRequest request) {
+		if (request.getCookies() == null) {
+			return null;
+		}
+		for (Cookie cookie : request.getCookies()) {
+			if ("jwt".equals(cookie.getName())) {
+				return cookie.getValue();
+			}
+		}
+		return null;
+	}
+
 }
