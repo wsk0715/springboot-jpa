@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS board, oauth_google, oauth_kakao, user;
+DROP TABLE IF EXISTS comment, board, oauth_google, oauth_kakao, user;
 CREATE TABLE user
 (
 	id         BIGINT       NOT NULL AUTO_INCREMENT,
@@ -47,8 +47,23 @@ CREATE TABLE board
 	CONSTRAINT fk_board_user FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
+CREATE TABLE comment
+(
+	id         BIGINT       NOT NULL AUTO_INCREMENT,
+	content    TEXT         NOT NULL,
+	board_id   BIGINT       NOT NULL,
+	user_id    BIGINT       NOT NULL,
+	is_deleted BIT(1)       NOT NULL DEFAULT b'0',
+	created_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
+	updated_at TIMESTAMP(6) NULL     DEFAULT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT fk_comment_board FOREIGN KEY (board_id) REFERENCES board (id),
+	CONSTRAINT fk_comment_user FOREIGN KEY (user_id) REFERENCES user (id)
+);
 
 CREATE INDEX idx_user_nickname ON user (nickname);
 CREATE INDEX idx_oauth_google_code ON oauth_google (code);
 CREATE INDEX idx_oauth_kakao_code ON oauth_kakao (code);
 CREATE INDEX idx_board_user_id ON board (user_id);
+CREATE INDEX idx_comment_board_id ON comment (board_id);
+CREATE INDEX idx_comment_user_id ON comment (user_id);

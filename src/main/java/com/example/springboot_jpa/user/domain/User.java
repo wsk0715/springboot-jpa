@@ -24,6 +24,7 @@ import org.hibernate.annotations.SQLRestriction;
 @AllArgsConstructor
 @SQLDelete(sql = "UPDATE user SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = false")
+@Builder
 public class User extends BaseEntity {
 
 	@Id
@@ -37,11 +38,6 @@ public class User extends BaseEntity {
 	@Builder.Default
 	@Column(nullable = false)
 	private Boolean isDeleted = false;
-
-	@Builder
-	private User(Nickname nickname) {
-		this.nickname = nickname;
-	}
 
 
 	public static User create(Nickname nickname) {

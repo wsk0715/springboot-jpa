@@ -2,6 +2,7 @@ package com.example.springboot_jpa.board.service;
 
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.repository.BoardRepository;
+import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
 import com.example.springboot_jpa.util.JwtTokenUtil;
@@ -19,6 +20,11 @@ public class BoardService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
+
+	public Board findById(Long boardId) {
+		return boardRepository.findById(boardId)
+							  .orElseThrow(() -> new SpringbootJpaException("해당 게시글을 찾을 수 없습니다."));
+	}
 
 	@Transactional
 	public void post(String token, Board board) {

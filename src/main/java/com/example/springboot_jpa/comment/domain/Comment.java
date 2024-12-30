@@ -1,5 +1,6 @@
-package com.example.springboot_jpa.board.domain;
+package com.example.springboot_jpa.comment.domain;
 
+import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.config.domain.BaseEntity;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
@@ -19,25 +20,26 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "board")
+@Table(name = "comment")
 @Getter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@SQLDelete(sql = "UPDATE board SET is_deleted = TRUE WHERE id = ?")
-@SQLRestriction("is_deleted = false")
 @Builder
-public class Board extends BaseEntity {
+@SQLDelete(sql = "UPDATE comment SET is_deleted = TRUE WHERE id = ?")
+@SQLRestriction("is_deleted = false")
+public class Comment extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 255)
-	private String title;
-
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
+
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "board_id")
+	private Board board;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "user_id")
@@ -45,34 +47,15 @@ public class Board extends BaseEntity {
 
 	@Builder.Default
 	@Column(nullable = false)
-	private Integer viewCount = 0;
-
-	@Builder.Default
-	@Column(nullable = false)
-	private Integer likeCount = 0;
-
-	@Builder.Default
-	@Column(nullable = false)
-	private Integer commentCount = 0;
-
-	@Builder.Default
-	@Column(nullable = false)
 	private Boolean isDeleted = false;
 
 
-	public static Board create(String title, String content) {
-		return Board.builder()
-					.title(title)
-					.content(content)
-					.build();
+	public void updateBoard(Board board) {
+		this.board = board;
 	}
 
 	public void updateUser(User user) {
 		this.user = user;
-	}
-
-	public void addCommentCount() {
-		this.commentCount += 1;
 	}
 
 }
