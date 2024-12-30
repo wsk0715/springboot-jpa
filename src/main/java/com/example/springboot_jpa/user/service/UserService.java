@@ -22,6 +22,11 @@ public class UserService {
 		userRepository.save(user);
 	}
 
+	public User findById(Long userId) {
+		return userRepository.findById(userId)
+							 .orElseThrow(() -> new SpringbootJpaException("해당 사용자가 존재하지 않습니다."));
+	}
+
 	public boolean existsByNickname(Nickname nickname) {
 		return userRepository.existsByNickname(nickname);
 	}
