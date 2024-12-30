@@ -57,6 +57,9 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code,
 												 HttpServletResponse response) {
 		OAuthResult result = OAuthGoogleService.init(code);
+
+		jwtCookieUtil.addJwtToCookie(response, result.token());
+
 		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";
 
@@ -67,8 +70,6 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 										   .build();
 			return ResponseEntity.ok(res);
 		}
-
-		jwtCookieUtil.addJwtToCookie(response, result.token());
 
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그인 성공")

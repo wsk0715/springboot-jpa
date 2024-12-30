@@ -31,7 +31,7 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 	private String REDIRECT_URI;
 
 	private final OAuthKakaoService OAuthKakaoService;
-	
+
 	private final JwtCookieUtil jwtCookieUtil;
 
 
@@ -54,6 +54,9 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code,
 												 HttpServletResponse response) {
 		OAuthResult result = OAuthKakaoService.init(code);
+
+		jwtCookieUtil.addJwtToCookie(response, result.token());
+
 		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";
 
@@ -65,7 +68,6 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 			return ResponseEntity.ok(res);
 		}
 
-		jwtCookieUtil.addJwtToCookie(response, result.token());
 
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그인 성공")
