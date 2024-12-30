@@ -45,4 +45,18 @@ public class UserService {
 		dbUser.updateNickname(nickname);
 	}
 
+	@Transactional
+	public void delete(String token) {
+		// 사용자 확인
+		Long currentUserId = jwtTokenUtil.getUserId(token);
+		User dbUser = userRepository.findById(currentUserId).orElse(null);
+
+		if (dbUser == null) {
+			throw new SpringbootJpaException("해당 사용자가 존재하지 않습니다.");
+		}
+
+		// 사용자 제거
+		userRepository.deleteById(currentUserId);
+	}
+
 }

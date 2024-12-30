@@ -19,4 +19,10 @@ public interface UserControllerDocs {
 	})
 	ResponseEntity<BaseResponse> update(@RequestBody UserRequest userRequest, HttpServletRequest request);
 
+	@Operation(summary = "사용자 제거", description = "사용자를 제거한다.")
+	@ApiResponses(value = {
+			@ApiResponse(description = "제거 성공", responseCode = "200"),
+	})
+	ResponseEntity<BaseResponse> delete(HttpServletRequest request);
+
 }

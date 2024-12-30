@@ -34,6 +34,7 @@ public class User extends BaseEntity {
 	@Column(nullable = false, unique = true, length = 10)
 	private Nickname nickname;
 
+	@Builder.Default
 	@Column(nullable = false)
 	private Boolean isDeleted = false;
 

@@ -8,6 +8,7 @@ import com.example.springboot_jpa.util.JwtCookieUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController implements UserControllerDocs {
 
 	private final UserService userService;
-	
+
 	private final JwtCookieUtil jwtCookieUtil;
 
 
@@ -33,6 +34,19 @@ public class UserController implements UserControllerDocs {
 		BaseResponse res = BaseResponse.ok()
 									   .title("사용자 정보 수정 성공")
 									   .description("사용자 정보를 수정했습니다.")
+									   .build();
+
+		return ResponseEntity.ok(res);
+	}
+
+	@DeleteMapping
+	public ResponseEntity<BaseResponse> delete(HttpServletRequest request) {
+		String token = jwtCookieUtil.getJwtFromCookies(request);
+		userService.delete(token);
+
+		BaseResponse res = BaseResponse.ok()
+									   .title("사용자 제거 성공")
+									   .description("사용자 정보를 제거했습니다. (로그아웃 API 호출 필요)")
 									   .build();
 
 		return ResponseEntity.ok(res);
