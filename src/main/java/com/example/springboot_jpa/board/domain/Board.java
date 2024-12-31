@@ -75,4 +75,8 @@ public class Board extends BaseEntity {
 		this.commentCount += 1;
 	}
 
+	public void subtractCommentCount() {
+		this.commentCount -= 1;
+	}
+
 }
