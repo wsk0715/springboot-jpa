@@ -5,6 +5,7 @@ import com.example.springboot_jpa.config.domain.BaseEntity;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,11 +38,11 @@ public class Comment extends BaseEntity {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
 	private Board board;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 

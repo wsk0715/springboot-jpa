@@ -16,6 +16,6 @@ public interface CommentControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "댓글 등록 성공", responseCode = "200"),
 	})
-	ResponseEntity<BaseResponse> post(Long id, CommentRequest commentRequest, HttpServletRequest request);
+	ResponseEntity<BaseResponse> post(Long boardId, CommentRequest commentRequest, HttpServletRequest request);
 
 }
