@@ -1,12 +1,13 @@
 package com.example.springboot_jpa.board.controller;
 
+import com.example.springboot_jpa.auth.annotation.LoginUser;
 import com.example.springboot_jpa.board.controller.request.BoardRequest;
 import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,6 +19,6 @@ public interface BoardControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "게시글 작성 성공", responseCode = "200")
 	})
-	ResponseEntity<BaseResponse> post(@RequestBody BoardRequest boardRequest, HttpServletRequest request);
+	ResponseEntity<BaseResponse> post(@RequestBody BoardRequest boardRequest, @LoginUser User user);
 
 }

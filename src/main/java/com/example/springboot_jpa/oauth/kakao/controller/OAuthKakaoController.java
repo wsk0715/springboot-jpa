@@ -1,9 +1,9 @@
 package com.example.springboot_jpa.oauth.kakao.controller;
 
+import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.kakao.service.OAuthKakaoService;
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.util.JwtCookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,8 +31,8 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 	private String REDIRECT_URI;
 
 	private final OAuthKakaoService OAuthKakaoService;
-
-	private final JwtCookieUtil jwtCookieUtil;
+	
+	private final AuthService authService;
 
 
 	@GetMapping("")
@@ -55,7 +55,7 @@ public class OAuthKakaoController implements OAuthKakaoControllerDocs {
 												 HttpServletResponse response) {
 		OAuthResult result = OAuthKakaoService.init(code);
 
-		jwtCookieUtil.addJwtToCookie(response, result.token());
+		authService.addJwtToCookie(response, result.token());
 
 		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";

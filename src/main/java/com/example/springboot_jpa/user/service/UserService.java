@@ -4,7 +4,6 @@ import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.repository.UserRepository;
-import com.example.springboot_jpa.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
 	private final UserRepository userRepository;
-
-	private final JwtTokenUtil jwtTokenUtil;
 
 
 	public void save(User user) {
@@ -32,14 +29,10 @@ public class UserService {
 	}
 
 	@Transactional
-	public void update(String token, User user) {
-		// 토큰을 통해 사용자 확인
-		Long currentUserId = jwtTokenUtil.getUserId(token);
-		User dbUser = userRepository.findById(currentUserId).orElse(null);
-
-		if (dbUser == null) {
-			throw new SpringbootJpaException("해당 사용자가 존재하지 않습니다.");
-		}
+	public void update(User user, User loginUser) {
+		// 사용자 확인
+		Long loginUserId = loginUser.getId();
+		User dbUser = findById(loginUserId);
 
 		// 닉네임 변경
 		Nickname nickname = user.getNickname();
@@ -51,17 +44,13 @@ public class UserService {
 	}
 
 	@Transactional
-	public void delete(String token) {
+	public void delete(User user) {
 		// 사용자 확인
-		Long currentUserId = jwtTokenUtil.getUserId(token);
-		User dbUser = userRepository.findById(currentUserId).orElse(null);
-
-		if (dbUser == null) {
-			throw new SpringbootJpaException("해당 사용자가 존재하지 않습니다.");
-		}
+		Long loginUserId = user.getId();
+		findById(loginUserId);
 
 		// 사용자 제거
-		userRepository.deleteById(currentUserId);
+		userRepository.deleteById(loginUserId);
 	}
 
 }

@@ -5,7 +5,6 @@ import com.example.springboot_jpa.board.repository.BoardRepository;
 import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import com.example.springboot_jpa.util.JwtTokenUtil;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,6 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	private final UserService userService;
-
-	private final JwtTokenUtil jwtTokenUtil;
 
 
 	public Board findById(Long boardId) {
@@ -36,24 +33,20 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void post(String token, Board board) {
-		Long userId = jwtTokenUtil.getUserId(token);
-		User user = userService.findById(userId);
-
+	public void post(Board board, User user) {
 		board.updateUser(user);
-		System.out.println(board);
 
 		boardRepository.save(board);
 	}
 
 
 	@Transactional
-	public void updateBoard(Long boardId, Board board, Long userId) {
+	public void updateBoard(Long boardId, Board board, User user) {
 		Board dbBoard = findById(boardId);
 
 		// 게시글 작성자 확인
 		User boardUser = dbBoard.getUser();
-		if (!userId.equals(boardUser.getId())) {
+		if (!user.getId().equals(boardUser.getId())) {
 			throw new SpringbootJpaException("사용자 정보와 게시글 작성자가 일치하지 않습니다.");
 		}
 
@@ -65,12 +58,12 @@ public class BoardService {
 		dbBoard.updateContent(content);
 	}
 
-	public void delete(Long boardId, Long userId) {
+	public void delete(Long boardId, User user) {
 		Board board = findById(boardId);
 		User boardUser = board.getUser();
 
 		// 게시글 작성자 확인
-		if (!userId.equals(boardUser.getId())) {
+		if (!user.getId().equals(boardUser.getId())) {
 			throw new SpringbootJpaException("사용자 정보와 게시글 작성자와 일치하지 않습니다.");
 		}
 

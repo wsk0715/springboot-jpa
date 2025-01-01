@@ -1,9 +1,9 @@
 package com.example.springboot_jpa.oauth.google.controller;
 
+import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.google.service.OAuthGoogleService;
 import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.util.JwtCookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 
 	private final OAuthGoogleService OAuthGoogleService;
 
-	private final JwtCookieUtil jwtCookieUtil;
+	private final AuthService authService;
 
 
 	@GetMapping("")
@@ -58,7 +58,7 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 												 HttpServletResponse response) {
 		OAuthResult result = OAuthGoogleService.init(code);
 
-		jwtCookieUtil.addJwtToCookie(response, result.token());
+		authService.addJwtToCookie(response, result.token());
 
 		if (result.initialLogin()) {
 			String url = BASE_URL + "/auth";

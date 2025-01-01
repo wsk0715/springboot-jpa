@@ -28,14 +28,12 @@ public class CommentService {
 	}
 
 	@Transactional
-	public void post(Comment comment, Long boardId, Long userId) {
+	public void post(Comment comment, Long boardId, User user) {
 		// 게시글 정보 찾기, 댓글 카운트 추가
 		Board board = boardService.findById(boardId);
 		board.addCommentCount();
 
 		// 사용자 정보 찾기
-		User user = userService.findById(userId);
-
 		comment.updateBoard(board);
 		comment.updateUser(user);
 
@@ -43,14 +41,14 @@ public class CommentService {
 	}
 
 	@Transactional
-	public void delete(Long commentId, Long boardId, Long userId) {
+	public void delete(Long commentId, Long boardId, User user) {
 		// 댓글 찾기
 		Comment comment = commentRepository.findById(commentId)
 										   .orElseThrow(() -> new SpringbootJpaException("해당 댓글이 존재하지 않습니다."));
 
 		// 작성자 비교
 		User commentUser = comment.getUser();
-		if (!userId.equals(commentUser.getId())) {
+		if (!user.getId().equals(commentUser.getId())) {
 			throw new SpringbootJpaException("사용자 정보와 댓글 작성자가 일치하지 않습니다.");
 		}
 
