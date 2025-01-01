@@ -5,9 +5,12 @@ import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.service.BoardService;
 import com.example.springboot_jpa.response.BaseResponse;
 import com.example.springboot_jpa.util.JwtCookieUtil;
+import com.example.springboot_jpa.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,8 @@ public class BoardController implements BoardControllerDocs {
 
 	private final JwtCookieUtil jwtCookieUtil;
 
+	private final JwtTokenUtil jwtTokenUtil;
+
 
 	@PostMapping
 	public ResponseEntity<BaseResponse> post(@RequestBody BoardRequest boardRequest,
@@ -35,7 +40,24 @@ public class BoardController implements BoardControllerDocs {
 									   .title("게시글 작성 완료")
 									   .description("게시글을 작성했습니다.")
 									   .build();
-		
+
+		return ResponseEntity.ok(res);
+	}
+
+	@DeleteMapping("/{boardId}")
+	public ResponseEntity<BaseResponse> deleteBoard(@PathVariable Long boardId,
+													HttpServletRequest request
+												   ) {
+		String token = jwtCookieUtil.getJwtFromCookies(request);
+		Long userId = jwtTokenUtil.getUserId(token);
+
+		boardService.delete(boardId, userId);
+
+		BaseResponse res = BaseResponse.ok()
+									   .title("게시글 삭제 완료")
+									   .description("게시글을 삭제했습니다.")
+									   .build();
+
 		return ResponseEntity.ok(res);
 	}
 

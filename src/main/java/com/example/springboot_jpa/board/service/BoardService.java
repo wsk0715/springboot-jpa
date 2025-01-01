@@ -37,4 +37,16 @@ public class BoardService {
 		boardRepository.save(board);
 	}
 
+	public void delete(Long boardId, Long userId) {
+		Board board = findById(boardId);
+		User boardUser = board.getUser();
+
+		// 게시글 작성자 확인
+		if (!userId.equals(boardUser.getId())) {
+			throw new SpringbootJpaException("사용자 정보와 게시글 작성자와 일치하지 않습니다.");
+		}
+
+		boardRepository.delete(board);
+	}
+
 }
