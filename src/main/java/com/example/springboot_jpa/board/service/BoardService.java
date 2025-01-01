@@ -6,6 +6,7 @@ import com.example.springboot_jpa.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
 import com.example.springboot_jpa.util.JwtTokenUtil;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,14 @@ public class BoardService {
 	public Board findById(Long boardId) {
 		return boardRepository.findById(boardId)
 							  .orElseThrow(() -> new SpringbootJpaException("해당 게시글을 찾을 수 없습니다."));
+	}
+
+	public List<Board> getBoards() {
+		return boardRepository.findAll();
+	}
+
+	public Board getBoard(Long boardId) {
+		return findById(boardId);
 	}
 
 	@Transactional
