@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+  <timestamp key="BY_DATE" datePattern="yyyy-MM-dd" />
+
+  <springProfile name="dev">
+    <include resource="console-appender.xml" />
+    <root level="INFO">
+      <appender-ref ref="STDOUT" />
+    </root>
+    <include resource="info-appender.xml" />
+    <include resource="warn-appender.xml" />
+    <include resource="error-appender.xml" />
+
+    <root level="INFO">
+      <appender-ref ref="INFO" />
+      <appender-ref ref="WARN" />
+      <appender-ref ref="ERROR" />
+    </root>
+  </springProfile>
+
+  <logger name="org.springframework" level="WARN" />
+  <logger name="org.hibernate" level="WARN" />
+  <logger name="org.apache" level="WARN" />
+  <logger name="com.example.springboot_jpa" level="INFO" />
+</configuration>

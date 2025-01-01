@@ -1,3 +1,6 @@
+logs/
+backup/
+
 HELP.md
 .gradle
 build/
