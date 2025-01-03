@@ -31,7 +31,6 @@ public class JwtTokenUtil {
 						   .setSubject(user.getNickname().toString())
 						   .claim("id", user.getId())
 						   .claim("nickname", user.getNickname().toString())
-						   .claim("createdAt", user.getCreatedAt().toString())
 						   .setIssuedAt(now)
 						   .setExpiration(expiryDate)
 						   .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY.getBytes())
