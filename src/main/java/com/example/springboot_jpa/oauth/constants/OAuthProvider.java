@@ -8,12 +8,12 @@ public enum OAuthProvider {
 	KAKAO("kakao", "id");
 
 
-	private final String name;
+	private final String code;
 
 	private final String identifier;
 
-	OAuthProvider(String name, String identifier) {
-		this.name = name;
+	OAuthProvider(String code, String identifier) {
+		this.code = code;
 		this.identifier = identifier;
 	}
 }

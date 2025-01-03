@@ -9,7 +9,7 @@ public class NicknameGenerator {
 
 
 	public static String generateRandom(OAuthProvider provider) {
-		StringBuilder sb = new StringBuilder(provider.getName()).append("_");
+		StringBuilder sb = new StringBuilder(provider.getCode()).append("_");
 		int l = sb.length();
 
 		SecureRandom random = new SecureRandom();

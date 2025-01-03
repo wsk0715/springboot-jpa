@@ -1,12 +1,12 @@
 package com.example.springboot_jpa.oauth.service;
 
+import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.oauth.common.service.OAuthCommonService;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
+import com.example.springboot_jpa.oauth.domain.OAuth;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
-import com.example.springboot_jpa.oauth.domain.OAuthGoogle;
-import com.example.springboot_jpa.oauth.repository.OAuthGoogleRepository;
+import com.example.springboot_jpa.oauth.repository.OAuthRepository;
 import com.example.springboot_jpa.user.domain.User;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ public class OAuthGoogleService {
 
 	private final OAuthCommonService oAuthCommonService;
 
-	private final OAuthGoogleRepository oAuthGoogleRepository;
+	private final OAuthRepository oAuthRepository;
 
 	private final JwtTokenUtil jwtTokenUtil;
 
@@ -29,7 +29,7 @@ public class OAuthGoogleService {
 													 .get(OAuthProvider.GOOGLE.getIdentifier());
 
 		// 최초 로그인 여부 확인
-		OAuthGoogle oauth = oAuthGoogleRepository.findByCode(googleId).orElse(null);
+		OAuth oauth = oAuthRepository.findByCode(googleId).orElse(null);
 		boolean isInitialLogin = oauth == null;
 
 		// 최초 로그인 시 = 소셜 로그인 정보 존재하지 않을 시
@@ -38,8 +38,8 @@ public class OAuthGoogleService {
 			User user = oAuthCommonService.createTempUser(OAuthProvider.GOOGLE);  // 임시 사용자
 
 			// 2. 임시 사용자와 구글 식별값 연결, 데이터베이스에 저장
-			oauth = OAuthGoogle.create(user, googleId);
-			oAuthGoogleRepository.save(oauth);
+			oauth = OAuth.create(user, OAuthProvider.GOOGLE, googleId);
+			oAuthRepository.save(oauth);
 		}
 
 		// JWT 발급

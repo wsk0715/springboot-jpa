@@ -9,26 +9,18 @@ CREATE TABLE user
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE oauth_google
+CREATE TABLE oauth
 (
+	id         BIGINT       NOT NULL AUTO_INCREMENT,
 	user_id    BIGINT       NOT NULL,
-	code       VARCHAR(255) NOT NULL,
+	provider   VARCHAR(20)  NOT NULL,
+	code       VARCHAR(255) NOT NULL UNIQUE, -- OAuth 제공자의 사용자 id
 	created_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
 	updated_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
-	PRIMARY KEY (user_id),
-	CONSTRAINT fk_oauth_google_user FOREIGN KEY (user_id)
-		REFERENCES user (id) ON DELETE CASCADE
-);
-
-CREATE TABLE oauth_kakao
-(
-	user_id    BIGINT       NOT NULL,
-	code       VARCHAR(255) NOT NULL,
-	created_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
-	updated_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
-	PRIMARY KEY (user_id),
-	CONSTRAINT fk_oauth_kakao_user FOREIGN KEY (user_id)
-		REFERENCES user (id) ON DELETE CASCADE
+	PRIMARY KEY (id),
+	CONSTRAINT fk_oauth_user FOREIGN KEY (user_id)
+		REFERENCES user (id) ON DELETE CASCADE,
+	UNIQUE (user_id, provider)               -- 한 사용자가 중복된 provider를 등록할 수 없음
 );
 
 CREATE TABLE board
@@ -62,8 +54,7 @@ CREATE TABLE comment
 );
 
 CREATE INDEX idx_user_nickname ON user (nickname);
-CREATE INDEX idx_oauth_google_code ON oauth_google (code);
-CREATE INDEX idx_oauth_kakao_code ON oauth_kakao (code);
+CREATE INDEX idx_oauth_code ON oauth (code);
 CREATE INDEX idx_board_user_id ON board (user_id);
 CREATE INDEX idx_comment_board_id ON comment (board_id);
 CREATE INDEX idx_comment_user_id ON comment (user_id);
