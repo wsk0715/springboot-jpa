@@ -1,11 +1,11 @@
 package com.example.springboot_jpa.oauth.common.service;
 
-import com.example.springboot_jpa.exception.SpringbootJpaException;
+import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import com.example.springboot_jpa.util.NicknameGenerator;
+import com.example.springboot_jpa.common.util.NicknameGenerator;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

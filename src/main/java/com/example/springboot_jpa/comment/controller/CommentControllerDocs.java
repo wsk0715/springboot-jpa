@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.comment.controller;
 
 import com.example.springboot_jpa.comment.controller.request.CommentRequest;
-import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.common.response.BaseResponse;
 import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

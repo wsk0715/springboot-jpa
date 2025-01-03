@@ -5,8 +5,8 @@ import com.example.springboot_jpa.board.controller.request.BoardRequest;
 import com.example.springboot_jpa.board.controller.response.BoardResponse;
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.service.BoardService;
-import com.example.springboot_jpa.log.annotation.Trace;
-import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.common.log.annotation.Trace;
+import com.example.springboot_jpa.common.response.BaseResponse;
 import com.example.springboot_jpa.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -60,8 +60,8 @@ public class BoardController implements BoardControllerDocs {
 	}
 
 	@PostMapping
-	public ResponseEntity<BaseResponse> post(@RequestBody BoardRequest boardRequest,
-											 @LoginUser User loginUser) {
+	public ResponseEntity<BaseResponse> postBoard(@RequestBody BoardRequest boardRequest,
+												  @LoginUser User loginUser) {
 		Board board = boardRequest.toBoard();
 
 		boardService.post(board, loginUser);

@@ -2,7 +2,7 @@ package com.example.springboot_jpa.board.service;
 
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.repository.BoardRepository;
-import com.example.springboot_jpa.exception.SpringbootJpaException;
+import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
 import java.util.List;

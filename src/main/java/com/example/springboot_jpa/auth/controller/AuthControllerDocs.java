@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.auth.controller;
 
-import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

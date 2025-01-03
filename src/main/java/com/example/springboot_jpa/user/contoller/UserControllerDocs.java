@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.user.contoller;
 
 import com.example.springboot_jpa.auth.annotation.LoginUser;
-import com.example.springboot_jpa.response.BaseResponse;
+import com.example.springboot_jpa.common.response.BaseResponse;
 import com.example.springboot_jpa.user.contoller.request.UserRequest;
 import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;

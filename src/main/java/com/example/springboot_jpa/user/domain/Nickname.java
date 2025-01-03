@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.user.domain;
 
-import com.example.springboot_jpa.exception.SpringbootJpaException;
+import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.util.regex.Pattern;

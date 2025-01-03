@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.auth.controller;
 
-import com.example.springboot_jpa.response.BaseResponse;
-import com.example.springboot_jpa.util.JwtCookieUtil;
+import com.example.springboot_jpa.common.response.BaseResponse;
+import com.example.springboot_jpa.common.util.JwtCookieUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +20,7 @@ public class AuthController implements AuthControllerDocs {
 	@GetMapping("/logout")
 	public ResponseEntity<BaseResponse> logout(HttpServletResponse response) {
 		jwtCookieUtil.expireJwtFromToken(response);
-		
+
 		BaseResponse res = BaseResponse.ok()
 									   .title("로그아웃 성공")
 									   .description("로그아웃에 성공했습니다.")

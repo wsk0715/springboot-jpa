@@ -2,8 +2,8 @@ package com.example.springboot_jpa.auth.service;
 
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import com.example.springboot_jpa.util.JwtCookieUtil;
-import com.example.springboot_jpa.util.JwtTokenUtil;
+import com.example.springboot_jpa.common.util.JwtCookieUtil;
+import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
