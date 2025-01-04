@@ -38,7 +38,7 @@ public class OAuth extends BaseEntity {
 	private OAuthProvider provider;
 
 	@Column(nullable = false, unique = true, length = 255)
-	private String code;
+	private String code;  // 해싱된 OAuth 사용자 고유 id
 
 	@Builder
 	public OAuth(User user, OAuthProvider provider, String code) {
