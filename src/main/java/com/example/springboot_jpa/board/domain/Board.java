@@ -80,6 +80,10 @@ public class Board extends BaseEntity {
 		this.user = user;
 	}
 
+	public void addViewCount() {
+		this.viewCount += 1;
+	}
+
 	public void addCommentCount() {
 		this.commentCount += 1;
 	}

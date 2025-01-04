@@ -28,8 +28,11 @@ public class BoardService {
 		return boardRepository.findAll();
 	}
 
+	@Transactional
 	public Board getBoard(Long boardId) {
-		return findById(boardId);
+		Board board = findById(boardId);
+		board.addViewCount();
+		return board;
 	}
 
 	@Transactional
