@@ -6,6 +6,7 @@ import com.example.springboot_jpa.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -27,10 +28,10 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter parameter,
-								  ModelAndViewContainer mavContainer,
-								  NativeWebRequest webRequest,
-								  WebDataBinderFactory binderFactory) throws Exception {
+	public User resolveArgument(@NonNull MethodParameter parameter,
+								ModelAndViewContainer mavContainer,
+								NativeWebRequest webRequest,
+								WebDataBinderFactory binderFactory) {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
 		// 쿠키에서 JWT 토큰을 추출 (인터셉터에서 유효성 검증이 이미 이루어졌다고 가정)
