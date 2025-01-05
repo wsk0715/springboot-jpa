@@ -5,8 +5,6 @@ import com.example.springboot_jpa.board.controller.request.BoardRequest;
 import com.example.springboot_jpa.board.controller.response.BoardResponse;
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.service.BoardService;
-import com.example.springboot_jpa.common.log.annotation.Trace;
-import com.example.springboot_jpa.common.response.BaseResponse;
 import com.example.springboot_jpa.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -30,76 +28,53 @@ public class BoardController implements BoardControllerDocs {
 	private final BoardService boardService;
 
 
-	@Trace
-	@GetMapping
-	public ResponseEntity<BaseResponse> getBoards() {
-		List<Board> boards = boardService.getBoards();
-		List<BoardResponse> data = BoardResponse.createList(boards);
-
-		BaseResponse res = BaseResponse.ok()
-									   .title("게시글 목록 불러오기")
-									   .description("게시글 목록을 불러왔습니다.")
-									   .data(data)
-									   .build();
-
-		return ResponseEntity.ok(res);
-	}
-
-	@GetMapping("/{boardId}")
-	public ResponseEntity<BaseResponse> getBoard(@PathVariable Long boardId) {
-		Board board = boardService.getBoard(boardId);
-		BoardResponse data = BoardResponse.create(board);
-
-		BaseResponse res = BaseResponse.ok()
-									   .title("게시글 불러오기")
-									   .description("게시글을 불러왔습니다.")
-									   .data(data)
-									   .build();
-
-		return ResponseEntity.ok(res);
-	}
-
+	@Override
 	@PostMapping
-	public ResponseEntity<BaseResponse> postBoard(@RequestBody BoardRequest boardRequest,
-												  @LoginUser User loginUser) {
+	public ResponseEntity<Long> postBoard(@RequestBody BoardRequest boardRequest,
+										  @LoginUser User loginUser) {
 		Board board = boardRequest.toBoard();
+		Long boardId = boardService.post(board, loginUser);
 
-		boardService.post(board, loginUser);
+		return ResponseEntity.ok(boardId);
+	}
 
-		BaseResponse res = BaseResponse.ok()
-									   .title("게시글 작성 완료")
-									   .description("게시글을 작성했습니다.")
-									   .build();
+	@Override
+	@GetMapping
+	public ResponseEntity<List<BoardResponse>> getBoards() {
+		List<Board> boards = boardService.getBoards();
+		List<BoardResponse> res = BoardResponse.createList(boards);
 
 		return ResponseEntity.ok(res);
 	}
 
+	@Override
+	@GetMapping("/{boardId}")
+	public ResponseEntity<BoardResponse> getBoard(@PathVariable Long boardId) {
+		Board board = boardService.getBoard(boardId);
+		BoardResponse res = BoardResponse.create(board);
+
+		return ResponseEntity.ok(res);
+	}
+
+	@Override
 	@PatchMapping("/{boardId}")
-	public ResponseEntity<BaseResponse> updateBoard(@PathVariable Long boardId,
-													@RequestBody BoardRequest boardRequest,
-													@LoginUser User loginUser) {
+	public ResponseEntity<BoardResponse> updateBoard(@PathVariable Long boardId,
+													 @RequestBody BoardRequest boardRequest,
+													 @LoginUser User loginUser) {
 		Board board = boardRequest.toBoard();
 		boardService.updateBoard(boardId, board, loginUser);
-
-		BaseResponse res = BaseResponse.ok()
-									   .title("게시글 수정 완료")
-									   .description("게시글을 수정했습니다.")
-									   .build();
+		BoardResponse res = BoardResponse.create(board);
 
 		return ResponseEntity.ok(res);
 	}
 
+	@Override
 	@DeleteMapping("/{boardId}")
-	public ResponseEntity<BaseResponse> deleteBoard(@PathVariable Long boardId,
-													@LoginUser User loginUser) {
+	public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId,
+											@LoginUser User loginUser) {
 		boardService.delete(boardId, loginUser);
 
-		BaseResponse res = BaseResponse.ok()
-									   .title("게시글 삭제 완료")
-									   .description("게시글을 삭제했습니다.")
-									   .build();
-
-		return ResponseEntity.ok(res);
+		return ResponseEntity.ok().build();
 	}
 
 }

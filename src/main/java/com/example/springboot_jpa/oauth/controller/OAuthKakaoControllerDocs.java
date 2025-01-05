@@ -1,12 +1,14 @@
 package com.example.springboot_jpa.oauth.controller;
 
-import com.example.springboot_jpa.common.response.BaseResponse;
+import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.oauth.controller.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Tag(name = "Kakao Oauth", description = "Kakao Oauth 인증 관련 API")
@@ -16,13 +18,13 @@ public interface OAuthKakaoControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "리디렉션 요청", responseCode = "200")
 	})
-	ResponseEntity<BaseResponse> authentication();
+	ResponseEntity<AuthResponse> authentication();
 
 	@Operation(summary = "사용자 확인", description = "액세스 토큰을 이용해 사용자를 식별한다.")
 	@ApiResponses(value = {
-			@ApiResponse(description = "최초 로그인", responseCode = "200"),
 			@ApiResponse(description = "사용자 확인 성공", responseCode = "200")
 	})
-	ResponseEntity<BaseResponse> callback(String code, HttpServletResponse response);
+	ResponseEntity<Credential> callback(@RequestParam("code") String code,
+										HttpServletResponse response);
 
 }

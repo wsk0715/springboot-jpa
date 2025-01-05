@@ -1,9 +1,10 @@
 package com.example.springboot_jpa.auth.service;
 
+import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.common.credential.manager.CredentialManager;
+import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import com.example.springboot_jpa.common.util.JwtCookieUtil;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,17 +16,19 @@ public class AuthService {
 
 	private final UserService userService;
 
-	private final JwtCookieUtil jwtCookieUtil;
+	private final CredentialManager credentialManager;
 
 	private final JwtTokenUtil jwtTokenUtil;
 
 
-	public void addJwtToCookie(HttpServletResponse response, String token) {
-		jwtCookieUtil.addJwtToCookie(response, token);
+	public Credential setCredential(HttpServletResponse response, String token) {
+		Credential credential = new Credential(token);
+		credentialManager.setCredential(response, credential);
+		return credential;
 	}
 
 	public String extractJwtFromRequest(HttpServletRequest request) {
-		return jwtCookieUtil.getJwtFromCookies(request);
+		return credentialManager.getCredential(request);
 	}
 
 	public boolean validateToken(String token) {

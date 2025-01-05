@@ -1,9 +1,10 @@
 package com.example.springboot_jpa.oauth.controller;
 
 import com.example.springboot_jpa.auth.service.AuthService;
+import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.oauth.controller.response.AuthResponse;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.service.OAuthGoogleService;
-import com.example.springboot_jpa.common.response.BaseResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,51 +33,29 @@ public class OAuthGoogleController implements OAuthGoogleControllerDocs {
 
 	private final String SCOPE = "openid%20profile%20email";
 
+	private final String authUrl = AUTHORIZATION_URL
+								   + "?client_id=" + CLIENT_ID
+								   + "&redirect_uri=" + REDIRECT_URI
+								   + "&scope=" + SCOPE
+								   + "&response_type=code";
+
 	private final OAuthGoogleService OAuthGoogleService;
 
 	private final AuthService authService;
 
 
 	@GetMapping("")
-	public ResponseEntity<BaseResponse> authentication() {
-		String url = AUTHORIZATION_URL
-					 + "?client_id=" + CLIENT_ID
-					 + "&redirect_uri=" + REDIRECT_URI
-					 + "&scope=" + SCOPE
-					 + "&response_type=code";
-
-		BaseResponse res = BaseResponse.redirect()
-									   .title("구글 인증 요청")
-									   .description("data에 담긴 URL로 이동해 주세요.")
-									   .data(url)
-									   .build();
-		return ResponseEntity.ok(res);
+	public ResponseEntity<AuthResponse> authentication() {
+		return ResponseEntity.ok(new AuthResponse(authUrl));
 	}
 
 	@GetMapping("/callback")
-	public ResponseEntity<BaseResponse> callback(@RequestParam("code") String code,
-												 HttpServletResponse response) {
+	public ResponseEntity<Credential> callback(@RequestParam("code") String code,
+											   HttpServletResponse response) {
 		OAuthResult result = OAuthGoogleService.init(code);
+		Credential credential = authService.setCredential(response, result.token());
 
-		authService.addJwtToCookie(response, result.token());
-
-		if (result.initialLogin()) {
-			String url = BASE_URL + "/auth";
-
-			BaseResponse res = BaseResponse.ok()
-										   .title("최초 로그인")
-										   .description("data에 담긴 URL에 nickname을 POST 요청해주세요.")
-										   .data(url)
-										   .build();
-			return ResponseEntity.ok(res);
-		}
-
-		BaseResponse res = BaseResponse.ok()
-									   .title("로그인 성공")
-									   .description("토큰이 발급되었습니다.")
-									   .data(result.token())
-									   .build();
-		return ResponseEntity.ok(res);
+		return ResponseEntity.ok(credential);
 	}
 
 }

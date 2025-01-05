@@ -7,36 +7,3 @@ spring:
     url: ${DB_URL_DEV}
     username: ${DB_USERNAME_DEV}
     password: ${DB_PASSWORD_DEV}
-  jpa:
-    database: MYSQL
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        create_empty_composites.enabled: true
-    hibernate:
-      ddl-auto: validate
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    defer-datasource-initialization: false
-security:
-  jwt:
-    secretKey: ${JWT_SECRET_KEY}
-    expirationMs: 86400000  # ms 단위, 24시간
-  cookie:
-    httpOnly: true
-    isSecure: false
-    maxAge: 7200  # 초 단위, 2시간
-  oauth:
-    google:
-      clientId: ${AUTH_GOOGLE_CLIENT_ID}
-      clientSecret: ${AUTH_GOOGLE_CLIENT_SECRET}
-      redirectUri: ${AUTH_GOOGLE_REDIRECT_URI}
-      authUrl: https://accounts.google.com/o/oauth2/auth
-      tokenUrl: https://oauth2.googleapis.com/token
-      userInfoUrl: https://www.googleapis.com/oauth2/v3/userinfo
-    kakao:
-      clientId: ${AUTH_KAKAO_CLIENT_ID}
-      redirectUri: ${AUTH_KAKAO_REDIRECT_URI}
-      authUrl: https://kauth.kakao.com/oauth/authorize
-      tokenUrl: https://kauth.kakao.com/oauth/token
-      userInfoUrl: https://kapi.kakao.com/v2/user/me

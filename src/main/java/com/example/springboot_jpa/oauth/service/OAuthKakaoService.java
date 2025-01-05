@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OAuthKakaoService {
+public class OAuthKakaoService implements OAuthService {
 
 	private final OAuthCommonService oAuthCommonService;
 
@@ -22,6 +22,8 @@ public class OAuthKakaoService {
 	private final JwtTokenUtil jwtTokenUtil;
 
 
+
+	@Override
 	@Transactional
 	public OAuthResult init(String code) {
 		String accessToken = oAuthCommonService.getAccessToken(OAuthProvider.KAKAO, code);
@@ -46,7 +48,7 @@ public class OAuthKakaoService {
 		User user = oauth.getUser();
 		String token = jwtTokenUtil.createToken(user);
 
-		return new OAuthResult(isInitialLogin, token);
+		return new OAuthResult(token);
 	}
 
 }

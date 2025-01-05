@@ -1,6 +1,5 @@
 package com.example.springboot_jpa.auth.controller;
 
-import com.example.springboot_jpa.common.response.BaseResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -15,6 +14,6 @@ public interface AuthControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "로그아웃 성공", responseCode = "200")
 	})
-	ResponseEntity<BaseResponse> logout(HttpServletResponse response);
+	ResponseEntity<Void> logout(HttpServletResponse response);
 
 }

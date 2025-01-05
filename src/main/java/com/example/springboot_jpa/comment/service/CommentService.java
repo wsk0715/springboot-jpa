@@ -28,7 +28,7 @@ public class CommentService {
 	}
 
 	@Transactional
-	public void post(Comment comment, Long boardId, User user) {
+	public Long post(Comment comment, Long boardId, User user) {
 		// 게시글 정보 찾기, 댓글 카운트 추가
 		Board board = boardService.findById(boardId);
 		board.addCommentCount();
@@ -36,8 +36,10 @@ public class CommentService {
 		// 사용자 정보 찾기
 		comment.updateBoard(board);
 		comment.updateUser(user);
-
+		
 		commentRepository.save(comment);
+
+		return comment.getId();
 	}
 
 	@Transactional
