@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.auth.service;
 
-import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.common.credential.dto.Credential;
 import com.example.springboot_jpa.common.credential.manager.CredentialManager;
 import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.user.domain.User;

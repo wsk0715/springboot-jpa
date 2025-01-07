@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.controller;
 
 import com.example.springboot_jpa.auth.service.AuthService;
-import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.common.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.controller.response.AuthResponse;
 import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;

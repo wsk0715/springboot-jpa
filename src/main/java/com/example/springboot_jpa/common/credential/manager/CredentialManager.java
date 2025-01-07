@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.common.credential.manager;
 
-import com.example.springboot_jpa.common.credential.dto.Credential.Credential;
+import com.example.springboot_jpa.common.credential.dto.Credential;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
