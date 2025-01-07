@@ -1,5 +1,6 @@
 package com.example.springboot_jpa.oauth.service;
 
+import com.example.springboot_jpa.common.util.EncryptUtil;
 import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.oauth.common.service.OAuthCommonService;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
@@ -21,6 +22,7 @@ public class OAuthGoogleService implements OAuthService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
+	private final EncryptUtil encryptUtil;
 
 
 	@Override
@@ -31,7 +33,8 @@ public class OAuthGoogleService implements OAuthService {
 													 .get(OAuthProvider.GOOGLE.getIdentifier());
 
 		// 최초 로그인 여부 확인
-		OAuth oauth = oAuthRepository.findByCode(googleId).orElse(null);
+		String hashedCode = encryptUtil.hash(googleId);
+		OAuth oauth = oAuthRepository.findByCode(hashedCode).orElse(null);
 		boolean isInitialLogin = oauth == null;
 
 		// 최초 로그인 시 = 소셜 로그인 정보 존재하지 않을 시
@@ -40,7 +43,7 @@ public class OAuthGoogleService implements OAuthService {
 			User user = oAuthCommonService.createTempUser(OAuthProvider.GOOGLE);  // 임시 사용자
 
 			// 2. 임시 사용자와 구글 식별값 연결, 데이터베이스에 저장
-			oauth = OAuth.create(user, OAuthProvider.GOOGLE, googleId);
+			oauth = OAuth.create(user, OAuthProvider.GOOGLE, hashedCode);
 			oAuthRepository.save(oauth);
 		}
 
