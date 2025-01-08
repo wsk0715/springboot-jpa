@@ -18,7 +18,7 @@ public class AuthController implements AuthControllerDocs {
 
 	@GetMapping("/logout")
 	public ResponseEntity<Void> logout(HttpServletResponse response) {
-		cookieCredentialManager.expireCredential(response);
+		cookieCredentialManager.removeCredential(response);
 		return ResponseEntity.ok().build();
 	}
 

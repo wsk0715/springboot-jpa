@@ -13,6 +13,6 @@ public interface CredentialManager {
 
 	String getCredential(HttpServletRequest httpServletRequest);
 
-	void expireCredential(HttpServletResponse httpServletResponse);
+	void removeCredential(HttpServletResponse httpServletResponse);
 
 }

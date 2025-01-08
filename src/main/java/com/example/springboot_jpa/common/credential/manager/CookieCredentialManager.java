@@ -6,6 +6,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -14,28 +15,45 @@ import org.springframework.stereotype.Component;
  * 쿠키를 사용해서 인증 정보를 관리하는 클래스
  */
 @Component
+@Primary
 public class CookieCredentialManager implements CredentialManager {
 
 	@Value("${security.cookie.maxAge}")
-	private int cookieMaxAge;
+	private int maxAge;
 
 	@Value("${security.cookie.isSecure}")
-	private boolean cookieIsSecure;
+	private boolean isSecure;
 
 	@Value("${security.cookie.httpOnly}")
-	private boolean cookieHttpOnly;
+	private boolean httpOnly;
 
-	@Value("${security.cookie.sameSite")
-	private String cookieSameSite;
+	@Value("${security.cookie.sameSite}")
+	private String sameSite;
 
 	private static final String COOKIE_NAME = "jwt";
 
 
 	/**
-	 * 쿠키에 담긴 JWT 토큰을 얻는다.
-	 *
-	 * @param request HttpServeletRequest 객체
-	 * @return JWT 토큰 값
+	 * 인증 정보를 쿠키에 추가한다.
+	 */
+	@Override
+	public void setCredential(HttpServletResponse response, Credential credential) {
+		ResponseCookie cookie = createCookie(maxAge, credential.jwt());
+		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+	}
+
+	private ResponseCookie createCookie(int age, String jwt) {
+		return ResponseCookie.from(COOKIE_NAME, jwt)
+							 .path("/")           // 전체 경로에서 사용 가능
+							 .maxAge(age)         // 쿠키 유효기간
+							 .secure(isSecure)    // HTTPS를 사용할 경우에만 전송
+							 .httpOnly(httpOnly)  // 자바스크립트에서 접근 가능여부 설정
+							 .sameSite(sameSite)  // CSRF 공격 방지를 위한 SameSite 설정
+							 .build();
+	}
+
+	/**
+	 * 쿠키에 담긴 인증 정보를 얻는다.
 	 */
 	@Override
 	public String getCredential(HttpServletRequest request) {
@@ -53,41 +71,11 @@ public class CookieCredentialManager implements CredentialManager {
 	}
 
 	/**
-	 * JWT 토큰을 HTTP-Only 쿠키에 추가한다.
-	 *
-	 * @param response   HttpServletResponse 객체
-	 * @param credential 인증 정보 DTO
+	 * 쿠키에 담긴 인증 정보를 제거한다.
 	 */
 	@Override
-	public void setCredential(HttpServletResponse response, Credential credential) {
-		// 1. 쿠키 생성
-		ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, credential.jwt())
-											  .path("/")                      // 전체 경로에서 사용 가능
-											  .maxAge(cookieMaxAge)           // 쿠키 유효기간
-											  .secure(cookieIsSecure)         // HTTPS를 사용할 경우에만 전송
-											  .httpOnly(cookieHttpOnly)       // 자바스크립트에서 접근 불가 설정
-											  .sameSite(cookieSameSite)       // CSRF 공격 방지를 위한 SameSite 설정
-											  .build();
-
-		// 2. 응답 헤더에 쿠키 설정
-		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-	}
-
-
-	/**
-	 * 쿠키에 담긴 JWT 토큰을 만료시킨다.
-	 *
-	 * @param response HttpServeletResponse 객체
-	 */
-	@Override
-	public void expireCredential(HttpServletResponse response) {
-		ResponseCookie cookie = ResponseCookie.from(COOKIE_NAME, "")
-											  .path("/")
-											  .maxAge(0)  // 1. 만료시간을 0으로 설정 = 쿠키 만료
-											  .secure(cookieIsSecure)
-											  .httpOnly(cookieHttpOnly)
-											  .sameSite(cookieSameSite)
-											  .build();
+	public void removeCredential(HttpServletResponse response) {
+		ResponseCookie cookie = createCookie(0, "");  // 만료시간을 0으로 설정 - 쿠키 만료
 
 		// 2. 응답 헤더에 만료된 쿠키 설정
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
