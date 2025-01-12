@@ -1,0 +1,30 @@
+<included>
+  <appender name="warn-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!-- 로그 파일 저장 위치 -->
+    <file>${LOG_FILE_PATH}/warn/warn-${DATE_FORMAT}.log</file>
+
+    <!-- 정책을 적용할 로그 수준 설정, WARN 수준에만 적용 -->
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+      <level>WARN</level>
+      <onMatch>ACCEPT</onMatch>
+      <onMismatch>DENY</onMismatch>
+    </filter>
+
+    <!-- 로그 출력 정책, 로그 파일에 다음 형식으로 로그 메시지 저장 -->
+    <encoder>
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] [request_id=%X{request_id:-startup}] %5level [%logger{1}:%line] - %msg%exception{full}%n</pattern>
+    </encoder>
+
+    <!-- 로그 파일 저장 정책, 파일 크기와 보관 기간에 따라 관리 -->
+    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+      <!-- 기존 로그 파일 보관 시 기존 로그 파일 작명 정책 -->
+      <fileNamePattern>${LOG_FILE_PATH}/backups/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <!-- 개별 로그 파일 크기 제한, 초과 시 정해진 정책에 따라 기존 파일 보관 -->
+      <maxFileSize>10MB</maxFileSize>
+      <!-- 로그 파일 총 용량을 다음과 같이 제한, 초과 시 오래된 로그부터 삭제 -->
+      <totalSizeCap>5GB</totalSizeCap>
+      <!-- 로그 파일을 다음 일 수만큼 보관, 이후 삭제 -->
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+  </appender>
+</included>

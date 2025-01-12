@@ -47,6 +47,21 @@ security:
 
 spring:
   config:
+    import: classpath:security/application-local.yml
+    activate:
+      on-profile: local
+---
+
+spring:
+  config:
+    import: classpath:security/application-test.yml
+    activate:
+      on-profile: test
+
+---
+
+spring:
+  config:
     import: classpath:security/application-dev.yml
     activate:
       on-profile: dev
@@ -55,6 +70,6 @@ spring:
 
 spring:
   config:
-    import: classpath:security/application-test.yml
+    import: classpath:security/application-prod.yml
     activate:
-      on-profile: test
+      on-profile: prod

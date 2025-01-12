@@ -1,0 +1,9 @@
+<included>
+  <appender name="console-appender" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <!-- 콘솔을 이용하여 로그 출력, 다음 형식을 따름 -->
+      <!-- [타임스탬프] 로그수준 [패키지.클래스명] 로그메시지 -->
+      <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] %highlight(%5level) [%highlight(%logger{1}:%line)] %msg%n</pattern>
+    </encoder>
+  </appender>
+</included>

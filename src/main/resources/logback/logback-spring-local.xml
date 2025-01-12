@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+  <!-- 프로퍼티(변수) 설정 -->
+  <property name="LOG_FILE_PATH" value="./app/local/logs" />
+
+  <!-- 로그 출력 방식을 설정하는 appender 불러오기 -->
+  <include resource="logback/appender/console/console-appender.xml" />
+  <include resource="logback/appender/file/info-appender.xml" />
+  <include resource="logback/appender/file/warn-appender.xml" />
+  <include resource="logback/appender/file/error-appender.xml" />
+
+  <!-- 로그 레벨(오름차순) [TRACE | DEBUG | INFO | WARN | ERROR] -->
+  <!-- 기본 로그 수준을 설정한다. 설정된 레벨 이상의 로그만 출력된다.-->
+  <root level="TRACE">
+    <!-- 기본 로그 수준에서 사용할 appender를 설정한다. -->
+    <appender-ref ref="info-appender" />
+    <appender-ref ref="warn-appender" />
+    <appender-ref ref="error-appender" />
+  </root>
+
+  <!-- 패키지 별 로그 수준을 설정한다. 해당 레벨 이상의 로그만 출력된다. -->
+  <logger name="com.example.springboot_jpa" level="TRACE">
+    <!-- 패키지 별 로그 수준에서 사용할 appender를 설정한다. -->
+    <appender-ref ref="console-appender" />
+  </logger>
+  <logger name="org.springframework" level="WARN">
+    <appender-ref ref="console-appender" />
+  </logger>
+  <logger name="org.hibernate" level="WARN">
+    <appender-ref ref="console-appender" />
+  </logger>
+  <logger name="org.apache" level="WARN">
+    <appender-ref ref="console-appender" />
+  </logger>
+
+</configuration>
