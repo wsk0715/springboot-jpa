@@ -5,6 +5,7 @@ import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
@@ -41,7 +43,10 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		}
 
 		// 토큰을 이용해 실제 사용자 정보를 조회
-		return authService.extractFromToken(token);
+		User user = authService.extractFromToken(token);
+		log.info(user.toString());
+
+		return user;
 	}
 
 }
