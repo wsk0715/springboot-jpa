@@ -2,7 +2,7 @@ package com.example.springboot_jpa.common.config;
 
 import com.example.springboot_jpa.auth.interceptor.JwtInterceptor;
 import com.example.springboot_jpa.auth.resolver.LoginUserArgumentResolver;
-import com.example.springboot_jpa.common.interceptor.RequestTimeInterceptor;
+import com.example.springboot_jpa.common.log.interceptor.RequestInterceptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +14,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-	private final RequestTimeInterceptor requestTimeInterceptor;
+	private final RequestInterceptor requestInterceptor;
 	private final JwtInterceptor jwtInterceptor;
 	private final LoginUserArgumentResolver loginUserArgumentResolver;
 
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(requestTimeInterceptor)
+		registry.addInterceptor(requestInterceptor)
 				.order(1);
 
 		registry.addInterceptor(jwtInterceptor)

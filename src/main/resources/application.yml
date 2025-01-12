@@ -6,10 +6,12 @@ spring:
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        show_sql: true            # SQL 쿼리 출력 활성화
+        format-sql: true          # SQL 쿼리 포맷팅 활성화
+        generate_statistics: true  # Hibernate Statics 활성화
         create_empty_composites.enabled: true
     hibernate:
-      ddl-auto: validate
+      ddl_auto: validate
     database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: false
 security:
