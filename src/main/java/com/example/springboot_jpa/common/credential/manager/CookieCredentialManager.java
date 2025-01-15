@@ -1,11 +1,13 @@
 package com.example.springboot_jpa.common.credential.manager;
 
 import com.example.springboot_jpa.common.credential.dto.Credential;
+import com.example.springboot_jpa.common.credential.manager.properties.CookieCredentialProperties;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -16,21 +18,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Primary
+@RequiredArgsConstructor
+@EnableConfigurationProperties(CookieCredentialProperties.class)
 public class CookieCredentialManager implements CredentialManager {
 
-	@Value("${security.cookie.maxAge}")
-	private int maxAge;
-
-	@Value("${security.cookie.isSecure}")
-	private boolean isSecure;
-
-	@Value("${security.cookie.httpOnly}")
-	private boolean httpOnly;
-
-	@Value("${security.cookie.sameSite}")
-	private String sameSite;
-
-	private static final String COOKIE_NAME = "jwt";
+	private final CookieCredentialProperties cookieCredentialProperties;
 
 
 	/**
@@ -38,17 +30,17 @@ public class CookieCredentialManager implements CredentialManager {
 	 */
 	@Override
 	public void setCredential(HttpServletResponse response, Credential credential) {
-		ResponseCookie cookie = createCookie(maxAge, credential.jwt());
+		ResponseCookie cookie = createCookie(cookieCredentialProperties.maxAge(), credential.jwt());
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 
 	private ResponseCookie createCookie(int age, String jwt) {
-		return ResponseCookie.from(COOKIE_NAME, jwt)
-							 .path("/")           // 전체 경로에서 사용 가능
-							 .maxAge(age)         // 쿠키 유효기간
-							 .secure(isSecure)    // HTTPS를 사용할 경우에만 전송
-							 .httpOnly(httpOnly)  // 자바스크립트에서 접근 가능여부 설정
-							 .sameSite(sameSite)  // CSRF 공격 방지를 위한 SameSite 설정
+		return ResponseCookie.from(cookieCredentialProperties.cookieName(), jwt)
+							 .path("/")                                        // 전체 경로에서 사용 가능
+							 .maxAge(age)                                      // 쿠키 유효기간
+							 .secure(cookieCredentialProperties.isSecure())    // HTTPS를 사용할 경우에만 전송
+							 .httpOnly(cookieCredentialProperties.httpOnly())  // 자바스크립트에서 접근 가능여부 설정
+							 .sameSite(cookieCredentialProperties.sameSite())  // CSRF 공격 방지를 위한 SameSite 설정
 							 .build();
 	}
 
@@ -57,17 +49,39 @@ public class CookieCredentialManager implements CredentialManager {
 	 */
 	@Override
 	public String getCredential(HttpServletRequest request) {
-		Cookie[] cookies = request.getCookies();
-		if (cookies == null) {
-			throw new SpringbootJpaException("쿠키가 존재하지 않습니다.");
+		Cookie cookie = findCredentialCookie(request);
+		if (cookie == null) {
+			throw new SpringbootJpaException("쿠키에 인증 정보가 존재하지 않습니다.");
 		}
 
-		for (Cookie cookie : request.getCookies()) {
-			if (COOKIE_NAME.equals(cookie.getName())) {
-				return cookie.getValue();
+		String credential = cookie.getValue();
+		if (credential == null || credential.isEmpty()) {
+			throw new SpringbootJpaException("쿠키의 인증 정보가 유효하지 않습니다.");
+		}
+
+		return credential;
+	}
+
+	private Cookie findCredentialCookie(HttpServletRequest request) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies == null) {
+			return null;
+		}
+
+		for (Cookie cookie : cookies) {
+			if (cookieCredentialProperties.cookieName().equals(cookie.getName())) {
+				return cookie;
 			}
 		}
-		throw new SpringbootJpaException("쿠키에 인증 정보가 존재하지 않습니다.");
+		return null;
+	}
+
+	/**
+	 * 쿠키에 인증 정보가 존재하는지 확인한다.
+	 */
+	@Override
+	public boolean hasCredential(HttpServletRequest request) {
+		return findCredentialCookie(request) != null;
 	}
 
 	/**

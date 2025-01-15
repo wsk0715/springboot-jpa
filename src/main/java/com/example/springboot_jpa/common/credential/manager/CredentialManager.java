@@ -13,6 +13,8 @@ public interface CredentialManager {
 
 	String getCredential(HttpServletRequest httpServletRequest);
 
+	boolean hasCredential(HttpServletRequest httpServletRequest);
+
 	void removeCredential(HttpServletResponse httpServletResponse);
 
 }

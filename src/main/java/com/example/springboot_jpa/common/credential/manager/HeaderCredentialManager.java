@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class HeaderCredentialManager implements CredentialManager {
-	
+
 	/**
 	 * 헤더에 인증 정보를 설정한다.
 	 */
@@ -20,17 +20,25 @@ public class HeaderCredentialManager implements CredentialManager {
 	 */
 	@Override
 	public String getCredential(HttpServletRequest request) {
-		String header = request.getHeader("Authorization");
-		if (header == null || header.isEmpty()) {
+		if (!hasCredential(request)) {
 			throw new SpringbootJpaException("헤더에 인증 정보가 존재하지 않습니다.");
 		}
 
-		String[] authorization = header.split(" ");
+		String[] authorization = request.getHeader("Authorization").split(" ");
 		if (authorization.length < 2 || !"Bearer".equals(authorization[0])) {
-			throw new SpringbootJpaException("잘못된 인증 정보입니다.");
+			throw new SpringbootJpaException("헤더의 인증 정보가 잘못되었습니다.");
 		}
 
 		return authorization[1];
+	}
+
+	/**
+	 * 헤더에 인증 정보가 존재하는지 확인한다.
+	 */
+	@Override
+	public boolean hasCredential(HttpServletRequest httpServletRequest) {
+		String header = httpServletRequest.getHeader("Authorization");
+		return header != null && !header.isEmpty();
 	}
 
 	/**
