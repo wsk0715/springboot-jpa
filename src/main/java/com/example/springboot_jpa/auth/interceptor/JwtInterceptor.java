@@ -24,7 +24,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 							 HttpServletResponse response,
-							 Object handler) throws Exception {
+							 Object handler) {
 		try {
 			// 쿠키에서 토큰 String 가져오기
 			String token = authService.extractJwtFromRequest(request);
@@ -55,7 +55,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 	public void postHandle(HttpServletRequest request,
 						   HttpServletResponse response,
 						   Object handler,
-						   @Nullable ModelAndView modelAndView) throws Exception {
+						   @Nullable ModelAndView modelAndView) {
 	}
 
 }
