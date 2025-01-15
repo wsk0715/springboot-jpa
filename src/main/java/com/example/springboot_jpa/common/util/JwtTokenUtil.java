@@ -36,8 +36,6 @@ public class JwtTokenUtil {
 						   .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY.getBytes())
 						   .compact();
 
-		System.out.println("Generated JWT Token: " + token);
-
 		return token;
 	}
 
