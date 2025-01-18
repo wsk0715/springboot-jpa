@@ -19,7 +19,7 @@ public record CommentResponse(
 		return comments.stream()
 					   .map(comment -> new CommentResponse(
 							   comment.getId(),
-							   comment.getContent(),
+							   comment.getContent().getValue(),
 							   comment.getBoard().getId(),
 							   comment.getUser().getId(),
 							   comment.getUser().getNickname().getNickname(),
