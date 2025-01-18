@@ -1,8 +1,12 @@
 package com.example.springboot_jpa.board.domain;
 
+import com.example.springboot_jpa.board.domain.vo.Content;
+import com.example.springboot_jpa.board.domain.vo.Title;
 import com.example.springboot_jpa.common.domain.BaseEntity;
+import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,25 +24,25 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Table(name = "board")
 @Getter
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "board")
 @SQLDelete(sql = "UPDATE board SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = false")
-@Builder
 public class Board extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, length = 255)
-	private String title;
+	@Embedded
+	private Title title;
 
-	@Column(nullable = false, columnDefinition = "TEXT")
-	private String content;
+	@Embedded
+	private Content content;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -61,22 +65,25 @@ public class Board extends BaseEntity {
 	private Boolean isDeleted = false;
 
 
-	public static Board create(String title, String content) {
+	public static Board create(Title title, Content content) {
 		return Board.builder()
 					.title(title)
 					.content(content)
 					.build();
 	}
 
-	public void updateTitle(String title) {
+	public void updateTitle(Title title) {
 		this.title = title;
 	}
 
-	public void updateContent(String content) {
+	public void updateContent(Content content) {
 		this.content = content;
 	}
 
 	public void updateUser(User user) {
+		if (user == null) {
+			throw new SpringbootJpaException("게시글 작성자 정보를 입력해주세요.");
+		}
 		this.user = user;
 	}
 
@@ -89,6 +96,9 @@ public class Board extends BaseEntity {
 	}
 
 	public void subtractCommentCount() {
+		if (commentCount == 0) {
+			throw new SpringbootJpaException("게시글 댓글 수는 0보다 작을 수 없습니다.");
+		}
 		this.commentCount -= 1;
 	}
 

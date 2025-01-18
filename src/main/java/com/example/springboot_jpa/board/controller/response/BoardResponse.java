@@ -25,8 +25,8 @@ public record BoardResponse(
 
 	public static BoardResponse create(Board board) {
 		return new BoardResponse(board.getId(),
-								 board.getTitle(),
-								 board.getContent(),
+								 board.getTitle().getValue(),
+								 board.getContent().getValue(),
 								 board.getUser().getId(),
 								 board.getUser().getNickname().getNickname(),
 								 board.getViewCount(),

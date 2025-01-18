@@ -53,8 +53,8 @@ public class BoardService {
 		}
 
 		// 게시글 업데이트
-		String title = board.getTitle();
-		String content = board.getContent();
+		Title title = board.getTitle();
+		Content content = board.getContent();
 
 		dbBoard.updateTitle(title);
 		dbBoard.updateContent(content);
