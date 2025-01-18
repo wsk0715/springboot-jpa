@@ -1,14 +1,16 @@
 package com.example.springboot_jpa.oauth.common.service;
 
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.common.util.NicknameGenerator;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
+import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
+import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import com.example.springboot_jpa.common.util.NicknameGenerator;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,34 +21,12 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
+@EnableConfigurationProperties({OAuthGoogleProperties.class, OAuthKakaoProperties.class})
 public class OAuthCommonService {
 
-	@Value("${security.oauth.google.clientId}")
-	private String GOOGLE_CLIENT_ID;
+	private final OAuthGoogleProperties googleProperties;
 
-	@Value("${security.oauth.google.clientSecret}")
-	private String GOOGLE_CLIENT_SECRET;
-
-	@Value("${security.oauth.google.redirectUri}")
-	private String GOOGLE_REDIRECT_URI;
-
-	@Value("${security.oauth.google.tokenUrl}")
-	private String GOOGLE_TOKEN_URL;
-
-	@Value("${security.oauth.google.userInfoUrl}")
-	private String GOOGLE_USERINFO_URL;
-
-	@Value("${security.oauth.kakao.clientId}")
-	private String KAKAO_CLIENT_ID;
-
-	@Value("${security.oauth.kakao.redirectUri}")
-	private String KAKAO_REDIRECT_URI;
-
-	@Value("${security.oauth.kakao.tokenUrl}")
-	private String KAKAO_TOKEN_URL;
-
-	@Value("${security.oauth.kakao.userInfoUrl}")
-	private String KAKAO_USERINFO_URL;
+	private final OAuthKakaoProperties kakaoProperties;
 
 	private final UserService userService;
 
@@ -74,19 +54,12 @@ public class OAuthCommonService {
 		String body, tokenUrl;
 		switch (provider) {
 			case GOOGLE:
-				body = "code=" + code +
-					   "&client_id=" + GOOGLE_CLIENT_ID +
-					   "&client_secret=" + GOOGLE_CLIENT_SECRET +
-					   "&redirect_uri=" + GOOGLE_REDIRECT_URI +
-					   "&grant_type=authorization_code";
-				tokenUrl = GOOGLE_TOKEN_URL;
+				body = googleProperties.getBody(code);
+				tokenUrl = googleProperties.tokenUrl();
 				break;
 			case KAKAO:
-				body = "code=" + code +
-					   "&client_id=" + KAKAO_CLIENT_ID +
-					   "&redirect_uri=" + KAKAO_REDIRECT_URI +
-					   "&grant_type=authorization_code";
-				tokenUrl = KAKAO_TOKEN_URL;
+				body = kakaoProperties.getBody(code);
+				tokenUrl = kakaoProperties.tokenUrl();
 				break;
 			default:
 				throw new SpringbootJpaException("올바르지 않은 OAuth 서비스 제공자입니다.");
@@ -105,10 +78,10 @@ public class OAuthCommonService {
 		String userInfoUrl;
 		switch (provider) {
 			case GOOGLE:
-				userInfoUrl = GOOGLE_USERINFO_URL;
+				userInfoUrl = googleProperties.userInfoUrl();
 				break;
 			case KAKAO:
-				userInfoUrl = KAKAO_USERINFO_URL;
+				userInfoUrl = kakaoProperties.userInfoUrl();
 				break;
 			default:
 				throw new SpringbootJpaException("올바르지 않은 OAuth 서비스 제공자입니다.");
