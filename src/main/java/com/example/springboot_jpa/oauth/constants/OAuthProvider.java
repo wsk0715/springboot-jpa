@@ -16,4 +16,13 @@ public enum OAuthProvider {
 		this.code = code;
 		this.identifier = identifier;
 	}
+
+	public static OAuthProvider findByName(String name) {
+		for (OAuthProvider provider : OAuthProvider.values()) {
+			if (name.equals(provider.getCode())) {
+				return provider;
+			}
+		}
+		return null;
+	}
 }
