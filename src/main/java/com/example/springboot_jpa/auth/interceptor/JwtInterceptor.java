@@ -27,7 +27,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 							 Object handler) {
 		try {
 			// 쿠키에서 토큰 String 가져오기
-			String token = authService.extractJwtFromRequest(request);
+			String token = authService.getCredential(request);
 
 			// 토큰이 없는 경우 처리
 			if (token == null || token.isEmpty()) {

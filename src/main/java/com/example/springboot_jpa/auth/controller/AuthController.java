@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.auth.controller;
 
-import com.example.springboot_jpa.common.credential.manager.CredentialManager;
+import com.example.springboot_jpa.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController implements AuthControllerDocs {
 
-	private final CredentialManager cookieCredentialManager;
+	private final AuthService authService;
 
 
 	@GetMapping("/logout")
 	public ResponseEntity<Void> logout(HttpServletResponse response) {
-		cookieCredentialManager.removeCredential(response);
+		authService.removeCredential(response);
 		return ResponseEntity.ok().build();
 	}
 

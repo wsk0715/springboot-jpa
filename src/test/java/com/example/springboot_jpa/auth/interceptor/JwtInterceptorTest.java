@@ -42,7 +42,7 @@ public class JwtInterceptorTest extends BaseSpringBootTest {
 	@DisplayName("토큰이 유효하면 preHandle이 true를 반환한다.")
 	void preHandle() {
 		// 요청에서 임의 토큰값 추출하도록 모킹
-		when(authService.extractJwtFromRequest(request)).thenReturn(dummyToken);
+		when(authService.getCredential(request)).thenReturn(dummyToken);
 
 		// validateToken()이 true를 반환하도록 모킹
 		when(authService.validateToken(dummyToken)).thenReturn(true);
@@ -60,7 +60,7 @@ public class JwtInterceptorTest extends BaseSpringBootTest {
 	@DisplayName("토큰이 null인 경우 false를 반환하고, 401 상태 코드를 설정한다.")
 	void preHandle_tokenIsNull() {
 		// 추출된 토큰이 null 값을 갖도록 모킹
-		when(authService.extractJwtFromRequest(request)).thenReturn(null);
+		when(authService.getCredential(request)).thenReturn(null);
 
 		// when: preHandle 호출
 		boolean result = jwtInterceptor.preHandle(request, response, new Object());
@@ -74,7 +74,7 @@ public class JwtInterceptorTest extends BaseSpringBootTest {
 	@DisplayName("토큰이 빈 문자열인 경우 false를 반환하고, 401 상태 코드를 설정한다.")
 	void preHandle_tokenIsEmpty() {
 		// 추출된 토큰이 빈 문자열을 갖도록 모킹
-		when(authService.extractJwtFromRequest(request)).thenReturn("");
+		when(authService.getCredential(request)).thenReturn("");
 
 		// when: preHandle 호출
 		boolean result = jwtInterceptor.preHandle(request, response, new Object());
@@ -88,7 +88,7 @@ public class JwtInterceptorTest extends BaseSpringBootTest {
 	@DisplayName("토큰이 유효하지 않으면 false를 반환하고, 401 상태 코드를 설정한다.")
 	void preHandle_invalidToken() {
 		// 요청에서 임의 토큰값 추출하도록 모킹
-		when(authService.extractJwtFromRequest(request)).thenReturn(dummyToken);
+		when(authService.getCredential(request)).thenReturn(dummyToken);
 
 		// 유효하지 않은 토큰으로 가정하여 validateToken()이 false를 반환하도록 모킹
 		when(authService.validateToken(dummyToken)).thenReturn(false);

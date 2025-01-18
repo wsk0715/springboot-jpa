@@ -37,7 +37,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
 		// 쿠키에서 JWT 토큰을 추출 (인터셉터에서 유효성 검증이 이미 이루어졌다고 가정)
-		String token = authService.extractJwtFromRequest(request);
+		String token = authService.getCredential(request);
 		if (token == null || token.isEmpty()) {
 			return null; // 또는 예외를 던져 요청 중단
 		}

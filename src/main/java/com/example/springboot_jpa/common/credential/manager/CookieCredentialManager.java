@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Component;
  * 쿠키를 사용해서 인증 정보를 관리하는 클래스
  */
 @Component
-@Primary
 @RequiredArgsConstructor
 @EnableConfigurationProperties(CookieCredentialProperties.class)
 public class CookieCredentialManager implements CredentialManager {
