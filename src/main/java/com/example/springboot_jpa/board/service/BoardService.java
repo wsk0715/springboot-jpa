@@ -1,6 +1,8 @@
 package com.example.springboot_jpa.board.service;
 
 import com.example.springboot_jpa.board.domain.Board;
+import com.example.springboot_jpa.board.domain.vo.BoardContent;
+import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.board.repository.BoardRepository;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
@@ -53,8 +55,8 @@ public class BoardService {
 		}
 
 		// 게시글 업데이트
-		Title title = board.getTitle();
-		Content content = board.getContent();
+		BoardTitle title = board.getTitle();
+		BoardContent content = board.getContent();
 
 		dbBoard.updateTitle(title);
 		dbBoard.updateContent(content);

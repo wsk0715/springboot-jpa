@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.board.domain;
 
-import com.example.springboot_jpa.board.domain.vo.Content;
-import com.example.springboot_jpa.board.domain.vo.Title;
+import com.example.springboot_jpa.board.domain.vo.BoardContent;
+import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.common.domain.BaseEntity;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
@@ -23,6 +23,9 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
+/**
+ * 데이터베이스의 board 테이블과 매칭되는 엔티티
+ */
 @Entity
 @Getter
 @Builder
@@ -39,10 +42,10 @@ public class Board extends BaseEntity {
 	private Long id;
 
 	@Embedded
-	private Title title;
+	private BoardTitle title;
 
 	@Embedded
-	private Content content;
+	private BoardContent content;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
@@ -65,18 +68,18 @@ public class Board extends BaseEntity {
 	private Boolean isDeleted = false;
 
 
-	public static Board create(Title title, Content content) {
+	public static Board create(BoardTitle title, BoardContent content) {
 		return Board.builder()
 					.title(title)
 					.content(content)
 					.build();
 	}
 
-	public void updateTitle(Title title) {
+	public void updateTitle(BoardTitle title) {
 		this.title = title;
 	}
 
-	public void updateContent(Content content) {
+	public void updateContent(BoardContent content) {
 		this.content = content;
 	}
 

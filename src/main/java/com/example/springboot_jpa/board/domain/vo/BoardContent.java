@@ -5,30 +5,28 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
+/**
+ * 게시글의 내용에 관한 도메인 로직을 담은 VO
+ */
 @Getter
 @Embeddable
-public class Content {
+public class BoardContent {
 
 	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
 	private String value;
 
-	protected Content() {
+	protected BoardContent() {
 	}
 
-	public Content(String content) {
+	public BoardContent(String content) {
 		validate(content);
 		this.value = content;
 	}
 
-	public static Content of(String content) {
-		return new Content(content);
+	public static BoardContent of(String content) {
+		return new BoardContent(content);
 	}
 
-	
-	public void update(String content) {
-		validate(content);
-		this.value = content;
-	}
 
 	private void validate(String content) {
 		if (content == null || content.isEmpty()) {

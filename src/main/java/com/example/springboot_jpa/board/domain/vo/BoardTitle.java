@@ -10,30 +10,25 @@ import lombok.Getter;
  */
 @Getter
 @Embeddable
-public class Title {
+public class BoardTitle {
 
 	public static final int MAX_LENGTH = 255;
 
 	@Column(name = "title", nullable = false)
 	private String value;
 
-	protected Title() {
+	protected BoardTitle() {
 	}
 
-	public Title(String title) {
+	public BoardTitle(String title) {
 		validate(title);
 		this.value = title;
 	}
 
-	public static Title of(String title) {
-		return new Title(title);
+	public static BoardTitle of(String title) {
+		return new BoardTitle(title);
 	}
 
-
-	public void update(String title) {
-		validate(title);
-		this.value = title;
-	}
 
 	private void validate(String title) {
 		if (title == null || title.isEmpty()) {
