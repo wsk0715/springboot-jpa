@@ -28,7 +28,7 @@ public record BoardResponse(
 								 board.getTitle().getValue(),
 								 board.getContent().getValue(),
 								 board.getUser().getId(),
-								 board.getUser().getNickname().getNickname(),
+								 board.getUser().getNickname().getValue(),
 								 board.getViewCount(),
 								 board.getLikeCount(),
 								 board.getCommentCount(),

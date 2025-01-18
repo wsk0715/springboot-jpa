@@ -10,8 +10,8 @@ import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.oauth.repository.OAuthRepository;
-import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
+import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -91,13 +91,12 @@ public class OAuthService {
 	private User createTempUser(OAuthProvider provider) {
 		// 1. 랜덤 닉네임 생성, 중복 확인
 		String tmpNickname = NicknameGenerator.generateRandom(provider);
-		while (userService.existsByNickname(new Nickname(tmpNickname))) {
+		while (userService.existsByNickname(Nickname.of(tmpNickname))) {
 			tmpNickname = NicknameGenerator.generateRandom(provider);
 		}
 
 		// 2. 임시 유저 생성
-		Nickname nickname = new Nickname(tmpNickname);
-		User user = User.create(nickname);
+		User user = User.create(Nickname.of(tmpNickname));
 		userService.save(user);
 
 		return user;

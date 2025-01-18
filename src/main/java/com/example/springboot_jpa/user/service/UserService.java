@@ -1,8 +1,8 @@
 package com.example.springboot_jpa.user.service;
 
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
-import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
+import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

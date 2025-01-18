@@ -1,6 +1,7 @@
 package com.example.springboot_jpa.user.domain;
 
 import com.example.springboot_jpa.common.domain.BaseEntity;
+import com.example.springboot_jpa.user.domain.vo.Nickname;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -15,14 +16,17 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 
+/**
+ * 데이터베이스의 user 테이블과 매칭되는 엔티티
+ */
 @Entity
-@Table(name = "user")
 @Getter
+@Builder
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "user")
 @SQLDelete(sql = "UPDATE user SET is_deleted = TRUE WHERE id = ?")
-@Builder
 public class User extends BaseEntity {
 
 	@Id
@@ -30,7 +34,6 @@ public class User extends BaseEntity {
 	private Long id;
 
 	@Embedded
-	@Column(nullable = false, unique = true, length = 10)
 	private Nickname nickname;
 
 	@Builder.Default

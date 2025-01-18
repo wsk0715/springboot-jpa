@@ -22,7 +22,7 @@ public record CommentResponse(
 							   comment.getContent().getValue(),
 							   comment.getBoard().getId(),
 							   comment.getUser().getId(),
-							   comment.getUser().getNickname().getNickname(),
+							   comment.getUser().getNickname().getValue(),
 							   comment.getCreatedAt(),
 							   comment.getUpdatedAt()
 					   ))

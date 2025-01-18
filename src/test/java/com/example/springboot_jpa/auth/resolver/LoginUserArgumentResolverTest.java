@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 
 import com.example.springboot_jpa.auth.service.AuthService;
-import com.example.springboot_jpa.user.domain.Nickname;
 import com.example.springboot_jpa.user.domain.User;
+import com.example.springboot_jpa.user.domain.vo.Nickname;
 import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -49,9 +49,8 @@ class LoginUserArgumentResolverTest {
 	void resolveArgument() {
 		// given: 테스트에 필요한 데이터 설정
 		String expectedToken = "valid-jwt-token";
-		String expectedNickname = "testUser";
-		Nickname nickname = new Nickname(expectedNickname);
-		User expectedUser = User.create(nickname);
+		Nickname expectedNickname = Nickname.of("testUser");
+		User expectedUser = User.create(expectedNickname);
 
 		// authService 모킹
 		when(webRequest.getNativeRequest(HttpServletRequest.class)).thenReturn(httpServletRequest);
@@ -64,7 +63,7 @@ class LoginUserArgumentResolverTest {
 		// then: 반환된 User 객체가 예상한 값과 일치하는지 검증
 		assert resultUser != null;
 		assertEquals(expectedUser, resultUser);
-		assertEquals(expectedNickname, resultUser.getNickname().getNickname());
+		assertEquals(expectedNickname, resultUser.getNickname());
 	}
 
 	@Test
