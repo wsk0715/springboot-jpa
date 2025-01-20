@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.common.credential.manager.properties;
+package com.example.springboot_jpa.credential.manager.cookie.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

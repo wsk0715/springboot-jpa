@@ -1,7 +1,8 @@
-package com.example.springboot_jpa.common.credential.manager;
+package com.example.springboot_jpa.credential.manager.header;
 
-import com.example.springboot_jpa.common.credential.dto.Credential;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.credential.dto.Credential;
+import com.example.springboot_jpa.credential.manager.CredentialManager;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 

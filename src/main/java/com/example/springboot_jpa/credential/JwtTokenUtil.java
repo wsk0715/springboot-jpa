@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.common.util;
+package com.example.springboot_jpa.credential;
 
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.common.exception.UnauthorizedException;

@@ -1,10 +1,10 @@
 package com.example.springboot_jpa.oauth.service;
 
-import com.example.springboot_jpa.common.credential.dto.Credential;
+import com.example.springboot_jpa.common.encryption.HashEncryptUtil;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
-import com.example.springboot_jpa.common.util.EncryptUtil;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
-import com.example.springboot_jpa.common.util.NicknameGenerator;
+import com.example.springboot_jpa.common.util.NicknameUtil;
+import com.example.springboot_jpa.credential.JwtTokenUtil;
+import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.domain.OAuth;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
@@ -40,7 +40,6 @@ public class OAuthService {
 
 	private final JwtTokenUtil jwtTokenUtil;
 
-	private final EncryptUtil encryptUtil;
 
 	public String getUrl(String provider) {
 		if (provider.equals(OAuthProvider.GOOGLE.getCode())) {
@@ -66,7 +65,7 @@ public class OAuthService {
 													.get(oAuthProvider.getIdentifier()));
 
 		// 최초 로그인 여부 확인
-		String hashedCode = encryptUtil.hash(oAuthUserId);
+		String hashedCode = HashEncryptUtil.hash(oAuthUserId);
 		OAuth oauth = oAuthRepository.findByCode(hashedCode).orElse(null);
 		boolean isInitialLogin = oauth == null;
 
@@ -90,9 +89,9 @@ public class OAuthService {
 
 	private User createTempUser(OAuthProvider provider) {
 		// 1. 랜덤 닉네임 생성, 중복 확인
-		String tmpNickname = NicknameGenerator.generateRandom(provider);
+		String tmpNickname = NicknameUtil.generateRandom(provider);
 		while (userService.existsByNickname(Nickname.of(tmpNickname))) {
-			tmpNickname = NicknameGenerator.generateRandom(provider);
+			tmpNickname = NicknameUtil.generateRandom(provider);
 		}
 
 		// 2. 임시 유저 생성

@@ -3,7 +3,7 @@ package com.example.springboot_jpa.common.util;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import java.security.SecureRandom;
 
-public class NicknameGenerator {
+public class NicknameUtil {
 
 	private static final int NUMBER_MAX_LENGTH = 20;
 

@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.oauth.controller;
 
-import com.example.springboot_jpa.common.credential.dto.Credential;
+import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.controller.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;

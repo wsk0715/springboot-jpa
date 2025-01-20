@@ -3,11 +3,11 @@ package com.example.springboot_jpa.auth.service;
 import com.example.springboot_jpa.auth.controller.request.AuthRequest;
 import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
-import com.example.springboot_jpa.common.credential.dto.Credential;
-import com.example.springboot_jpa.common.credential.manager.CredentialManager;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
-import com.example.springboot_jpa.common.util.NicknameGenerator;
+import com.example.springboot_jpa.common.util.NicknameUtil;
+import com.example.springboot_jpa.credential.JwtTokenUtil;
+import com.example.springboot_jpa.credential.dto.Credential;
+import com.example.springboot_jpa.credential.manager.CredentialManager;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
@@ -44,9 +44,9 @@ public class AuthService {
 
 	private User createTempUser() {
 		// 1. 랜덤 닉네임 생성, 중복 확인
-		String tmpNickname = NicknameGenerator.generateRandom("user");
+		String tmpNickname = NicknameUtil.generateRandom("user");
 		while (userService.existsByNickname(Nickname.of(tmpNickname))) {
-			tmpNickname = NicknameGenerator.generateRandom("user");
+			tmpNickname = NicknameUtil.generateRandom("user");
 		}
 
 		// 2. 임시 유저 생성
