@@ -38,10 +38,9 @@ public class BoardService {
 	}
 
 	@Transactional
-	public Long post(Board board, User user) {
+	public Board post(Board board, User user) {
 		board.updateUser(user);
-		Board createdBoard = boardRepository.save(board);
-		return createdBoard.getId();
+		return boardRepository.save(board);
 	}
 
 	@Transactional

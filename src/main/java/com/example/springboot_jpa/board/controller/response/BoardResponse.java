@@ -17,13 +17,13 @@ public record BoardResponse(
 		LocalDateTime createdAt,
 		LocalDateTime updatedAt) {
 
-	public static List<BoardResponse> createList(List<Board> boards) {
+	public static List<BoardResponse> from(List<Board> boards) {
 		return boards.stream()
-					 .map(BoardResponse::create)
+					 .map(BoardResponse::from)
 					 .collect(Collectors.toList());
 	}
 
-	public static BoardResponse create(Board board) {
+	public static BoardResponse from(Board board) {
 		return new BoardResponse(board.getId(),
 								 board.getTitle().getValue(),
 								 board.getContent().getValue(),
@@ -33,7 +33,8 @@ public record BoardResponse(
 								 board.getLikeCount(),
 								 board.getCommentCount(),
 								 board.getCreatedAt(),
-								 board.getUpdatedAt());
+								 board.getUpdatedAt()
+		);
 	}
 
 }

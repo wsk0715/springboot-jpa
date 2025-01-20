@@ -30,19 +30,19 @@ public class BoardController implements BoardControllerDocs {
 
 	@Override
 	@PostMapping
-	public ResponseEntity<Long> postBoard(@RequestBody BoardRequest boardRequest,
-										  @LoginUser User loginUser) {
-		Board board = boardRequest.toBoard();
-		Long boardId = boardService.post(board, loginUser);
+	public ResponseEntity<BoardResponse> postBoard(@RequestBody BoardRequest boardRequest,
+												   @LoginUser User loginUser) {
+		Board board = boardService.post(boardRequest.toBoard(), loginUser);
+		BoardResponse res = BoardResponse.from(board);
 
-		return ResponseEntity.ok(boardId);
+		return ResponseEntity.ok(res);
 	}
 
 	@Override
 	@GetMapping
 	public ResponseEntity<List<BoardResponse>> getBoards() {
 		List<Board> boards = boardService.getBoards();
-		List<BoardResponse> res = BoardResponse.createList(boards);
+		List<BoardResponse> res = BoardResponse.from(boards);
 
 		return ResponseEntity.ok(res);
 	}
@@ -51,7 +51,7 @@ public class BoardController implements BoardControllerDocs {
 	@GetMapping("/{boardId}")
 	public ResponseEntity<BoardResponse> getBoard(@PathVariable Long boardId) {
 		Board board = boardService.getBoard(boardId);
-		BoardResponse res = BoardResponse.create(board);
+		BoardResponse res = BoardResponse.from(board);
 
 		return ResponseEntity.ok(res);
 	}
@@ -62,7 +62,7 @@ public class BoardController implements BoardControllerDocs {
 													 @RequestBody BoardRequest boardRequest,
 													 @LoginUser User loginUser) {
 		Board board = boardService.updateBoard(boardId, boardRequest.toBoard(), loginUser);
-		BoardResponse res = BoardResponse.create(board);
+		BoardResponse res = BoardResponse.from(board);
 
 		return ResponseEntity.ok(res);
 	}

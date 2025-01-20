@@ -25,8 +25,8 @@ public interface BoardControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "게시글 작성 성공", responseCode = "200")
 	})
-	ResponseEntity<Long> postBoard(@RequestBody BoardRequest boardRequest,
-								   @Parameter(hidden = true) @LoginUser User user);
+	ResponseEntity<BoardResponse> postBoard(@RequestBody BoardRequest boardRequest,
+											@Parameter(hidden = true) @LoginUser User user);
 
 	@Operation(summary = "게시글 목록 조회", description = "게시글 목록을 조회한다.")
 	@ApiResponses(value = {
