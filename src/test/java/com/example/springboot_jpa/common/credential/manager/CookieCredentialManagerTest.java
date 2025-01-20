@@ -7,9 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.springboot_jpa.BaseSpringBootTest;
-import com.example.springboot_jpa.common.credential.dto.Credential;
-import com.example.springboot_jpa.common.credential.manager.properties.CookieCredentialProperties;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.credential.dto.Credential;
+import com.example.springboot_jpa.credential.manager.cookie.CookieCredentialManager;
+import com.example.springboot_jpa.credential.manager.cookie.properties.CookieCredentialProperties;
 import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

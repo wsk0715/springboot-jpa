@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.example.springboot_jpa.BaseSpringBootTest;
 import com.example.springboot_jpa.auth.service.AuthService;
-import com.example.springboot_jpa.common.credential.dto.Credential;
+import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.oauth.service.OAuthService;

@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.example.springboot_jpa.BaseSpringBootTest;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
+import com.example.springboot_jpa.credential.JwtTokenUtil;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import org.junit.jupiter.api.BeforeEach;
