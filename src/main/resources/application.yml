@@ -15,13 +15,6 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: false
 security:
-  encrypt:
-    hash:
-      algorithm: SHA-256
-    aes:
-      algorithm: AES/CBC/PKCS5Padding
-      keySize: 256
-      iv: 1234567890123456
   jwt:
     secretKey: ${JWT_SECRET_KEY}
     expirationMs: 86400000  # ms 단위, 24시간
