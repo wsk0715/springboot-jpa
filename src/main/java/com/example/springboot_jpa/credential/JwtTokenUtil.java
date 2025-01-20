@@ -28,9 +28,9 @@ public class JwtTokenUtil {
 		Date expiryDate = new Date(now.getTime() + JWT_EXPIRATION_MS);
 
 		String token = Jwts.builder()
-						   .setSubject(user.getNickname().toString())
+						   .setSubject(user.getNickname().getValue())
 						   .claim("id", user.getId())
-						   .claim("nickname", user.getNickname().toString())
+						   .claim("nickname", user.getNickname().getValue())
 						   .setIssuedAt(now)
 						   .setExpiration(expiryDate)
 						   .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY.getBytes())
