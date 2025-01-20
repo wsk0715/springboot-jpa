@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS comment, board, oauth, user;
+DROP TABLE IF EXISTS comment, board, auth, oauth, user;
 CREATE TABLE user
 (
 	id         BIGINT       NOT NULL AUTO_INCREMENT,
@@ -12,15 +12,28 @@ CREATE TABLE user
 CREATE TABLE oauth
 (
 	id         BIGINT       NOT NULL AUTO_INCREMENT,
-	user_id    BIGINT       NOT NULL,
 	provider   VARCHAR(20)  NOT NULL,
 	code       VARCHAR(255) NOT NULL UNIQUE, -- OAuth 제공자의 사용자 id
+	user_id    BIGINT       NOT NULL,
 	created_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
 	updated_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
 	PRIMARY KEY (id),
 	CONSTRAINT fk_oauth_user FOREIGN KEY (user_id)
 		REFERENCES user (id) ON DELETE CASCADE,
 	UNIQUE (user_id, provider)               -- 한 사용자가 중복된 provider를 등록할 수 없음
+);
+
+CREATE TABLE auth
+(
+	id         BIGINT       NOT NULL AUTO_INCREMENT,
+	login_id   VARCHAR(20)  NOT NULL UNIQUE,
+	password   VARCHAR(255) NOT NULL,
+	user_id    BIGINT       NOT NULL UNIQUE,
+	created_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
+	updated_at TIMESTAMP(6) NOT NULL DEFAULT current_timestamp(6),
+	PRIMARY KEY (id),
+	CONSTRAINT fk_auth_user FOREIGN KEY (user_id)
+		REFERENCES user (id) ON DELETE CASCADE
 );
 
 CREATE TABLE board
@@ -55,6 +68,7 @@ CREATE TABLE comment
 
 CREATE INDEX idx_user_nickname ON user (nickname);
 CREATE INDEX idx_oauth_code ON oauth (code);
+CREATE INDEX idx_oauth_login_id ON auth (login_id);
 CREATE INDEX idx_board_user_id ON board (user_id);
 CREATE INDEX idx_comment_board_id ON comment (board_id);
 CREATE INDEX idx_comment_user_id ON comment (user_id);
