@@ -8,8 +8,8 @@ public class NicknameGenerator {
 	private static final int NUMBER_MAX_LENGTH = 20;
 
 
-	public static String generateRandom(OAuthProvider provider) {
-		StringBuilder sb = new StringBuilder(provider.getCode()).append("_");
+	public static String generateRandom(String prefix) {
+		StringBuilder sb = new StringBuilder(prefix + "_");
 		int l = sb.length();
 
 		SecureRandom random = new SecureRandom();
@@ -19,6 +19,11 @@ public class NicknameGenerator {
 		}
 
 		return sb.toString();
+	}
+
+	public static String generateRandom(OAuthProvider provider) {
+		String prefix = provider.getCode();
+		return generateRandom(prefix);
 	}
 
 }
