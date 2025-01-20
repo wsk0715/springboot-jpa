@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.example.springboot_jpa.BaseSpringBootTest;
 import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.common.credential.dto.Credential;
-import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.oauth.service.OAuthService;
@@ -66,19 +65,19 @@ class OAuthControllerTest extends BaseSpringBootTest {
 		// given
 		String dummyCode = "dummyCode";
 		String token = "dummyToken";
-		OAuthResult dummyResult = new OAuthResult(token);
+		Credential dummyResult = new Credential(token);
 
 		// init() 메서드에 입력값과 결과를 모킹한다.
 		when(oAuthService.init(providerGoogle, dummyCode)).thenReturn(dummyResult);
 
 		// authService 및 jwtCookieUtil에 대한 동작을 모킹한다. (실제 쿠키 추가 로직을 실행하지 않기 위함)
-		when(authService.setCredential(any(), eq(dummyResult.token()))).thenReturn(new Credential(token));
+		when(authService.setCredential(any(), eq(dummyResult.jwt()))).thenReturn(new Credential(token));
 
 		// when & then
 		mockMvc.perform(get("/oauth/google/callback")
 								.param("code", dummyCode))
 			   .andExpect(status().isOk())
-			   .andExpect(jsonPath("$.*", hasItem(dummyResult.token())));
+			   .andExpect(jsonPath("$.*", hasItem(dummyResult.jwt())));
 	}
 
 	@Test
@@ -99,19 +98,19 @@ class OAuthControllerTest extends BaseSpringBootTest {
 		// given
 		String dummyCode = "dummyCode";
 		String token = "dummyToken";
-		OAuthResult dummyResult = new OAuthResult(token);
+		Credential dummyResult = new Credential(token);
 
 		// init() 메서드에 입력값과 결과를 모킹한다.
 		when(oAuthService.init(providerKakao, dummyCode)).thenReturn(dummyResult);
 
 		// authService 및 jwtCookieUtil에 대한 동작을 모킹한다. (실제 쿠키 추가 로직을 실행하지 않기 위함)
-		when(authService.setCredential(any(), eq(dummyResult.token()))).thenReturn(new Credential(token));
+		when(authService.setCredential(any(), eq(dummyResult.jwt()))).thenReturn(new Credential(token));
 
 		// when & then
 		mockMvc.perform(get("/oauth/kakao/callback")
 								.param("code", dummyCode))
 			   .andExpect(status().isOk())
-			   .andExpect(jsonPath("$.*", hasItem(dummyResult.token())));
+			   .andExpect(jsonPath("$.*", hasItem(dummyResult.jwt())));
 	}
 
 }

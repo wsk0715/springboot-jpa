@@ -1,12 +1,12 @@
 package com.example.springboot_jpa.oauth.service;
 
+import com.example.springboot_jpa.common.credential.dto.Credential;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.common.util.EncryptUtil;
 import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.common.util.NicknameGenerator;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.domain.OAuth;
-import com.example.springboot_jpa.oauth.dto.OAuthResult;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.oauth.repository.OAuthRepository;
@@ -55,7 +55,7 @@ public class OAuthService {
 	}
 
 	@Transactional
-	public OAuthResult init(String provider, String code) {
+	public Credential init(String provider, String code) {
 		OAuthProvider oAuthProvider = OAuthProvider.findByName(provider);
 		if (oAuthProvider == null) {
 			throw new SpringbootJpaException("OAuth 제공자가 올바르지 않습니다.");
@@ -84,7 +84,7 @@ public class OAuthService {
 		User user = oauth.getUser();
 		String token = jwtTokenUtil.createToken(user);
 
-		return new OAuthResult(token);
+		return new Credential(token);
 	}
 
 
