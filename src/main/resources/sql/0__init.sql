@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS comment, board, oauth_google, oauth_kakao, user;
+DROP TABLE IF EXISTS comment, board, oauth, user;
 CREATE TABLE user
 (
 	id         BIGINT       NOT NULL AUTO_INCREMENT,
