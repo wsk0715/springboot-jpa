@@ -8,7 +8,9 @@ public record CommentRequest(
 ) {
 
 	public Comment create() {
-		return Comment.create(CommentContent.of(content));
+		return Comment.create(
+				CommentContent.of(content)
+		);
 	}
 
 }
