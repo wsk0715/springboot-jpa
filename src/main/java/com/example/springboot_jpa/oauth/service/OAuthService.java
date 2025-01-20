@@ -61,9 +61,9 @@ public class OAuthService {
 			throw new SpringbootJpaException("OAuth 제공자가 올바르지 않습니다.");
 		}
 
-		String accessToken = getAccessToken(OAuthProvider.GOOGLE, code);
-		String oAuthUserId = (String) getUserInfo(oAuthProvider, accessToken)
-				.get(oAuthProvider.getIdentifier());
+		String accessToken = getAccessToken(oAuthProvider, code);
+		String oAuthUserId = String.valueOf(getUserInfo(oAuthProvider, accessToken)
+													.get(oAuthProvider.getIdentifier()));
 
 		// 최초 로그인 여부 확인
 		String hashedCode = encryptUtil.hash(oAuthUserId);
