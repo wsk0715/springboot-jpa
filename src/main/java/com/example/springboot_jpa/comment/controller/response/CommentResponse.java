@@ -15,18 +15,22 @@ public record CommentResponse(
 		LocalDateTime updated_at
 ) {
 
-	public static List<CommentResponse> createList(List<Comment> comments) {
+	public static List<CommentResponse> from(List<Comment> comments) {
 		return comments.stream()
-					   .map(comment -> new CommentResponse(
-							   comment.getId(),
-							   comment.getContent().getValue(),
-							   comment.getBoard().getId(),
-							   comment.getUser().getId(),
-							   comment.getUser().getNickname().getValue(),
-							   comment.getCreatedAt(),
-							   comment.getUpdatedAt()
-					   ))
+					   .map(CommentResponse::from)
 					   .collect(Collectors.toList());
+	}
+
+	public static CommentResponse from(Comment comment) {
+		return new CommentResponse(
+				comment.getId(),
+				comment.getContent().getValue(),
+				comment.getBoard().getId(),
+				comment.getUser().getId(),
+				comment.getUser().getNickname().getValue(),
+				comment.getCreatedAt(),
+				comment.getUpdatedAt()
+		);
 	}
 
 }

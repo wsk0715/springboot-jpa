@@ -23,9 +23,9 @@ public interface CommentControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "댓글 등록 성공", responseCode = "200"),
 	})
-	ResponseEntity<Long> postComment(@PathVariable Long boardId,
-									 @RequestBody CommentRequest commentRequest,
-									 @Parameter(hidden = true) @LoginUser User user);
+	ResponseEntity<CommentResponse> postComment(@PathVariable Long boardId,
+												@RequestBody CommentRequest commentRequest,
+												@Parameter(hidden = true) @LoginUser User user);
 
 	@Operation(summary = "댓글 목록 조회", description = "게시글의 댓글 목록을 조회한다.")
 	@ApiResponses(value = {

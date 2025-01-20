@@ -5,8 +5,6 @@ import com.example.springboot_jpa.comment.controller.request.CommentRequest;
 import com.example.springboot_jpa.comment.controller.response.CommentResponse;
 import com.example.springboot_jpa.comment.domain.Comment;
 import com.example.springboot_jpa.comment.service.CommentService;
-import com.example.springboot_jpa.common.credential.manager.CookieCredentialManager;
-import com.example.springboot_jpa.common.util.JwtTokenUtil;
 import com.example.springboot_jpa.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,27 +24,23 @@ public class CommentController implements CommentControllerDocs {
 
 	private final CommentService commentService;
 
-	private final CookieCredentialManager cookieCredentialManager;
-
-	private final JwtTokenUtil jwtTokenUtil;
-
 
 	@Override
 	@PostMapping
-	public ResponseEntity<Long> postComment(@PathVariable Long boardId,
-											@RequestBody CommentRequest commentRequest,
-											@LoginUser User loginUser) {
-		Comment comment = commentRequest.create();
-		Long commentId = commentService.post(comment, boardId, loginUser);
+	public ResponseEntity<CommentResponse> postComment(@PathVariable Long boardId,
+													   @RequestBody CommentRequest commentRequest,
+													   @LoginUser User loginUser) {
+		Comment comment = commentService.post(commentRequest.create(), boardId, loginUser);
+		CommentResponse res = CommentResponse.from(comment);
 
-		return ResponseEntity.ok(commentId);
+		return ResponseEntity.ok(res);
 	}
 
 	@Override
 	@GetMapping
 	public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId) {
 		List<Comment> comments = commentService.getMany(boardId);
-		List<CommentResponse> res = CommentResponse.createList(comments);
+		List<CommentResponse> res = CommentResponse.from(comments);
 
 		return ResponseEntity.ok(res);
 	}
