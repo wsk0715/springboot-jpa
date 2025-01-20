@@ -45,7 +45,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public void updateBoard(Long boardId, Board board, User user) {
+	public Board updateBoard(Long boardId, Board board, User user) {
 		Board dbBoard = findById(boardId);
 
 		// 게시글 작성자 확인
@@ -57,9 +57,10 @@ public class BoardService {
 		// 게시글 업데이트
 		BoardTitle title = board.getTitle();
 		BoardContent content = board.getContent();
-
 		dbBoard.updateTitle(title);
 		dbBoard.updateContent(content);
+
+		return dbBoard;
 	}
 
 	public void delete(Long boardId, User user) {

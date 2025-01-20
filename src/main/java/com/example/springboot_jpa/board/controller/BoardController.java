@@ -61,8 +61,7 @@ public class BoardController implements BoardControllerDocs {
 	public ResponseEntity<BoardResponse> updateBoard(@PathVariable Long boardId,
 													 @RequestBody BoardRequest boardRequest,
 													 @LoginUser User loginUser) {
-		Board board = boardRequest.toBoard();
-		boardService.updateBoard(boardId, board, loginUser);
+		Board board = boardService.updateBoard(boardId, boardRequest.toBoard(), loginUser);
 		BoardResponse res = BoardResponse.create(board);
 
 		return ResponseEntity.ok(res);
