@@ -18,7 +18,7 @@ public class CommentContent {
 	protected CommentContent() {
 	}
 
-	public CommentContent(String content) {
+	private CommentContent(String content) {
 		validate(content);
 		this.value = content;
 	}

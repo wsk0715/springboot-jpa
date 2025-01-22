@@ -9,8 +9,8 @@ import lombok.Getter;
 @Embeddable
 public class AuthLoginId {
 
-	private static final int LOGIN_ID_MIN_LENGTH = 8;
-	private static final int LOGIN_ID_MAX_LENGTH = 20;
+	public static final int LOGIN_ID_MIN_LENGTH = 8;
+	public static final int LOGIN_ID_MAX_LENGTH = 20;
 
 	@Column(name = "loginId", nullable = false)
 	private String value;
@@ -18,7 +18,7 @@ public class AuthLoginId {
 	protected AuthLoginId() {
 	}
 
-	public AuthLoginId(String loginId) {
+	private AuthLoginId(String loginId) {
 		validate(loginId);
 		this.value = loginId;
 	}

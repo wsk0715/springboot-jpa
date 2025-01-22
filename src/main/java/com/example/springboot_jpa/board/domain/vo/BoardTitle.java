@@ -20,7 +20,7 @@ public class BoardTitle {
 	protected BoardTitle() {
 	}
 
-	public BoardTitle(String title) {
+	private BoardTitle(String title) {
 		validate(title);
 		this.value = title;
 	}

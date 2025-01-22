@@ -13,7 +13,7 @@ import lombok.Getter;
 @Embeddable
 public class AuthPassword {
 
-	private static final int PASSWORD_MIN_LENGTH = 10;
+	public static final int PASSWORD_MIN_LENGTH = 10;
 
 	@Column(name = "password", nullable = false)
 	private String value;

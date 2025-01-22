@@ -18,7 +18,7 @@ public class BoardContent {
 	protected BoardContent() {
 	}
 
-	public BoardContent(String content) {
+	private BoardContent(String content) {
 		validate(content);
 		this.value = content;
 	}

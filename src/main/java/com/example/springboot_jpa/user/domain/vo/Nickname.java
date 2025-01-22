@@ -14,17 +14,17 @@ import lombok.Getter;
 @Embeddable
 public class Nickname {
 
-	private static final Pattern NICKNAME_REGEX = Pattern.compile("^[ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z._]+$");
+	public static final int MAX_NICKNAME_LENGTH = 20;
+	public static final Pattern NICKNAME_REGEX = Pattern.compile("^[가-힣0-9a-zA-Z._]+$");
 
-	@Column(name = "nickname", nullable = false, length = 20)
+	@Column(name = "nickname", nullable = false)
 	private String value;
 
 	protected Nickname() {
 	}
 
-	public Nickname(String nickname) {
-		validate(nickname);
-		this.value = nickname;
+	private Nickname(String nickname) {
+		this.value = validateAndTrim(nickname);
 	}
 
 	public static Nickname of(String nickname) {
@@ -32,14 +32,18 @@ public class Nickname {
 	}
 
 
-	private void validate(String nickname) {
+	private String validateAndTrim(String nickname) {
 		if (nickname == null || nickname.isEmpty()) {
 			throw new SpringbootJpaException("닉네임을 입력해주세요.");
 		}
 		String trimmedNickname = nickname.trim();
-		if (!NICKNAME_REGEX.matcher(nickname).matches()) {
-			throw new SpringbootJpaException("닉네임 형식에 맞지 않습니다.");
+		if (trimmedNickname.length() > MAX_NICKNAME_LENGTH) {
+			throw new SpringbootJpaException("닉네임은 " + MAX_NICKNAME_LENGTH + "자 이하로 입력해주세요.");
 		}
+		if (!NICKNAME_REGEX.matcher(trimmedNickname).matches()) {
+			throw new SpringbootJpaException("닉네임 형식에 맞게 입력해주세요.");
+		}
+		return trimmedNickname;
 	}
 
 }
