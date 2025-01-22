@@ -31,7 +31,7 @@ class JwtTokenUtilTest extends BaseSpringBootTest {
 	void setUp() {
 		// given: 테스트에 필요한 메소드 모킹
 		when(testUser.getId()).thenReturn(1L);
-		when(testUser.getNickname()).thenReturn(new Nickname("testUser"));
+		when(testUser.getNickname()).thenReturn(Nickname.of("testUser"));
 
 		// given: 토큰 생성
 		token = jwtTokenUtil.createToken(testUser);
