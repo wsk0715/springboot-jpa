@@ -1,6 +1,7 @@
 package com.example.springboot_jpa.auth.controller;
 
 import com.example.springboot_jpa.auth.controller.request.AuthRequest;
+import com.example.springboot_jpa.auth.controller.request.LoginRequest;
 import com.example.springboot_jpa.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,17 @@ public class AuthController implements AuthControllerDocs {
 
 	@Override
 	@PostMapping
-	public ResponseEntity<Void> signup(@RequestBody AuthRequest auth) {
-		authService.signup(auth);
+	public ResponseEntity<Void> signup(@RequestBody AuthRequest authRequest) {
+		authService.signup(authRequest.toAuth());
+		return ResponseEntity.ok().build();
+	}
+
+	@Override
+	@PostMapping("/login")
+	public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
+									  HttpServletResponse response) {
+		authService.login(loginRequest, response);
+
 		return ResponseEntity.ok().build();
 	}
 

@@ -1,7 +1,8 @@
 package com.example.springboot_jpa.auth.service;
 
-import com.example.springboot_jpa.auth.controller.request.AuthRequest;
+import com.example.springboot_jpa.auth.controller.request.LoginRequest;
 import com.example.springboot_jpa.auth.domain.Auth;
+import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
 import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.common.util.NicknameUtil;
@@ -14,6 +15,7 @@ import com.example.springboot_jpa.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,13 +32,12 @@ public class AuthService {
 	private final JwtTokenUtil jwtTokenUtil;
 
 
-	public void signup(AuthRequest authRequest) {
+	public void signup(Auth auth) {
 		// 1. 임시 유저 생성 및 연결
 		User user = createTempUser();
 		userService.save(user);
 
 		// 2. 유저 인증 정보 저장
-		Auth auth = authRequest.toAuth();
 		auth.updateUser(user);
 
 		authRepository.save(auth);
@@ -54,6 +55,27 @@ public class AuthService {
 		userService.save(user);
 
 		return user;
+	}
+
+	public void login(LoginRequest loginRequest, HttpServletResponse response) {
+		// 1. DB에서 로그인 정보 받아오기
+		AuthLoginId loginId = AuthLoginId.of(loginRequest.loginId());
+		Auth dbAuth = Optional.ofNullable(authRepository.findByLoginId(loginId))
+							  .orElseThrow(() -> new SpringbootJpaException("해당 사용자가 존재하지 않습니다."));
+
+		// 2. 해당 로그인 정보의 비밀번호와 사용자가 입력한 비밀번호 확인
+		String encodedPassword = loginRequest.password();
+		if (!dbAuth.getPassword().isEquals(encodedPassword)) {
+			throw new SpringbootJpaException("비밀번호가 일치하지 않습니다.");
+		}
+
+		// 3. 인증 정보 설정을 위해 User 엔티티 받아오기
+		Long userId = dbAuth.getUser().getId();
+		User dbUser = userService.findById(userId);
+
+		// 4. 인증 정보 설정
+		String token = jwtTokenUtil.createToken(dbUser);
+		setCredential(response, token);
 	}
 
 	public Credential setCredential(HttpServletResponse response, String token) {

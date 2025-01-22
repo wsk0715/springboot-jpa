@@ -22,6 +22,7 @@ public class AuthPassword {
 	}
 
 	private AuthPassword(String password) {
+		System.out.println(password);
 		validate(password);
 		this.value = BCryptEncryptUtil.encode(password);
 	}
@@ -37,7 +38,6 @@ public class AuthPassword {
 		}
 		return false;
 	}
-
 
 	private void validate(String plainPassword) {
 		if (plainPassword == null || plainPassword.isEmpty()) {
