@@ -1,7 +1,7 @@
-package com.example.springboot_jpa.common.exception.handler;
+package com.example.springboot_jpa.exception.handler;
 
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
-import com.example.springboot_jpa.common.exception.handler.response.ErrorResponse;
+import com.example.springboot_jpa.exception.handler.response.ErrorResponse;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

@@ -3,7 +3,7 @@ package com.example.springboot_jpa.comment.domain;
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.comment.domain.vo.CommentContent;
 import com.example.springboot_jpa.common.domain.BaseEntity;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.credential.manager.cookie;
 
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.credential.manager.CredentialManager;
 import com.example.springboot_jpa.credential.manager.cookie.properties.CookieCredentialProperties;

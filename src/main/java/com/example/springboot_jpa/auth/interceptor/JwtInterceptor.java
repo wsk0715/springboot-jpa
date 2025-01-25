@@ -2,7 +2,7 @@ package com.example.springboot_jpa.auth.interceptor;
 
 
 import com.example.springboot_jpa.auth.service.AuthService;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

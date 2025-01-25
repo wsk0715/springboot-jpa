@@ -1,6 +1,6 @@
 package com.example.springboot_jpa.board.domain.vo;
 
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

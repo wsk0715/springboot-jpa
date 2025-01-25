@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.auth.domain.vo;
 
 import com.example.springboot_jpa.common.encryption.BCryptEncryptUtil;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

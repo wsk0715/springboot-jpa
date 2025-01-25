@@ -4,11 +4,11 @@ import com.example.springboot_jpa.auth.controller.request.LoginRequest;
 import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.JwtTokenUtil;
 import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.credential.manager.CredentialManager;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
@@ -32,7 +32,7 @@ public class AuthService {
 	private final JwtTokenUtil jwtTokenUtil;
 
 
-	public void signup(Auth auth) {
+	public Auth signup(Auth auth) {
 		// 1. 임시 유저 생성 및 연결
 		User user = createTempUser();
 		userService.save(user);
@@ -40,7 +40,7 @@ public class AuthService {
 		// 2. 유저 인증 정보 저장
 		auth.updateUser(user);
 
-		authRepository.save(auth);
+		return authRepository.save(auth);
 	}
 
 	private User createTempUser() {

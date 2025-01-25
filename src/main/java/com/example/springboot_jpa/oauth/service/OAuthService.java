@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.oauth.service;
 
 import com.example.springboot_jpa.common.encryption.HashEncryptUtil;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.JwtTokenUtil;
 import com.example.springboot_jpa.credential.dto.Credential;

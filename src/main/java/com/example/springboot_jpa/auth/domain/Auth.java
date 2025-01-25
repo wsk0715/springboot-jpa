@@ -3,7 +3,7 @@ package com.example.springboot_jpa.auth.domain;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.domain.vo.AuthPassword;
 import com.example.springboot_jpa.common.domain.BaseEntity;
-import com.example.springboot_jpa.common.exception.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

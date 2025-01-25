@@ -1,6 +1,6 @@
-package com.example.springboot_jpa.common.exception;
+package com.example.springboot_jpa.exception.type;
 
-public class UnauthorizedException extends RuntimeException {
+public class UnauthorizedException extends SpringbootJpaException {
 
 	public UnauthorizedException() {
 		super("인증되지 않은 사용자입니다.");
@@ -15,7 +15,7 @@ public class UnauthorizedException extends RuntimeException {
 	}
 
 	public UnauthorizedException(final Throwable cause) {
-		super(cause);
+		super("인증되지 않은 사용자입니다.", cause);
 	}
 
 }
