@@ -2,7 +2,7 @@ package com.example.springboot_jpa.oauth.controller;
 
 import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.credential.dto.Credential;
-import com.example.springboot_jpa.oauth.controller.response.AuthResponse;
+import com.example.springboot_jpa.oauth.controller.response.OAuthResponse;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
 import com.example.springboot_jpa.oauth.service.OAuthService;
@@ -29,8 +29,8 @@ public class OAuthController implements OAuthControllerDocs {
 
 	@Override
 	@GetMapping("")
-	public ResponseEntity<AuthResponse> getUrl(@PathVariable String provider) {
-		return ResponseEntity.ok(new AuthResponse(oAuthService.getUrl(provider)));
+	public ResponseEntity<OAuthResponse> getUrl(@PathVariable String provider) {
+		return ResponseEntity.ok(new OAuthResponse(oAuthService.getUrl(provider)));
 	}
 
 	@Override

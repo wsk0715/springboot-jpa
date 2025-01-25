@@ -2,6 +2,7 @@ package com.example.springboot_jpa.auth.controller;
 
 import com.example.springboot_jpa.auth.controller.request.AuthRequest;
 import com.example.springboot_jpa.auth.controller.request.LoginRequest;
+import com.example.springboot_jpa.auth.controller.response.AuthResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -19,7 +20,7 @@ public interface AuthControllerDocs {
 			@ApiResponse(description = "회원가입 성공", responseCode = "200")
 	})
 	@PostMapping
-	ResponseEntity<Void> signup(@RequestBody AuthRequest authRequest);
+	ResponseEntity<AuthResponse> signup(@RequestBody AuthRequest authRequest);
 
 	@Operation(summary = "로그인", description = "ID/PW를 이용해 로그인 요청을 보낸다.")
 	@ApiResponses(value = {
