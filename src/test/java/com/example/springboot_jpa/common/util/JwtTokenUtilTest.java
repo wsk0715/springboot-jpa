@@ -1,4 +1,4 @@
-package com.example.springboot_jpa.util;
+package com.example.springboot_jpa.common.util;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
