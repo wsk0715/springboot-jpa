@@ -1,7 +1,7 @@
 package com.example.springboot_jpa.credential;
 
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
-import com.example.springboot_jpa.exception.type.UnauthorizedException;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;

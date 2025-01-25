@@ -1,4 +1,6 @@
-package com.example.springboot_jpa.exception.type;
+package com.example.springboot_jpa.exception.type.status4xx;
+
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 
 public class NotFoundException extends SpringbootJpaException {
 
