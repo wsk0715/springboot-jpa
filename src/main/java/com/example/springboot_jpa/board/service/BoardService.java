@@ -4,10 +4,12 @@ import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.domain.vo.BoardContent;
 import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.board.repository.BoardRepository;
+import com.example.springboot_jpa.exception.type.NotFoundException;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +24,12 @@ public class BoardService {
 
 
 	public Board findById(Long boardId) {
-		return boardRepository.findById(boardId)
-							  .orElseThrow(() -> new SpringbootJpaException("해당 게시글을 찾을 수 없습니다."));
+		try {
+			return boardRepository.findById(boardId)
+								  .orElseThrow();
+		} catch (NoSuchElementException e) {
+			throw new NotFoundException("해당 게시글을 찾을 수 없습니다.");
+		}
 	}
 
 	public List<Board> getBoards() {
