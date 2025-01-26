@@ -5,7 +5,7 @@ import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 public class UnauthorizedException extends SpringbootJpaException {
 
 	public UnauthorizedException() {
-		super("인증되지 않은 사용자입니다.");
+		super("해당 요청을 수행하기 위해 인증이 필요합니다.");
 	}
 
 	public UnauthorizedException(final String message) {
@@ -17,7 +17,7 @@ public class UnauthorizedException extends SpringbootJpaException {
 	}
 
 	public UnauthorizedException(final Throwable cause) {
-		super("인증되지 않은 사용자입니다.", cause);
+		super("해당 요청을 수행하기 위해 인증이 필요합니다.", cause);
 	}
 
 }

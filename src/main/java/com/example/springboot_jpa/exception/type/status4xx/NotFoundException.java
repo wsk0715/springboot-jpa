@@ -5,7 +5,7 @@ import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 public class NotFoundException extends SpringbootJpaException {
 
 	public NotFoundException() {
-		super("항목을 찾을 수 없습니다.");
+		super("해당 요청에 대한 항목을 찾을 수 없습니다.");
 	}
 
 	public NotFoundException(String message) {
@@ -17,7 +17,7 @@ public class NotFoundException extends SpringbootJpaException {
 	}
 
 	public NotFoundException(Throwable cause) {
-		super("항목을 찾을 수 없습니다.", cause);
+		super("해당 요청에 대한 항목을 찾을 수 없습니다.", cause);
 	}
 
 }
