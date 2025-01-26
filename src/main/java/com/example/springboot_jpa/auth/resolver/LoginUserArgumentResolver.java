@@ -36,15 +36,10 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 								WebDataBinderFactory binderFactory) {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
-		// 쿠키에서 JWT 토큰을 추출 (인터셉터에서 유효성 검증이 이미 이루어졌다고 가정)
+		// 요청이 보유한 토큰을 이용해 실제 존재하는 사용자인지 조회
 		String token = authService.getCredential(request);
-		if (token == null || token.isEmpty()) {
-			return null; // 또는 예외를 던져 요청 중단
-		}
-
-		// 토큰을 이용해 실제 사용자 정보를 조회
 		User user = authService.extractFromToken(token);
-		log.info(user.toString());
+		log.info("사용자 로그인: {}", user.toString());
 
 		return user;
 	}

@@ -9,6 +9,7 @@ import com.example.springboot_jpa.credential.JwtTokenUtil;
 import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.credential.manager.CredentialManager;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
@@ -92,14 +93,18 @@ public class AuthService {
 	public String getCredential(HttpServletRequest request) {
 		for (CredentialManager cm : credentialManager) {
 			if (cm.hasCredential(request)) {
-				return cm.getCredential(request);
+				String token = cm.getCredential(request);
+				validateToken(token);
+				return token;
 			}
 		}
-		throw new SpringbootJpaException("인증 정보를 찾을 수 없습니다.");
+		throw new UnauthorizedException("인증 정보를 찾을 수 없습니다.");
 	}
 
-	public boolean validateToken(String token) {
-		return jwtTokenUtil.validateToken(token);
+	private void validateToken(String token) {
+		if (!jwtTokenUtil.validateToken(token)) {
+			throw new UnauthorizedException("유효하지 않은 인증 정보입니다.");
+		}
 	}
 
 	public Long getUserId(String token) {

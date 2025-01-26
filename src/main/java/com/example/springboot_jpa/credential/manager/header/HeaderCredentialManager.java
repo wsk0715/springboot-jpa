@@ -1,8 +1,8 @@
 package com.example.springboot_jpa.credential.manager.header;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.credential.manager.CredentialManager;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -22,12 +22,12 @@ public class HeaderCredentialManager implements CredentialManager {
 	@Override
 	public String getCredential(HttpServletRequest request) {
 		if (!hasCredential(request)) {
-			throw new SpringbootJpaException("헤더에 인증 정보가 존재하지 않습니다.");
+			throw new UnauthorizedException("헤더에 인증 정보가 존재하지 않습니다.");
 		}
 
 		String[] authorization = request.getHeader("Authorization").split(" ");
 		if (authorization.length < 2 || !"Bearer".equals(authorization[0])) {
-			throw new SpringbootJpaException("헤더의 인증 정보가 잘못되었습니다.");
+			throw new UnauthorizedException("헤더의 인증 정보가 잘못되었습니다.");
 		}
 
 		return authorization[1];

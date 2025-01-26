@@ -3,6 +3,7 @@ package com.example.springboot_jpa.exception.handler;
 import com.example.springboot_jpa.exception.handler.response.ErrorResponse;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -28,11 +29,20 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
+	 * 401 Unauthorized
+	 * 인증되지 않은 사용자가 인증이 필요한 항목에 접근한 경우의 예외를 처리하는 핸들러 메소드
+	 */
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException e) {
+		return logWarnAndCreateResponse(e, HttpStatus.UNAUTHORIZED);
+	}
+
+	/**
 	 * 404 Not Found
 	 * 요청한 콘텐츠를 찾지 못했을 경우의 예외를 처리하는 핸들러 메소드
 	 */
 	@ExceptionHandler(NotFoundException.class)
-	public ResponseEntity<ErrorResponse> handleContentNotFoundException(NotFoundException e) {
+	public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException e) {
 		return logWarnAndCreateResponse(e, HttpStatus.NOT_FOUND);
 	}
 

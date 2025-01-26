@@ -1,9 +1,9 @@
 package com.example.springboot_jpa.credential.manager.cookie;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.credential.manager.CredentialManager;
 import com.example.springboot_jpa.credential.manager.cookie.properties.CookieCredentialProperties;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,12 +50,12 @@ public class CookieCredentialManager implements CredentialManager {
 	public String getCredential(HttpServletRequest request) {
 		Cookie cookie = findCredentialCookie(request);
 		if (cookie == null) {
-			throw new SpringbootJpaException("쿠키에 인증 정보가 존재하지 않습니다.");
+			throw new UnauthorizedException("쿠키에 인증 정보가 존재하지 않습니다.");
 		}
 
 		String credential = cookie.getValue();
 		if (credential == null || credential.isEmpty()) {
-			throw new SpringbootJpaException("쿠키의 인증 정보가 유효하지 않습니다.");
+			throw new UnauthorizedException("쿠키의 인증 정보가 유효하지 않습니다.");
 		}
 
 		return credential;
