@@ -5,17 +5,12 @@ import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
 import com.example.springboot_jpa.common.util.NicknameUtil;
-import com.example.springboot_jpa.credential.JwtTokenUtil;
-import com.example.springboot_jpa.credential.dto.Credential;
-import com.example.springboot_jpa.credential.manager.CredentialManager;
+import com.example.springboot_jpa.credential.service.CredentialService;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
-import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,14 +19,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthService {
 
-	private final UserService userService;
-
 	private final AuthRepository authRepository;
 
-	private final List<CredentialManager> credentialManager;
-
-	private final JwtTokenUtil jwtTokenUtil;
-
+	private final UserService userService;
+	
+	private final CredentialService credentialService;
 
 	public Auth signup(Auth auth) {
 		// 1. 임시 유저 생성 및 연결
@@ -75,44 +67,7 @@ public class AuthService {
 		User dbUser = userService.findById(userId);
 
 		// 4. 인증 정보 설정
-		String token = jwtTokenUtil.createToken(dbUser);
-		setCredential(response, token);
-	}
-
-	public Credential setCredential(HttpServletResponse response, String token) {
-		Credential credential = new Credential(token);
-
-		credentialManager.forEach(cm -> cm.setCredential(response, credential));
-		return credential;
-	}
-
-	public void removeCredential(HttpServletResponse response) {
-		credentialManager.forEach(cm -> cm.removeCredential(response));
-	}
-
-	public String getCredential(HttpServletRequest request) {
-		for (CredentialManager cm : credentialManager) {
-			if (cm.hasCredential(request)) {
-				String token = cm.getCredential(request);
-				validateToken(token);
-				return token;
-			}
-		}
-		throw new UnauthorizedException("인증 정보를 찾을 수 없습니다.");
-	}
-
-	private void validateToken(String token) {
-		if (!jwtTokenUtil.validateToken(token)) {
-			throw new UnauthorizedException("유효하지 않은 인증 정보입니다.");
-		}
-	}
-
-	public Long getUserId(String token) {
-		return jwtTokenUtil.getUserId(token);
-	}
-
-	public User extractFromToken(String token) {
-		return userService.findById(getUserId(token));
+		credentialService.setCredential(response, dbUser);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.example.springboot_jpa.oauth.controller;
 
-import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.controller.response.OAuthResponse;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,8 +26,8 @@ public interface OAuthControllerDocs {
 	@ApiResponses(value = {
 			@ApiResponse(description = "사용자 확인 성공", responseCode = "200")
 	})
-	ResponseEntity<Credential> callback(@PathVariable String provider,
-										@RequestParam("code") String code,
-										HttpServletResponse response);
+	ResponseEntity<Void> callback(@PathVariable String provider,
+								  @RequestParam("code") String code,
+								  HttpServletResponse response);
 
 }

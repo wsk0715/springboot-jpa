@@ -5,6 +5,7 @@ import com.example.springboot_jpa.auth.controller.request.LoginRequest;
 import com.example.springboot_jpa.auth.controller.response.AuthResponse;
 import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.service.AuthService;
+import com.example.springboot_jpa.credential.service.CredentialService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController implements AuthControllerDocs {
 
 	private final AuthService authService;
+	private final CredentialService credentialService;
 
 
 	@Override
@@ -43,7 +45,7 @@ public class AuthController implements AuthControllerDocs {
 	@Override
 	@GetMapping("/logout")
 	public ResponseEntity<Void> logout(HttpServletResponse response) {
-		authService.removeCredential(response);
+		credentialService.removeCredential(response);
 		return ResponseEntity.ok().build();
 	}
 

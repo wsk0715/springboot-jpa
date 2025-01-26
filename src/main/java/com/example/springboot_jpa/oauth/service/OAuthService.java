@@ -1,10 +1,10 @@
 package com.example.springboot_jpa.oauth.service;
 
 import com.example.springboot_jpa.common.encryption.HashEncryptUtil;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.JwtTokenUtil;
-import com.example.springboot_jpa.credential.dto.Credential;
+import com.example.springboot_jpa.credential.service.CredentialService;
+import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.domain.OAuth;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
@@ -13,6 +13,7 @@ import com.example.springboot_jpa.oauth.repository.OAuthRepository;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -34,11 +35,13 @@ public class OAuthService {
 
 	private final OAuthKakaoProperties kakaoProperties;
 
+	private final JwtTokenUtil jwtTokenUtil;
+
 	private final UserService userService;
 
-	private final OAuthRepository oAuthRepository;
+	private final CredentialService credentialService;
 
-	private final JwtTokenUtil jwtTokenUtil;
+	private final OAuthRepository oAuthRepository;
 
 
 	public String getUrl(String provider) {
@@ -54,7 +57,7 @@ public class OAuthService {
 	}
 
 	@Transactional
-	public Credential init(String provider, String code) {
+	public void init(String provider, String code, HttpServletResponse response) {
 		OAuthProvider oAuthProvider = OAuthProvider.findByName(provider);
 		if (oAuthProvider == null) {
 			throw new SpringbootJpaException("OAuth 제공자가 올바르지 않습니다.");
@@ -79,11 +82,9 @@ public class OAuthService {
 			oAuthRepository.save(oauth);
 		}
 
-		// JWT 발급
+		// 요청에 인증 정보 설정
 		User user = oauth.getUser();
-		String token = jwtTokenUtil.createToken(user);
-
-		return new Credential(token);
+		credentialService.setCredential(response, user);
 	}
 
 

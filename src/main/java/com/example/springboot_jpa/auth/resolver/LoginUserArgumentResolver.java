@@ -1,8 +1,9 @@
 package com.example.springboot_jpa.auth.resolver;
 
 import com.example.springboot_jpa.auth.annotation.LoginUser;
-import com.example.springboot_jpa.auth.service.AuthService;
+import com.example.springboot_jpa.credential.service.CredentialService;
 import com.example.springboot_jpa.user.domain.User;
+import com.example.springboot_jpa.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,10 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final AuthService authService;
+	private final CredentialService credentialService;
 
+	private final UserService userService;
+	
 
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
@@ -37,8 +40,8 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
 		// 요청이 보유한 토큰을 이용해 실제 존재하는 사용자인지 조회
-		String token = authService.getCredential(request);
-		User user = authService.extractFromToken(token);
+		String token = credentialService.getCredential(request);
+		User user = userService.findById(credentialService.getUserId(token));
 		log.info("사용자 로그인: {}", user.toString());
 
 		return user;

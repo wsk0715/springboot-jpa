@@ -1,7 +1,5 @@
 package com.example.springboot_jpa.oauth.controller;
 
-import com.example.springboot_jpa.auth.service.AuthService;
-import com.example.springboot_jpa.credential.dto.Credential;
 import com.example.springboot_jpa.oauth.controller.response.OAuthResponse;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
 import com.example.springboot_jpa.oauth.properties.OAuthKakaoProperties;
@@ -24,9 +22,6 @@ public class OAuthController implements OAuthControllerDocs {
 
 	private final OAuthService oAuthService;
 
-	private final AuthService authService;
-
-
 	@Override
 	@GetMapping("")
 	public ResponseEntity<OAuthResponse> getUrl(@PathVariable String provider) {
@@ -35,13 +30,12 @@ public class OAuthController implements OAuthControllerDocs {
 
 	@Override
 	@GetMapping("/callback")
-	public ResponseEntity<Credential> callback(@PathVariable String provider,
-											   @RequestParam("code") String code,
-											   HttpServletResponse response) {
-		Credential result = oAuthService.init(provider, code);
-		Credential credential = authService.setCredential(response, result.jwt());
+	public ResponseEntity<Void> callback(@PathVariable String provider,
+										 @RequestParam("code") String code,
+										 HttpServletResponse response) {
+		oAuthService.init(provider, code, response);
 
-		return ResponseEntity.ok(credential);
+		return ResponseEntity.ok().build();
 	}
 
 }
