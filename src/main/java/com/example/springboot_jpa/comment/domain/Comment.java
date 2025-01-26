@@ -63,6 +63,10 @@ public class Comment extends BaseEntity {
 	}
 
 
+	public void updateContent(CommentContent content) {
+		this.content = content;
+	}
+
 	public void updateBoard(Board board) {
 		if (board == null) {
 			throw new SpringbootJpaException("댓글의 게시글 정보를 입력해주세요.");

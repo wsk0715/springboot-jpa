@@ -13,6 +13,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +38,16 @@ public interface CommentControllerDocs {
 													  @RequestParam(defaultValue = "1") int page,
 													  @RequestParam(defaultValue = "20") int size,
 													  @RequestParam(defaultValue = "id, desc") String sort);
+
+	@Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정한다.")
+	@ApiResponses(value = {
+			@ApiResponse(description = "댓글 수정 성공", responseCode = "200"),
+	})
+	@PatchMapping("/{commentId}")
+	ResponseEntity<CommentResponse> patchComment(@PathVariable Long boardId,
+												 @PathVariable Long commentId,
+												 @RequestBody CommentRequest commentRequest,
+												 @Parameter(hidden = true) @LoginUser User loginUser);
 
 	@Operation(summary = "댓글 삭제", description = "게시글의 댓글을 삭제한다.")
 	@ApiResponses(value = {

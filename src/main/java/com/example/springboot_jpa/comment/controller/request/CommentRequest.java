@@ -7,7 +7,7 @@ public record CommentRequest(
 		String content
 ) {
 
-	public Comment create() {
+	public Comment toComment() {
 		return Comment.create(
 				CommentContent.of(content)
 		);

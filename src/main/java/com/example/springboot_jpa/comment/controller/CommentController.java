@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public class CommentController implements CommentControllerDocs {
 	public ResponseEntity<CommentResponse> postComment(@PathVariable Long boardId,
 													   @RequestBody CommentRequest commentRequest,
 													   @LoginUser User loginUser) {
-		Comment comment = commentService.post(commentRequest.create(), boardId, loginUser);
+		Comment comment = commentService.post(commentRequest.toComment(), boardId, loginUser);
 		CommentResponse res = CommentResponse.from(comment);
 
 		return ResponseEntity.ok(res);
@@ -54,7 +55,20 @@ public class CommentController implements CommentControllerDocs {
 	}
 
 	@Override
+	@PatchMapping("/{commentId}")
+	public ResponseEntity<CommentResponse> patchComment(@PathVariable Long boardId,
+														@PathVariable Long commentId,
+														@RequestBody CommentRequest commentRequest,
+														@LoginUser User loginUser) {
+		Comment comment = commentService.update(commentId, commentRequest.toComment(), loginUser);
+		CommentResponse res = CommentResponse.from(comment);
+
+		return ResponseEntity.ok(res);
+	}
+
+	@Override
 	@DeleteMapping("/{commentId}")
+
 	public ResponseEntity<Void> deleteComment(@PathVariable Long boardId,
 											  @PathVariable Long commentId,
 											  @LoginUser User loginUser) {
