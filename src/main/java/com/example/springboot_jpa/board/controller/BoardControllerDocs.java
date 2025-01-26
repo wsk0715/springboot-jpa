@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Board", description = "Board 도메인 관련 API")
 public interface BoardControllerDocs {
@@ -33,7 +34,9 @@ public interface BoardControllerDocs {
 			@ApiResponse(description = "게시글 목록 조회 성공", responseCode = "200")
 	})
 	@GetMapping
-	ResponseEntity<List<BoardResponse>> getBoards();
+	ResponseEntity<List<BoardResponse>> getBoards(@RequestParam(defaultValue = "0") int page,
+												  @RequestParam(defaultValue = "10") int size,
+												  @RequestParam(defaultValue = "id, desc") String sort);
 
 	@Operation(summary = "게시글 조회", description = "게시글을 조회한다.")
 	@ApiResponses(value = {

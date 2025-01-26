@@ -8,9 +8,10 @@ import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +33,8 @@ public class BoardService {
 		}
 	}
 
-	public List<Board> getBoards() {
-		return boardRepository.findAll();
+	public Page<Board> getBoards(Pageable pageable) {
+		return boardRepository.findAll(pageable);
 	}
 
 	@Transactional

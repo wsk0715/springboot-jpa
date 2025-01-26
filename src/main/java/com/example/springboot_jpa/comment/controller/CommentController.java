@@ -5,9 +5,12 @@ import com.example.springboot_jpa.comment.controller.request.CommentRequest;
 import com.example.springboot_jpa.comment.controller.response.CommentResponse;
 import com.example.springboot_jpa.comment.domain.Comment;
 import com.example.springboot_jpa.comment.service.CommentService;
+import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,9 +42,13 @@ public class CommentController implements CommentControllerDocs {
 
 	@Override
 	@GetMapping
-	public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId) {
-		List<Comment> comments = commentService.getMany(boardId);
-		List<CommentResponse> res = CommentResponse.from(comments);
+	public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId,
+															 @RequestParam(defaultValue = "1") int page,
+															 @RequestParam(defaultValue = "20") int size,
+															 @RequestParam(defaultValue = "id, desc") String sort) {
+		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
+		Page<Comment> comments = commentService.getMany(boardId, pageable);
+		List<CommentResponse> res = CommentResponse.from(comments.getContent());
 
 		return ResponseEntity.ok(res);
 	}

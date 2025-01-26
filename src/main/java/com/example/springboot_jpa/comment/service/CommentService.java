@@ -7,8 +7,9 @@ import com.example.springboot_jpa.comment.repository.CommentRepository;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +24,8 @@ public class CommentService {
 	private final CommentRepository commentRepository;
 
 
-	public List<Comment> getMany(Long boardId) {
-		return commentRepository.findAllByBoardId(boardId);
+	public Page<Comment> getMany(Long boardId, Pageable pageable) {
+		return commentRepository.findAllByBoardId(boardId, pageable);
 	}
 
 	@Transactional

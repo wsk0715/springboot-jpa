@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "Comment", description = "Comment 도메인 관련 API")
 public interface CommentControllerDocs {
@@ -32,8 +33,10 @@ public interface CommentControllerDocs {
 			@ApiResponse(description = "댓글 목록 조회 성공", responseCode = "200"),
 	})
 	@GetMapping
-	ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId);
-
+	ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId,
+													  @RequestParam(defaultValue = "1") int page,
+													  @RequestParam(defaultValue = "20") int size,
+													  @RequestParam(defaultValue = "id, desc") String sort);
 
 	@Operation(summary = "댓글 삭제", description = "게시글의 댓글을 삭제한다.")
 	@ApiResponses(value = {
