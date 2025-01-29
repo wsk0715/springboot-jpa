@@ -4,8 +4,10 @@ import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 
 public class ForbiddenException extends SpringbootJpaException {
 
+	private static final String DEFAULT_MESSAGE = "해당 요청에 대한 권한이 충분하지 않습니다.";
+
 	public ForbiddenException() {
-		super("해당 요청에 대한 권한이 충분하지 않습니다.");
+		super(DEFAULT_MESSAGE);
 	}
 
 	public ForbiddenException(String message) {
@@ -17,7 +19,7 @@ public class ForbiddenException extends SpringbootJpaException {
 	}
 
 	public ForbiddenException(Throwable cause) {
-		super("해당 요청에 대한 권한이 충분하지 않습니다.", cause);
+		super(DEFAULT_MESSAGE, cause);
 	}
 
 }
