@@ -7,9 +7,11 @@ import com.example.springboot_jpa.auth.repository.AuthRepository;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.service.CredentialService;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.status4xx.BadRequestException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
+import com.example.springboot_jpa.validation.Validator;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +33,8 @@ public class AuthService {
 		userService.save(user);
 
 		// 2. 유저 인증 정보 저장
-		auth.updateUser(user);
+		Validator.validate(() -> auth.updateUser(user))
+				 .orElseThrow(() -> new BadRequestException("회원 정보가 존재하지 않습니다."));
 
 		return authRepository.save(auth);
 	}
