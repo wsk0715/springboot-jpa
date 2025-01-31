@@ -2,8 +2,10 @@ package com.example.springboot_jpa.exception.type;
 
 public class SpringbootJpaException extends RuntimeException {
 
+	private static final String DEFAULT_MESSAGE = "서버 내부 오류가 발생했습니다.";
+
 	public SpringbootJpaException() {
-		super("서버 내부 오류가 발생했습니다.");
+		super(DEFAULT_MESSAGE);
 	}
 
 	public SpringbootJpaException(String message) {
@@ -15,7 +17,7 @@ public class SpringbootJpaException extends RuntimeException {
 	}
 
 	public SpringbootJpaException(Throwable cause) {
-		super("서버 내부 오류가 발생했습니다.", cause);
+		super(DEFAULT_MESSAGE, cause);
 	}
 
 }
