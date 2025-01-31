@@ -22,7 +22,7 @@ public class AuthService {
 	private final AuthRepository authRepository;
 
 	private final UserService userService;
-	
+
 	private final CredentialService credentialService;
 
 	public Auth signup(Auth auth) {
@@ -57,8 +57,8 @@ public class AuthService {
 							  .orElseThrow(() -> new SpringbootJpaException("해당 사용자가 존재하지 않습니다."));
 
 		// 2. 해당 로그인 정보의 비밀번호와 사용자가 입력한 비밀번호 확인
-		String encodedPassword = loginRequest.password();
-		if (!dbAuth.getPassword().isEquals(encodedPassword)) {
+		String password = loginRequest.password();
+		if (!dbAuth.comparePasswordWith(password)) {
 			throw new SpringbootJpaException("비밀번호가 일치하지 않습니다.");
 		}
 

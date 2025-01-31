@@ -32,7 +32,7 @@ public class AuthPassword {
 	}
 
 
-	public boolean isEquals(String plainPassword) {
+	public boolean isMatches(String plainPassword) {
 		if (BCryptEncryptUtil.matches(plainPassword, this.value)) {
 			return true;
 		}

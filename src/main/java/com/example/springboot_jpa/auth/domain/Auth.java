@@ -65,4 +65,8 @@ public class Auth extends BaseEntity {
 		this.password = password;
 	}
 
+	public boolean comparePasswordWith(String plainPassword) {
+		return this.getPassword().isMatches(plainPassword);
+	}
+
 }
