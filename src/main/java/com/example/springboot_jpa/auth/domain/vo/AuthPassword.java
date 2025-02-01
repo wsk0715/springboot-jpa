@@ -1,13 +1,14 @@
 package com.example.springboot_jpa.auth.domain.vo;
 
 import com.example.springboot_jpa.common.encryption.BCryptEncryptUtil;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentLengthException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 /**
- * 회원 비밀번호 로직을 관리하는 VO
+ * 회원 비밀번호에 관한 로직을 관리하는 VO
  */
 @Getter
 @Embeddable
@@ -41,10 +42,10 @@ public class AuthPassword {
 
 	private void validate(String plainPassword) {
 		if (plainPassword == null || plainPassword.isEmpty()) {
-			throw new SpringbootJpaException("로그인 비밀번호를 입력해주세요.");
+			throw new ArgumentNullException("로그인 비밀번호를 입력해주세요.");
 		}
 		if (plainPassword.length() < PASSWORD_MIN_LENGTH) {
-			throw new SpringbootJpaException("로그인 비밀번호는 " + PASSWORD_MIN_LENGTH + "자 이상으로 입력해주세요.");
+			throw new ArgumentLengthException("로그인 비밀번호는 " + PASSWORD_MIN_LENGTH + "자 이상으로 입력해주세요.");
 		}
 	}
 

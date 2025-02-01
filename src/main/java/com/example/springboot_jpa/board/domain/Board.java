@@ -3,7 +3,8 @@ package com.example.springboot_jpa.board.domain;
 import com.example.springboot_jpa.board.domain.vo.BoardContent;
 import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.common.domain.BaseEntity;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
+import com.example.springboot_jpa.exception.type.domain.InvalidStateException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -85,7 +86,7 @@ public class Board extends BaseEntity {
 
 	public void updateUser(User user) {
 		if (user == null) {
-			throw new SpringbootJpaException("게시글 작성자 정보를 입력해주세요.");
+			throw new ArgumentNullException("게시글 작성자 정보를 입력해주세요.");
 		}
 		this.user = user;
 	}
@@ -100,7 +101,7 @@ public class Board extends BaseEntity {
 
 	public void subtractCommentCount() {
 		if (commentCount == 0) {
-			throw new SpringbootJpaException("게시글 댓글 수는 0보다 작을 수 없습니다.");
+			throw new InvalidStateException("게시글 댓글 수는 0보다 작을 수 없습니다.");
 		}
 		this.commentCount -= 1;
 	}
