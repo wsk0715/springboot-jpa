@@ -3,6 +3,7 @@ package com.example.springboot_jpa.exception.handler;
 import com.example.springboot_jpa.exception.handler.response.ErrorResponse;
 import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.BadRequestException;
+import com.example.springboot_jpa.exception.type.status4xx.ConflictException;
 import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
@@ -55,6 +56,15 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException e) {
 		return createErrorResponse(e, HttpStatus.NOT_FOUND);
+	}
+
+	/**
+	 * 409 Conflict<br>
+	 * POST 요청한 콘텐츠가 이미 존재하는 경우의 예외를 처리하는 핸들러 메소드
+	 */
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<ErrorResponse> handleConflict(ConflictException e) {
+		return createErrorResponse(e, HttpStatus.CONFLICT);
 	}
 
 	/**

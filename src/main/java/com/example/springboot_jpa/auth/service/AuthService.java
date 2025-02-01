@@ -6,8 +6,8 @@ import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.service.CredentialService;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.BadRequestException;
+import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.service.UserService;
@@ -57,12 +57,12 @@ public class AuthService {
 		// 1. DB에서 로그인 정보 받아오기
 		AuthLoginId loginId = AuthLoginId.of(loginRequest.loginId());
 		Auth dbAuth = Optional.ofNullable(authRepository.findByLoginId(loginId))
-							  .orElseThrow(() -> new SpringbootJpaException("해당 사용자가 존재하지 않습니다."));
+							  .orElseThrow(() -> new UnauthorizedException("입력한 정보가 일치하지 않습니다."));
 
 		// 2. 해당 로그인 정보의 비밀번호와 사용자가 입력한 비밀번호 확인
 		String password = loginRequest.password();
 		if (!dbAuth.comparePasswordWith(password)) {
-			throw new SpringbootJpaException("비밀번호가 일치하지 않습니다.");
+			throw new UnauthorizedException("입력한 정보가 일치하지 않습니다.");
 		}
 
 		// 3. 인증 정보 설정을 위해 User 엔티티 받아오기
