@@ -1,12 +1,13 @@
 package com.example.springboot_jpa.board.domain.vo;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentLengthException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 /**
- * 게시글의 제목에 관한 도메인 로직을 담은 VO
+ * 게시글의 제목에 관한 로직을 관리하는 VO
  */
 @Getter
 @Embeddable
@@ -32,10 +33,10 @@ public class BoardTitle {
 
 	private void validate(String title) {
 		if (title == null || title.isEmpty()) {
-			throw new SpringbootJpaException("게시글 제목을 입력해주세요.");
+			throw new ArgumentNullException("게시글 제목을 입력해주세요.");
 		}
 		if (title.length() > MAX_LENGTH) {
-			throw new SpringbootJpaException("게시글 제목은 " + MAX_LENGTH + "자를 초과할 수 없습니다.");
+			throw new ArgumentLengthException("게시글 제목은 " + MAX_LENGTH + "자를 초과할 수 없습니다.");
 		}
 	}
 

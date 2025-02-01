@@ -3,7 +3,7 @@ package com.example.springboot_jpa.auth.domain;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.domain.vo.AuthPassword;
 import com.example.springboot_jpa.common.domain.BaseEntity;
-import com.example.springboot_jpa.exception.type.domain.NullArgumentException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -54,9 +54,9 @@ public class Auth extends BaseEntity {
 				   .build();
 	}
 
-	public void updateUser(User user) throws NullArgumentException {
+	public void updateUser(User user) {
 		if (user == null) {
-			throw new NullArgumentException("인증 정보와 연결된 사용자 정보를 입력해주세요.");
+			throw new ArgumentNullException("인증 정보와 연결된 사용자 정보를 입력해주세요.");
 		}
 		this.user = user;
 	}

@@ -3,7 +3,7 @@ package com.example.springboot_jpa.comment.domain;
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.comment.domain.vo.CommentContent;
 import com.example.springboot_jpa.common.domain.BaseEntity;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -69,14 +69,14 @@ public class Comment extends BaseEntity {
 
 	public void updateBoard(Board board) {
 		if (board == null) {
-			throw new SpringbootJpaException("댓글의 게시글 정보를 입력해주세요.");
+			throw new ArgumentNullException("댓글의 게시글 정보를 입력해주세요.");
 		}
 		this.board = board;
 	}
 
 	public void updateUser(User user) {
 		if (user == null) {
-			throw new SpringbootJpaException("댓글의 작성자 정보를 입력해주세요.");
+			throw new ArgumentNullException("댓글의 작성자 정보를 입력해주세요.");
 		}
 		this.user = user;
 	}

@@ -1,12 +1,12 @@
 package com.example.springboot_jpa.board.domain.vo;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 /**
- * 게시글의 내용에 관한 도메인 로직을 담은 VO
+ * 게시글의 내용에 관한 로직을 관리하는 VO
  */
 @Getter
 @Embeddable
@@ -30,7 +30,7 @@ public class BoardContent {
 
 	private void validate(String content) {
 		if (content == null || content.isEmpty()) {
-			throw new SpringbootJpaException("게시글 본문을 입력해주세요.");
+			throw new ArgumentNullException("게시글 본문을 입력해주세요.");
 		}
 	}
 

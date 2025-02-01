@@ -1,12 +1,12 @@
 package com.example.springboot_jpa.comment.domain.vo;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 
 /**
- * 댓글의 내용에 관한 도메인 로직을 담은 VO
+ * 댓글 내용에 관한 도메인 로직을 담은 VO
  */
 @Getter
 @Embeddable
@@ -29,7 +29,7 @@ public class CommentContent {
 
 	private void validate(String content) {
 		if (content == null || content.isEmpty()) {
-			throw new SpringbootJpaException("본문을 작성해주세요.");
+			throw new ArgumentNullException("본문을 작성해주세요.");
 		}
 	}
 
