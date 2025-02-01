@@ -4,7 +4,7 @@ import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.domain.vo.BoardContent;
 import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.board.repository.BoardRepository;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
@@ -57,7 +57,7 @@ public class BoardService {
 		// 게시글 작성자 확인
 		User boardUser = dbBoard.getUser();
 		if (!user.getId().equals(boardUser.getId())) {
-			throw new SpringbootJpaException("사용자 정보와 게시글 작성자가 일치하지 않습니다.");
+			throw new ForbiddenException("사용자 정보와 게시글 작성자가 일치하지 않습니다.");
 		}
 
 		// 게시글 업데이트
@@ -75,7 +75,7 @@ public class BoardService {
 
 		// 게시글 작성자 확인
 		if (!user.getId().equals(boardUser.getId())) {
-			throw new SpringbootJpaException("사용자 정보와 게시글 작성자와 일치하지 않습니다.");
+			throw new ForbiddenException("사용자 정보와 게시글 작성자와 일치하지 않습니다.");
 		}
 
 		boardRepository.delete(board);

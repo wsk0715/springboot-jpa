@@ -4,7 +4,7 @@ import com.example.springboot_jpa.common.encryption.HashEncryptUtil;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.JwtTokenUtil;
 import com.example.springboot_jpa.credential.service.CredentialService;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.status4xx.BadRequestException;
 import com.example.springboot_jpa.oauth.constants.OAuthProvider;
 import com.example.springboot_jpa.oauth.domain.OAuth;
 import com.example.springboot_jpa.oauth.properties.OAuthGoogleProperties;
@@ -53,14 +53,14 @@ public class OAuthService {
 			return kakaoProperties.getUrl();
 		}
 
-		throw new SpringbootJpaException("OAuth 제공자가 올바르지 않습니다.");
+		throw new BadRequestException("OAuth 제공자가 올바르지 않습니다.");
 	}
 
 	@Transactional
 	public void init(String provider, String code, HttpServletResponse response) {
 		OAuthProvider oAuthProvider = OAuthProvider.findByName(provider);
 		if (oAuthProvider == null) {
-			throw new SpringbootJpaException("OAuth 제공자가 올바르지 않습니다.");
+			throw new BadRequestException("OAuth 제공자가 올바르지 않습니다.");
 		}
 
 		String accessToken = getAccessToken(oAuthProvider, code);
@@ -118,7 +118,7 @@ public class OAuthService {
 				tokenUrl = kakaoProperties.tokenUrl();
 				break;
 			default:
-				throw new SpringbootJpaException("올바르지 않은 OAuth 서비스 제공자입니다.");
+				throw new BadRequestException("올바르지 않은 OAuth 서비스 제공자입니다.");
 		}
 
 		HttpEntity<String> entity = new HttpEntity<>(body, headers);
@@ -140,7 +140,7 @@ public class OAuthService {
 				userInfoUrl = kakaoProperties.userInfoUrl();
 				break;
 			default:
-				throw new SpringbootJpaException("올바르지 않은 OAuth 서비스 제공자입니다.");
+				throw new BadRequestException("올바르지 않은 OAuth 서비스 제공자입니다.");
 		}
 
 		HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,7 @@
 package com.example.springboot_jpa.user.service;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
+import com.example.springboot_jpa.exception.type.status4xx.ConflictException;
+import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import com.example.springboot_jpa.user.repository.UserRepository;
@@ -21,7 +22,7 @@ public class UserService {
 
 	public User findById(Long userId) {
 		return userRepository.findById(userId)
-							 .orElseThrow(() -> new SpringbootJpaException("해당 사용자가 존재하지 않습니다."));
+							 .orElseThrow(() -> new NotFoundException("해당 사용자가 존재하지 않습니다."));
 	}
 
 	public boolean existsByNickname(Nickname nickname) {
@@ -37,7 +38,7 @@ public class UserService {
 		// 닉네임 변경
 		Nickname nickname = user.getNickname();
 		if (userRepository.existsByNickname(nickname)) {
-			throw new SpringbootJpaException("이미 존재하는 닉네임입니다.");
+			throw new ConflictException("이미 존재하는 닉네임입니다.");
 		}
 
 		dbUser.updateNickname(nickname);

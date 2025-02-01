@@ -4,7 +4,6 @@ import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.service.BoardService;
 import com.example.springboot_jpa.comment.domain.Comment;
 import com.example.springboot_jpa.comment.repository.CommentRepository;
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
@@ -47,12 +46,12 @@ public class CommentService {
 	public void delete(Long commentId, Long boardId, User user) {
 		// 댓글 찾기
 		Comment comment = commentRepository.findById(commentId)
-										   .orElseThrow(() -> new SpringbootJpaException("해당 댓글이 존재하지 않습니다."));
+										   .orElseThrow(() -> new NotFoundException("해당 댓글이 존재하지 않습니다."));
 
 		// 작성자 비교
 		User commentUser = comment.getUser();
 		if (!user.getId().equals(commentUser.getId())) {
-			throw new SpringbootJpaException("사용자 정보와 댓글 작성자가 일치하지 않습니다.");
+			throw new ForbiddenException("사용자 정보와 댓글 작성자가 일치하지 않습니다.");
 		}
 
 		// 댓글 삭제
@@ -61,7 +60,7 @@ public class CommentService {
 		// 게시글 비교
 		Board commentBoard = comment.getBoard();
 		if (!boardId.equals(commentBoard.getId())) {
-			throw new SpringbootJpaException("게시글 정보와 댓글이 일치하지 않습니다.");
+			throw new ForbiddenException("게시글 정보와 댓글이 일치하지 않습니다.");
 		}
 
 		// 댓글 카운트 차감

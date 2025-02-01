@@ -1,6 +1,5 @@
 package com.example.springboot_jpa.credential;
 
-import com.example.springboot_jpa.exception.type.SpringbootJpaException;
 import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -51,7 +50,7 @@ public class JwtTokenUtil {
 
 	private Claims getClaims(String token) {
 		if (token == null) {
-			throw new SpringbootJpaException("토큰이 존재하지 않습니다");
+			throw new UnauthorizedException("토큰이 존재하지 않습니다");
 		}
 
 		try {
