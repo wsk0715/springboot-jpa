@@ -12,6 +12,9 @@ import lombok.Getter;
 @Embeddable
 public class CommentContent {
 
+	public static final String COMMENT_CONTENT_EMPTY_MESSAGE = "본문을 작성해주세요.";
+
+
 	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
 	private String value;
 
@@ -29,7 +32,7 @@ public class CommentContent {
 
 	private void validate(String content) {
 		if (content == null || content.isEmpty()) {
-			throw new ArgumentNullException("본문을 작성해주세요.");
+			throw new ArgumentNullException(COMMENT_CONTENT_EMPTY_MESSAGE);
 		}
 	}
 

@@ -38,6 +38,10 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = false")
 public class Board extends BaseEntity {
 
+	private static final String BOARD_USER_NULL_MESSAGE = "게시글 작성자 정보를 입력해주세요.";
+	private static final String BOARD_COMMENT_COUNT_MESSAGE = "게시글 댓글 수는 0보다 작을 수 없습니다.";
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -86,7 +90,7 @@ public class Board extends BaseEntity {
 
 	public void updateUser(User user) {
 		if (user == null) {
-			throw new ArgumentNullException("게시글 작성자 정보를 입력해주세요.");
+			throw new ArgumentNullException(BOARD_USER_NULL_MESSAGE);
 		}
 		this.user = user;
 	}
@@ -101,7 +105,7 @@ public class Board extends BaseEntity {
 
 	public void subtractCommentCount() {
 		if (commentCount == 0) {
-			throw new InvalidStateException("게시글 댓글 수는 0보다 작을 수 없습니다.");
+			throw new InvalidStateException(BOARD_COMMENT_COUNT_MESSAGE);
 		}
 		this.commentCount -= 1;
 	}

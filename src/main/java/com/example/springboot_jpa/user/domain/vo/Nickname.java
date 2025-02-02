@@ -16,8 +16,16 @@ import lombok.Getter;
 @Embeddable
 public class Nickname {
 
-	public static final int MAX_NICKNAME_LENGTH = 20;
+	public static final int NICKNAME_MAX_LENGTH = 20;
 	public static final Pattern NICKNAME_REGEX = Pattern.compile("^[가-힣0-9a-zA-Z._]+$");
+	public static final String NICKNAME_EMPTY_MESSAGE =
+			"닉네임을 입력해주세요.";
+	public static final String NICKNAME_LENGTH_MESSAGE = String.format(
+			"닉네임은 %s자 이하로 입력해주세요.", NICKNAME_MAX_LENGTH
+	);
+	public static final String NICKNAME_REGEX_MESSAGE =
+			"닉네임 형식에 맞게 입력해주세요.";
+
 
 	@Column(name = "nickname", nullable = false)
 	private String value;
@@ -36,14 +44,14 @@ public class Nickname {
 
 	private String validateAndTrim(String nickname) {
 		if (nickname == null || nickname.isEmpty()) {
-			throw new ArgumentNullException("닉네임을 입력해주세요.");
+			throw new ArgumentNullException(NICKNAME_EMPTY_MESSAGE);
 		}
 		String trimmedNickname = nickname.trim();
-		if (trimmedNickname.length() > MAX_NICKNAME_LENGTH) {
-			throw new ArgumentLengthException("닉네임은 " + MAX_NICKNAME_LENGTH + "자 이하로 입력해주세요.");
+		if (trimmedNickname.length() > NICKNAME_MAX_LENGTH) {
+			throw new ArgumentLengthException(NICKNAME_LENGTH_MESSAGE);
 		}
 		if (!NICKNAME_REGEX.matcher(trimmedNickname).matches()) {
-			throw new ArgumentFormatException("닉네임 형식에 맞게 입력해주세요.");
+			throw new ArgumentFormatException(NICKNAME_REGEX_MESSAGE);
 		}
 		return trimmedNickname;
 	}
