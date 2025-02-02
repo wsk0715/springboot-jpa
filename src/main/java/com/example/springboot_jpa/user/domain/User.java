@@ -1,6 +1,7 @@
 package com.example.springboot_jpa.user.domain;
 
 import com.example.springboot_jpa.common.domain.BaseEntity;
+import com.example.springboot_jpa.exception.type.domain.ArgumentNullException;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -29,6 +30,9 @@ import org.hibernate.annotations.SQLDelete;
 @SQLDelete(sql = "UPDATE user SET is_deleted = TRUE WHERE id = ?")
 public class User extends BaseEntity {
 
+	public static final String USER_NICKNAME_NULL_MESSAGE = "사용자 닉네임을 입력해주세요.";
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -48,6 +52,9 @@ public class User extends BaseEntity {
 	}
 
 	public void updateNickname(Nickname nickname) {
+		if (nickname == null) {
+			throw new ArgumentNullException(USER_NICKNAME_NULL_MESSAGE);
+		}
 		this.nickname = nickname;
 	}
 

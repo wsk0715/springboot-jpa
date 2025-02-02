@@ -7,6 +7,7 @@ import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.service.AuthService;
 import com.example.springboot_jpa.credential.service.CredentialService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class AuthController implements AuthControllerDocs {
 
 	@Override
 	@PostMapping
-	public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequest authRequest) {
+	public ResponseEntity<AuthResponse> signup(@Valid @RequestBody AuthRequest authRequest) {
 		Auth auth = authService.signup(authRequest.toAuth());
 		AuthResponse res = AuthResponse.from(auth);
 
@@ -35,7 +36,7 @@ public class AuthController implements AuthControllerDocs {
 
 	@Override
 	@PostMapping("/login")
-	public ResponseEntity<Void> login(@RequestBody LoginRequest loginRequest,
+	public ResponseEntity<Void> login(@Valid @RequestBody LoginRequest loginRequest,
 									  HttpServletResponse response) {
 		authService.login(loginRequest, response);
 

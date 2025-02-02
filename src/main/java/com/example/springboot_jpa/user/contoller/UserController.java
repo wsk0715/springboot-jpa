@@ -4,6 +4,7 @@ import com.example.springboot_jpa.auth.annotation.LoginUser;
 import com.example.springboot_jpa.user.contoller.request.UserRequest;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +22,7 @@ public class UserController implements UserControllerDocs {
 
 
 	@PatchMapping
-	public ResponseEntity<Void> update(@RequestBody UserRequest userRequest,
+	public ResponseEntity<Void> update(@Valid @RequestBody UserRequest userRequest,
 									   @LoginUser User loginUser) {
 		User user = userRequest.toUser();
 		userService.update(user, loginUser);

@@ -15,13 +15,12 @@ import lombok.Getter;
 public class AuthPassword {
 
 	public static final int PASSWORD_MIN_LENGTH = 10;
-	public static final String LOGIN_PASSWORD_EMPTY_MESSAGE =
+	public static final String LOGIN_PASSWORD_BLANK_MESSAGE =
 			"로그인 비밀번호를 입력해주세요.";
-	public static final String LOGIN_PASSWORD_LENGTH_MESSAGE = String.format(
-			"로그인 비밀번호는 %s자 이상으로 입력해주세요.", PASSWORD_MIN_LENGTH
-	);
+	public static final String LOGIN_PASSWORD_LENGTH_MESSAGE =
+			"로그인 비밀번호는 " + PASSWORD_MIN_LENGTH + "자 이상으로 입력해주세요.";
 
-	
+
 	@Column(name = "password", nullable = false)
 	private String value;
 
@@ -48,7 +47,7 @@ public class AuthPassword {
 
 	private void validate(String plainPassword) {
 		if (plainPassword == null || plainPassword.isEmpty()) {
-			throw new ArgumentNullException(LOGIN_PASSWORD_EMPTY_MESSAGE);
+			throw new ArgumentNullException(LOGIN_PASSWORD_BLANK_MESSAGE);
 		}
 		if (plainPassword.length() < PASSWORD_MIN_LENGTH) {
 			throw new ArgumentLengthException(LOGIN_PASSWORD_LENGTH_MESSAGE);
