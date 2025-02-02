@@ -10,15 +10,17 @@ public record ResponsePage<T>(
 		int currentPage,
 		int totalPages,
 		int currentElements,
-		int totalElements
+		long totalElements
 ) {
 
 	public static <T> ResponsePage<T> from(List<T> contents,
 										   int currentPage,
-										   int maxPage,
+										   int totalPage,
 										   int currentElements,
-										   int totalElements) {
-		return new ResponsePage<>(contents, currentPage, maxPage, currentElements, totalElements);
+										   long totalElements) {
+		return new ResponsePage<>(
+				contents, currentPage, totalPage, currentElements, totalElements
+		);
 	}
 
 }
