@@ -18,11 +18,10 @@ public class Nickname {
 
 	public static final int NICKNAME_MAX_LENGTH = 20;
 	public static final Pattern NICKNAME_REGEX = Pattern.compile("^[가-힣0-9a-zA-Z._]+$");
-	public static final String NICKNAME_EMPTY_MESSAGE =
+	public static final String NICKNAME_BLANK_MESSAGE =
 			"닉네임을 입력해주세요.";
-	public static final String NICKNAME_LENGTH_MESSAGE = String.format(
-			"닉네임은 %s자 이하로 입력해주세요.", NICKNAME_MAX_LENGTH
-	);
+	public static final String NICKNAME_LENGTH_MESSAGE =
+			"닉네임은 " + NICKNAME_MAX_LENGTH + "자 이하로 입력해주세요.";
 	public static final String NICKNAME_REGEX_MESSAGE =
 			"닉네임 형식에 맞게 입력해주세요.";
 
@@ -44,7 +43,7 @@ public class Nickname {
 
 	private String validateAndTrim(String nickname) {
 		if (nickname == null || nickname.isEmpty()) {
-			throw new ArgumentNullException(NICKNAME_EMPTY_MESSAGE);
+			throw new ArgumentNullException(NICKNAME_BLANK_MESSAGE);
 		}
 		String trimmedNickname = nickname.trim();
 		if (trimmedNickname.length() > NICKNAME_MAX_LENGTH) {

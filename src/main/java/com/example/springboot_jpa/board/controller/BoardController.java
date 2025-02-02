@@ -7,6 +7,7 @@ import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.service.BoardService;
 import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class BoardController implements BoardControllerDocs {
 
 	@Override
 	@PostMapping
-	public ResponseEntity<BoardResponse> postBoard(@RequestBody BoardRequest boardRequest,
+	public ResponseEntity<BoardResponse> postBoard(@Valid @RequestBody BoardRequest boardRequest,
 												   @LoginUser User loginUser) {
 		Board board = boardService.post(boardRequest.toBoard(), loginUser);
 		BoardResponse res = BoardResponse.from(board);
@@ -65,7 +66,7 @@ public class BoardController implements BoardControllerDocs {
 	@Override
 	@PatchMapping("/{boardId}")
 	public ResponseEntity<BoardResponse> updateBoard(@PathVariable Long boardId,
-													 @RequestBody BoardRequest boardRequest,
+													 @Valid @RequestBody BoardRequest boardRequest,
 													 @LoginUser User loginUser) {
 		Board board = boardService.updateBoard(boardId, boardRequest.toBoard(), loginUser);
 		BoardResponse res = BoardResponse.from(board);

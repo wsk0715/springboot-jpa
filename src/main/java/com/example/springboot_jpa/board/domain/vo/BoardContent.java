@@ -12,7 +12,7 @@ import lombok.Getter;
 @Embeddable
 public class BoardContent {
 
-	public static final String BOARD_CONTENT_EMPTY_MESSAGE = "게시글 본문을 입력해주세요.";
+	public static final String BOARD_CONTENT_BLANK_MESSAGE = "게시글 본문을 입력해주세요.";
 
 
 	@Column(name = "content", nullable = false, columnDefinition = "TEXT")
@@ -33,7 +33,7 @@ public class BoardContent {
 
 	private void validate(String content) {
 		if (content == null || content.isEmpty()) {
-			throw new ArgumentNullException(BOARD_CONTENT_EMPTY_MESSAGE);
+			throw new ArgumentNullException(BOARD_CONTENT_BLANK_MESSAGE);
 		}
 	}
 

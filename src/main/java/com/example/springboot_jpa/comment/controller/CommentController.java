@@ -7,6 +7,7 @@ import com.example.springboot_jpa.comment.domain.Comment;
 import com.example.springboot_jpa.comment.service.CommentService;
 import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,7 +34,7 @@ public class CommentController implements CommentControllerDocs {
 	@Override
 	@PostMapping
 	public ResponseEntity<CommentResponse> postComment(@PathVariable Long boardId,
-													   @RequestBody CommentRequest commentRequest,
+													   @Valid @RequestBody CommentRequest commentRequest,
 													   @LoginUser User loginUser) {
 		Comment comment = commentService.post(commentRequest.toComment(), boardId, loginUser);
 		CommentResponse res = CommentResponse.from(comment);
@@ -58,7 +59,7 @@ public class CommentController implements CommentControllerDocs {
 	@PatchMapping("/{commentId}")
 	public ResponseEntity<CommentResponse> patchComment(@PathVariable Long boardId,
 														@PathVariable Long commentId,
-														@RequestBody CommentRequest commentRequest,
+														@Valid @RequestBody CommentRequest commentRequest,
 														@LoginUser User loginUser) {
 		Comment comment = commentService.update(commentId, commentRequest.toComment(), loginUser);
 		CommentResponse res = CommentResponse.from(comment);

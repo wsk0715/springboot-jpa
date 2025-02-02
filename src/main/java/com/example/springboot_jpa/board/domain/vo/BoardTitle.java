@@ -14,9 +14,9 @@ import lombok.Getter;
 public class BoardTitle {
 
 	public static final int MAX_LENGTH = 255;
-	public static final String BOARD_TITLE_EMPTY_MESSAGE = "게시글 제목을 입력해주세요.";
+	public static final String BOARD_TITLE_BLANK_MESSAGE = "게시글 제목을 입력해주세요.";
 	public static final String BOARD_TITLE_LENGTH_MESSAGE = "게시글 제목은 " + MAX_LENGTH + "자를 초과할 수 없습니다.";
-	
+
 
 	@Column(name = "title", nullable = false)
 	private String value;
@@ -36,7 +36,7 @@ public class BoardTitle {
 
 	private void validate(String title) {
 		if (title == null || title.isEmpty()) {
-			throw new ArgumentNullException(BOARD_TITLE_EMPTY_MESSAGE);
+			throw new ArgumentNullException(BOARD_TITLE_BLANK_MESSAGE);
 		}
 		if (title.length() > MAX_LENGTH) {
 			throw new ArgumentLengthException(BOARD_TITLE_LENGTH_MESSAGE);
