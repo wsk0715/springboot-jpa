@@ -3,13 +3,14 @@ package com.example.springboot_jpa.board.controller;
 import com.example.springboot_jpa.auth.annotation.LoginUser;
 import com.example.springboot_jpa.board.controller.request.BoardRequest;
 import com.example.springboot_jpa.board.controller.response.BoardResponse;
+import com.example.springboot_jpa.board.domain.dto.BoardSummary;
+import com.example.springboot_jpa.common.pagination.ResponsePage;
 import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +35,9 @@ public interface BoardControllerDocs {
 			@ApiResponse(description = "게시글 목록 조회 성공", responseCode = "200")
 	})
 	@GetMapping
-	ResponseEntity<List<BoardResponse>> getBoards(@RequestParam(defaultValue = "0") int page,
-												  @RequestParam(defaultValue = "10") int size,
-												  @RequestParam(defaultValue = "id, desc") String sort);
+	ResponseEntity<ResponsePage<BoardSummary>> getBoards(@RequestParam(defaultValue = "0") int page,
+														 @RequestParam(defaultValue = "10") int size,
+														 @RequestParam(defaultValue = "id, desc") String sort);
 
 	@Operation(summary = "게시글 조회", description = "게시글을 조회한다.")
 	@ApiResponses(value = {
