@@ -3,13 +3,13 @@ package com.example.springboot_jpa.comment.controller;
 import com.example.springboot_jpa.auth.annotation.LoginUser;
 import com.example.springboot_jpa.comment.controller.request.CommentRequest;
 import com.example.springboot_jpa.comment.controller.response.CommentResponse;
+import com.example.springboot_jpa.common.pagination.ResponsePage;
 import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +34,10 @@ public interface CommentControllerDocs {
 			@ApiResponse(description = "댓글 목록 조회 성공", responseCode = "200"),
 	})
 	@GetMapping
-	ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId,
-													  @RequestParam(defaultValue = "1") int page,
-													  @RequestParam(defaultValue = "20") int size,
-													  @RequestParam(defaultValue = "id, desc") String sort);
+	ResponseEntity<ResponsePage<CommentResponse>> getComments(@PathVariable Long boardId,
+															  @RequestParam(defaultValue = "1") int page,
+															  @RequestParam(defaultValue = "20") int size,
+															  @RequestParam(defaultValue = "id, desc") String sort);
 
 	@Operation(summary = "댓글 수정", description = "게시글의 댓글을 수정한다.")
 	@ApiResponses(value = {
