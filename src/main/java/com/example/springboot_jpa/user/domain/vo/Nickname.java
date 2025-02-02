@@ -55,4 +55,9 @@ public class Nickname {
 		return trimmedNickname;
 	}
 
+	@Override
+	public String toString() {
+		return this.value;
+	}
+
 }
