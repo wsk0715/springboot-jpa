@@ -15,6 +15,12 @@ public class AuthLoginId {
 
 	public static final int LOGIN_ID_MIN_LENGTH = 8;
 	public static final int LOGIN_ID_MAX_LENGTH = 20;
+	public static final String LOGIN_ID_EMPTY_MESSAGE =
+			"로그인 아이디를 입력해주세요.";
+	public static final String LOGIN_ID_LENGTH_MESSAGE = String.format(
+			"로그인 아이디는 %s자 이상, %s자 이하로 입력해주세요.", LOGIN_ID_MIN_LENGTH, LOGIN_ID_MAX_LENGTH
+	);
+
 
 	@Column(name = "loginId", nullable = false)
 	private String value;
@@ -34,10 +40,10 @@ public class AuthLoginId {
 
 	private void validate(String loginId) {
 		if (loginId == null || loginId.isEmpty()) {
-			throw new ArgumentNullException("로그인 아이디를 입력해주세요.");
+			throw new ArgumentNullException(LOGIN_ID_EMPTY_MESSAGE);
 		}
 		if (!checkLength(loginId)) {
-			throw new ArgumentLengthException("로그인 아이디는 " + LOGIN_ID_MIN_LENGTH + "자 이상, " + LOGIN_ID_MAX_LENGTH + "자 이하로 입력해주세요.");
+			throw new ArgumentLengthException(LOGIN_ID_LENGTH_MESSAGE);
 		}
 	}
 

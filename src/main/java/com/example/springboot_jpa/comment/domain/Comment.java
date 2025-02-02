@@ -37,6 +37,10 @@ import org.hibernate.annotations.SQLRestriction;
 @SQLRestriction("is_deleted = false")
 public class Comment extends BaseEntity {
 
+	public static final String COMMENT_BOARD_NULL_MESSAGE = "댓글의 게시글 정보를 입력해주세요.";
+	public static final String COMMENT_USER_NULL_MESSAGE = "댓글의 작성자 정보를 입력해주세요.";
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -69,14 +73,14 @@ public class Comment extends BaseEntity {
 
 	public void updateBoard(Board board) {
 		if (board == null) {
-			throw new ArgumentNullException("댓글의 게시글 정보를 입력해주세요.");
+			throw new ArgumentNullException(COMMENT_BOARD_NULL_MESSAGE);
 		}
 		this.board = board;
 	}
 
 	public void updateUser(User user) {
 		if (user == null) {
-			throw new ArgumentNullException("댓글의 작성자 정보를 입력해주세요.");
+			throw new ArgumentNullException(COMMENT_USER_NULL_MESSAGE);
 		}
 		this.user = user;
 	}

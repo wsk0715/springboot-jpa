@@ -32,6 +32,9 @@ import lombok.ToString;
 @Table(name = "auth")
 public class Auth extends BaseEntity {
 
+	public static final String AUTH_USER_NULL_MESSAGE = "인증 정보와 연결된 사용자 정보를 입력해주세요.";
+
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -56,7 +59,7 @@ public class Auth extends BaseEntity {
 
 	public void updateUser(User user) {
 		if (user == null) {
-			throw new ArgumentNullException("인증 정보와 연결된 사용자 정보를 입력해주세요.");
+			throw new ArgumentNullException(AUTH_USER_NULL_MESSAGE);
 		}
 		this.user = user;
 	}
