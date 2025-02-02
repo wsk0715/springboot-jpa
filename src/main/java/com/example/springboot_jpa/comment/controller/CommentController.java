@@ -5,6 +5,7 @@ import com.example.springboot_jpa.comment.controller.request.CommentRequest;
 import com.example.springboot_jpa.comment.controller.response.CommentResponse;
 import com.example.springboot_jpa.comment.domain.Comment;
 import com.example.springboot_jpa.comment.service.CommentService;
+import com.example.springboot_jpa.common.pagination.ResponsePage;
 import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.validation.Valid;
@@ -44,13 +45,18 @@ public class CommentController implements CommentControllerDocs {
 
 	@Override
 	@GetMapping
-	public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long boardId,
-															 @RequestParam(defaultValue = "1") int page,
-															 @RequestParam(defaultValue = "20") int size,
-															 @RequestParam(defaultValue = "id, desc") String sort) {
+	public ResponseEntity<ResponsePage<CommentResponse>> getComments(@PathVariable Long boardId,
+																	 @RequestParam(defaultValue = "1") int page,
+																	 @RequestParam(defaultValue = "20") int size,
+																	 @RequestParam(defaultValue = "id, desc") String sort) {
 		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
 		Page<Comment> comments = commentService.getMany(boardId, pageable);
-		List<CommentResponse> res = CommentResponse.from(comments.getContent());
+		List<CommentResponse> contents = CommentResponse.from(comments.getContent());
+		ResponsePage<CommentResponse> res = ResponsePage.from(contents,
+															  page,
+															  comments.getTotalPages(),
+															  comments.getNumberOfElements(),
+															  comments.getTotalElements());
 
 		return ResponseEntity.ok(res);
 	}
