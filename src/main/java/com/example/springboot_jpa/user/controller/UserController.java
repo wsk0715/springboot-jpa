@@ -1,7 +1,7 @@
-package com.example.springboot_jpa.user.contoller;
+package com.example.springboot_jpa.user.controller;
 
 import com.example.springboot_jpa.auth.annotation.LoginUser;
-import com.example.springboot_jpa.user.contoller.request.UserRequest;
+import com.example.springboot_jpa.user.controller.request.UserRequest;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
 import jakarta.validation.Valid;
