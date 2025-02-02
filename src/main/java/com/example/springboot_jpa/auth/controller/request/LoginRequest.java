@@ -3,7 +3,6 @@ package com.example.springboot_jpa.auth.controller.request;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
 import com.example.springboot_jpa.auth.domain.vo.AuthPassword;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -19,8 +18,8 @@ public record LoginRequest(
 
 		@Schema(example = "bangaman1@")
 		@NotNull(message = AuthPassword.LOGIN_PASSWORD_BLANK_MESSAGE)
-		@Min(value = AuthPassword.PASSWORD_MIN_LENGTH,
-			 message = AuthPassword.LOGIN_PASSWORD_LENGTH_MESSAGE
+		@Size(min = AuthPassword.PASSWORD_MIN_LENGTH,
+			  message = AuthPassword.LOGIN_PASSWORD_LENGTH_MESSAGE
 		)
 		String password
 ) {
