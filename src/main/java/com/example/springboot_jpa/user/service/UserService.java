@@ -24,14 +24,14 @@ public class UserService {
 		return userRepository.findById(userId)
 							 .orElseThrow(() -> new NotFoundException("해당 사용자가 존재하지 않습니다."));
 	}
-	
+
 	public User findUserByNickname(String nickname) {
 		return userRepository.findByNickname(Nickname.of(nickname))
 							 .orElseThrow(() -> new NotFoundException("해당 사용자가 존재하지 않습니다."));
 	}
 
-	public boolean existsByNickname(Nickname nickname) {
-		return userRepository.existsByNickname(nickname);
+	public boolean existsByNickname(String nickname) {
+		return userRepository.existsByNickname(Nickname.of(nickname));
 	}
 
 	@Transactional

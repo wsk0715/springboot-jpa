@@ -42,7 +42,7 @@ public class AuthService {
 	private User createTempUser() {
 		// 1. 랜덤 닉네임 생성, 중복 확인
 		String tmpNickname = NicknameUtil.generateRandom("user");
-		while (userService.existsByNickname(Nickname.of(tmpNickname))) {
+		while (userService.existsByNickname(tmpNickname)) {
 			tmpNickname = NicknameUtil.generateRandom("user");
 		}
 
