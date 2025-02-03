@@ -10,11 +10,14 @@ import com.example.springboot_jpa.common.pagination.ResponsePage;
 import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,11 +54,13 @@ public class BoardController implements BoardControllerDocs {
 																		@RequestParam(required = false) String title,
 																		@RequestParam(required = false) String content,
 																		@RequestParam(required = false) String titleOrContent,
+																		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE) LocalDate dateFrom,
+																		@RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd", iso = ISO.DATE) LocalDate dateTo,
 																		@RequestParam(defaultValue = "1") int page,
 																		@RequestParam(defaultValue = "20") int size,
 																		@RequestParam(defaultValue = "id, desc") String sort) {
 		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
-		Page<Board> boards = boardService.getBoards(userId, userNickname, title, content, titleOrContent, pageable);
+		Page<Board> boards = boardService.getBoards(userId, userNickname, title, content, titleOrContent, dateFrom, dateTo, pageable);
 		List<BoardResponseSummary> boardSummaries = BoardResponseSummary.from(boards.getContent());
 		ResponsePage<BoardResponseSummary> res = ResponsePage.from(boardSummaries,
 																   page,

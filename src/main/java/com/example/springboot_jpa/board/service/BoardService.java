@@ -8,6 +8,8 @@ import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.service.UserService;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,23 +35,95 @@ public class BoardService {
 		}
 	}
 
-	public Page<Board> getBoards(Long userId, String userNickname, String title, String content,
-								 String titleOrContent, Pageable pageable) {
+	public Page<Board> getBoards(Long userId,
+								 String userNickname,
+								 String title,
+								 String content,
+								 String titleOrContent,
+								 LocalDate dateFrom,
+								 LocalDate dateTo,
+								 Pageable pageable) {
+		LocalDateTime dateTimeFrom = dateFrom == null ? null : dateFrom.atTime(0, 0, 0);
+		LocalDateTime dateTimeTo = dateTo == null ? null : dateTo.atTime(23, 59, 59, 999_999_999);
+
+		System.out.println("dateTimeFrom = " + dateTimeFrom);
+		System.out.println("dateTimeTo = " + dateTimeTo);
+
+		if (dateTimeFrom != null && dateTimeTo != null) {
+			if (userId != null) {
+				return boardRepository.findByUserIdAndCreatedAtBetween(userId, dateTimeFrom, dateTimeTo, pageable);
+			}
+			if (userNickname != null) {
+				User user = userService.findUserByNickname(userNickname);
+				return boardRepository.findByUserIdAndCreatedAtBetween(user.getId(), dateTimeFrom, dateTimeTo, pageable);
+			}
+			if (titleOrContent != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtBetweenOrContent_ValueContainingAndCreatedAtBetween(titleOrContent, dateTimeFrom, dateTimeTo, titleOrContent, dateTimeFrom, dateTimeTo, pageable);
+			}
+			if (title != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtBetween(title, dateTimeFrom, dateTimeTo, pageable);
+			}
+			if (content != null) {
+				return boardRepository.findByContent_ValueContainingAndCreatedAtBetween(content, dateTimeFrom, dateTimeTo, pageable);
+			}
+			return boardRepository.findByCreatedAtBetween(dateTimeFrom, dateTimeTo, pageable);
+		}
+
+		if (dateTimeFrom != null) {
+			if (userId != null) {
+				return boardRepository.findByUserIdAndCreatedAtAfter(userId, dateTimeFrom, pageable);
+			}
+			if (userNickname != null) {
+				User user = userService.findUserByNickname(userNickname);
+				return boardRepository.findByUserIdAndCreatedAtAfter(user.getId(), dateTimeFrom, pageable);
+			}
+			if (titleOrContent != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtAfterOrContent_ValueContainingAndCreatedAtAfter(titleOrContent, dateTimeFrom, titleOrContent, dateTimeFrom, pageable);
+			}
+			if (title != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtAfter(title, dateTimeFrom, pageable);
+			}
+			if (content != null) {
+				return boardRepository.findByContent_ValueContainingAndCreatedAtAfter(content, dateTimeFrom, pageable);
+			}
+			return boardRepository.findByCreatedAtAfter(dateTimeFrom, pageable);
+		}
+
+		if (dateTimeTo != null) {
+			if (userId != null) {
+				return boardRepository.findByUserIdAndCreatedAtBefore(userId, dateTimeTo, pageable);
+			}
+			if (userNickname != null) {
+				User user = userService.findUserByNickname(userNickname);
+				return boardRepository.findByUserIdAndCreatedAtBefore(user.getId(), dateTimeTo, pageable);
+			}
+			if (titleOrContent != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtBeforeOrContent_ValueContainingAndCreatedAtBefore(titleOrContent, dateTimeTo, titleOrContent, dateTimeTo, pageable);
+			}
+			if (title != null) {
+				return boardRepository.findByTitle_ValueContainingAndCreatedAtBefore(title, dateTimeTo, pageable);
+			}
+			if (content != null) {
+				return boardRepository.findByContent_ValueContainingAndCreatedAtBefore(content, dateTimeTo, pageable);
+			}
+			return boardRepository.findByCreatedAtBefore(dateTimeTo, pageable);
+		}
+
 		if (userId != null) {
-			return boardRepository.findAllByUserId(userId, pageable);
+			return boardRepository.findByUserId(userId, pageable);
 		}
 		if (userNickname != null) {
 			User user = userService.findUserByNickname(userNickname);
-			return boardRepository.findAllByUserId(user.getId(), pageable);
+			return boardRepository.findByUserId(user.getId(), pageable);
 		}
 		if (titleOrContent != null) {
-			return boardRepository.findOneByTitle_ValueContainingOrContent_ValueContaining(titleOrContent, titleOrContent, pageable);
+			return boardRepository.findByTitle_ValueContainingOrContent_ValueContaining(titleOrContent, titleOrContent, pageable);
 		}
 		if (title != null) {
-			return boardRepository.findOneByTitle_ValueContaining(title, pageable);
+			return boardRepository.findByTitle_ValueContaining(title, pageable);
 		}
 		if (content != null) {
-			return boardRepository.findOneByContent_ValueContaining(content, pageable);
+			return boardRepository.findByContent_ValueContaining(content, pageable);
 		}
 		return boardRepository.findAll(pageable);
 	}
