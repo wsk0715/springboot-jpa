@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,8 @@ public interface BoardControllerDocs {
 																 @RequestParam(required = false) String title,
 																 @RequestParam(required = false) String content,
 																 @RequestParam(required = false) String titleOrContent,
+																 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateFrom,
+																 @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dateTo,
 																 @RequestParam(defaultValue = "1") int page,
 																 @RequestParam(defaultValue = "20") int size,
 																 @RequestParam(defaultValue = "id, desc") String sort);
