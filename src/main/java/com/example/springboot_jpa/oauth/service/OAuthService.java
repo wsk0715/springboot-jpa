@@ -91,7 +91,7 @@ public class OAuthService {
 	private User createTempUser(OAuthProvider provider) {
 		// 1. 랜덤 닉네임 생성, 중복 확인
 		String tmpNickname = NicknameUtil.generateRandom(provider);
-		while (userService.existsByNickname(Nickname.of(tmpNickname))) {
+		while (userService.existsByNickname(tmpNickname)) {
 			tmpNickname = NicknameUtil.generateRandom(provider);
 		}
 
