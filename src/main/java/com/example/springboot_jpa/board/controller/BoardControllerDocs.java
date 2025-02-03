@@ -37,6 +37,7 @@ public interface BoardControllerDocs {
 	@GetMapping
 	ResponseEntity<ResponsePage<BoardResponseSummary>> getBoards(@RequestParam(required = false) Long userId,
 																 @RequestParam(required = false) String userNickname,
+																 @RequestParam(required = false) String title,
 																 @RequestParam(defaultValue = "1") int page,
 																 @RequestParam(defaultValue = "20") int size,
 																 @RequestParam(defaultValue = "id, desc") String sort);
