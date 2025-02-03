@@ -50,11 +50,12 @@ public class BoardController implements BoardControllerDocs {
 																		@RequestParam(required = false) String userNickname,
 																		@RequestParam(required = false) String title,
 																		@RequestParam(required = false) String content,
+																		@RequestParam(required = false) String titleOrContent,
 																		@RequestParam(defaultValue = "1") int page,
 																		@RequestParam(defaultValue = "20") int size,
 																		@RequestParam(defaultValue = "id, desc") String sort) {
 		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
-		Page<Board> boards = boardService.getBoards(userId, userNickname, title, content, pageable);
+		Page<Board> boards = boardService.getBoards(userId, userNickname, title, content, titleOrContent, pageable);
 		List<BoardResponseSummary> boardSummaries = BoardResponseSummary.from(boards.getContent());
 		ResponsePage<BoardResponseSummary> res = ResponsePage.from(boardSummaries,
 																   page,

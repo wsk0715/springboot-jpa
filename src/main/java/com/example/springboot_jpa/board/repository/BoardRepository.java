@@ -13,4 +13,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
 	Page<Board> findOneByContent_ValueContaining(String content, Pageable pageable);
 
+	Page<Board> findOneByTitle_ValueContainingOrContent_ValueContaining(String title,
+																		String content,
+																		Pageable pageable);
+
 }
