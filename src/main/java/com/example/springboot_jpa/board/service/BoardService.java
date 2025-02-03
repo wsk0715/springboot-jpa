@@ -33,13 +33,16 @@ public class BoardService {
 		}
 	}
 
-	public Page<Board> getBoards(Long userId, String userNickname, Pageable pageable) {
+	public Page<Board> getBoards(Long userId, String userNickname, String title, Pageable pageable) {
 		if (userId != null) {
 			return boardRepository.findAllByUserId(userId, pageable);
 		}
 		if (userNickname != null) {
 			User user = userService.findUserByNickname(userNickname);
 			return boardRepository.findAllByUserId(user.getId(), pageable);
+		}
+		if (title != null) {
+			return boardRepository.findOneByTitle_ValueContaining(title, pageable);
 		}
 		return boardRepository.findAll(pageable);
 	}

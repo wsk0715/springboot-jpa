@@ -48,11 +48,12 @@ public class BoardController implements BoardControllerDocs {
 	@GetMapping
 	public ResponseEntity<ResponsePage<BoardResponseSummary>> getBoards(@RequestParam(required = false) Long userId,
 																		@RequestParam(required = false) String userNickname,
+																		@RequestParam(required = false) String title,
 																		@RequestParam(defaultValue = "1") int page,
 																		@RequestParam(defaultValue = "20") int size,
 																		@RequestParam(defaultValue = "id, desc") String sort) {
 		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
-		Page<Board> boards = boardService.getBoards(userId, userNickname, pageable);
+		Page<Board> boards = boardService.getBoards(userId, userNickname, title, pageable);
 		List<BoardResponseSummary> boardSummaries = BoardResponseSummary.from(boards.getContent());
 		ResponsePage<BoardResponseSummary> res = ResponsePage.from(boardSummaries,
 																   page,
