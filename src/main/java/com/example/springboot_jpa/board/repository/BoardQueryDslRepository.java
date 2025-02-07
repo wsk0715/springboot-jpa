@@ -3,12 +3,11 @@ package com.example.springboot_jpa.board.repository;
 import static com.example.springboot_jpa.board.domain.QBoard.board;
 
 import com.example.springboot_jpa.board.domain.Board;
-import com.example.springboot_jpa.user.domain.vo.Nickname;
+import com.example.springboot_jpa.board.domain.dto.BoardSearchParams;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.PathBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,41 +22,38 @@ public class BoardQueryDslRepository {
 
 	private final JPAQueryFactory jpaQueryFactory;
 
-	public Page<Board> findBoardsByCondition(Long userId,
-											 String userNickname,
-											 String title,
-											 String content,
-											 String titleOrContent,
-											 LocalDateTime dateTimeFrom,
-											 LocalDateTime dateTimeTo,
-											 Pageable pageable) {
+	public Page<Board> findBoardsByCondition(BoardSearchParams searchParams, Pageable pageable) {
 		BooleanBuilder builder = new BooleanBuilder();
 
 		// 사용자 ID 조건
-		if (userId != null) {
-			builder.and(board.user.id.eq(userId));
-		} else if (userNickname != null) {
-			builder.and(board.user.nickname.eq(Nickname.of(userNickname)));
+		if (searchParams.userId() != null) {
+			builder.and(board.user.id.eq(searchParams.userId()));
+		}
+
+		// 닉네임 조건
+		if (searchParams.userNickname() != null) {
+			builder.and(board.user.nickname.value.eq(searchParams.userNickname()));
 		}
 
 		// 제목/내용 검색 조건
-		if (titleOrContent != null) {
-			builder.and(board.title.value.contains(titleOrContent).or(board.content.value.contains(titleOrContent)));
+		if (searchParams.titleOrContent() != null) {
+			builder.and(board.title.value.contains(searchParams.titleOrContent())
+										 .or(board.content.value.contains(searchParams.titleOrContent())));
 		} else {
-			if (title != null) {
-				builder.and(board.title.value.contains(title));
+			if (searchParams.title() != null) {
+				builder.and(board.title.value.contains(searchParams.title()));
 			}
-			if (content != null) {
-				builder.and(board.content.value.contains(content));
+			if (searchParams.content() != null) {
+				builder.and(board.content.value.contains(searchParams.content()));
 			}
 		}
 
 		// 날짜 조건
-		if (dateTimeFrom != null) {
-			builder.and(board.createdAt.goe(dateTimeFrom));
+		if (searchParams.dateTimeFrom() != null) {
+			builder.and(board.createdAt.goe(searchParams.dateTimeFrom()));
 		}
-		if (dateTimeTo != null) {
-			builder.and(board.createdAt.loe(dateTimeTo));
+		if (searchParams.dateTimeTo() != null) {
+			builder.and(board.createdAt.loe(searchParams.dateTimeTo()));
 		}
 
 		// 쿼리 실행

@@ -5,12 +5,14 @@ import com.example.springboot_jpa.board.controller.request.BoardRequest;
 import com.example.springboot_jpa.board.controller.response.BoardResponse;
 import com.example.springboot_jpa.board.domain.Board;
 import com.example.springboot_jpa.board.domain.dto.BoardResponseSummary;
+import com.example.springboot_jpa.board.domain.dto.BoardSearchParams;
 import com.example.springboot_jpa.board.service.BoardService;
 import com.example.springboot_jpa.common.pagination.ResponsePage;
 import com.example.springboot_jpa.common.util.PaginationUtil;
 import com.example.springboot_jpa.user.domain.User;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -59,14 +61,16 @@ public class BoardController implements BoardControllerDocs {
 																		@RequestParam(defaultValue = "1") int page,
 																		@RequestParam(defaultValue = "20") int size,
 																		@RequestParam(defaultValue = "id, desc") String sort) {
+		LocalDateTime dateTimeFrom = dateFrom == null ? null : dateFrom.atTime(0, 0, 0);
+		LocalDateTime dateTimeTo = dateTo == null ? null : dateTo.atTime(23, 59, 59, 999_999_999);
+
+		BoardSearchParams searchParams = new BoardSearchParams(userId, userNickname, title, content, titleOrContent, dateTimeFrom, dateTimeTo);
 		Pageable pageable = PaginationUtil.createPageable(page, size, sort);
-		Page<Board> boards = boardService.getBoards(userId, userNickname, title, content, titleOrContent, dateFrom, dateTo, pageable);
+
+		Page<Board> boards = boardService.getBoards(searchParams, pageable);
+		
 		List<BoardResponseSummary> boardSummaries = BoardResponseSummary.from(boards.getContent());
-		ResponsePage<BoardResponseSummary> res = ResponsePage.from(boardSummaries,
-																   page,
-																   boards.getTotalPages(),
-																   boards.getNumberOfElements(),
-																   boards.getTotalElements());
+		ResponsePage<BoardResponseSummary> res = ResponsePage.from(boardSummaries, page, boards.getTotalPages(), boards.getNumberOfElements(), boards.getTotalElements());
 
 		return ResponseEntity.ok(res);
 	}
@@ -93,8 +97,7 @@ public class BoardController implements BoardControllerDocs {
 
 	@Override
 	@DeleteMapping("/{boardId}")
-	public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId,
-											@LoginUser User loginUser) {
+	public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId, @LoginUser User loginUser) {
 		boardService.delete(boardId, loginUser);
 
 		return ResponseEntity.ok().build();

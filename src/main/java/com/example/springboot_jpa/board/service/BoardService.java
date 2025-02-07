@@ -1,14 +1,13 @@
 package com.example.springboot_jpa.board.service;
 
 import com.example.springboot_jpa.board.domain.Board;
+import com.example.springboot_jpa.board.domain.dto.BoardSearchParams;
 import com.example.springboot_jpa.board.domain.vo.BoardContent;
 import com.example.springboot_jpa.board.domain.vo.BoardTitle;
 import com.example.springboot_jpa.board.repository.BoardRepository;
 import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.NotFoundException;
 import com.example.springboot_jpa.user.domain.User;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,21 +30,9 @@ public class BoardService {
 		}
 	}
 
-	public Page<Board> getBoards(Long userId,
-								 String userNickname,
-								 String title,
-								 String content,
-								 String titleOrContent,
-								 LocalDate dateFrom,
-								 LocalDate dateTo,
+	public Page<Board> getBoards(BoardSearchParams searchParams,
 								 Pageable pageable) {
-		LocalDateTime dateTimeFrom = dateFrom == null ? null : dateFrom.atTime(0, 0, 0);
-		LocalDateTime dateTimeTo = dateTo == null ? null : dateTo.atTime(23, 59, 59, 999_999_999);
-
-		System.out.println("dateTimeFrom = " + dateTimeFrom);
-		System.out.println("dateTimeTo = " + dateTimeTo);
-
-		return boardRepository.findBoardsByCondition(userId, userNickname, title, content, titleOrContent, dateTimeFrom, dateTimeTo, pageable);
+		return boardRepository.findBoardsByCondition(searchParams, pageable);
 	}
 
 	@Transactional
