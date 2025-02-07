@@ -2,82 +2,41 @@ package com.example.springboot_jpa.board.repository;
 
 import com.example.springboot_jpa.board.domain.Board;
 import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+@Repository
+@RequiredArgsConstructor
+public class BoardRepository {
 
-	Page<Board> findByCreatedAtBetween(LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo, Pageable pageable);
-
-	Page<Board> findByCreatedAtBefore(LocalDateTime dateTimeTo, Pageable pageable);
-
-	Page<Board> findByCreatedAtAfter(LocalDateTime dateTimeFrom, Pageable pageable);
-
-
-	Page<Board> findByUserId(Long userId, Pageable pageable);
-
-	Page<Board> findByUserIdAndCreatedAtBetween(Long userId,
-												LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo,
-												Pageable pageable);
-
-	Page<Board> findByUserIdAndCreatedAtBefore(Long userId, LocalDateTime dateTimeTo, Pageable pageable);
-
-	Page<Board> findByUserIdAndCreatedAtAfter(Long userId, LocalDateTime dateTimeFrom, Pageable pageable);
+	private final BoardJpaRepository boardJpaRepository;
+	private final BoardQueryDslRepository boardQueryDslRepository;
 
 
-	Page<Board> findByTitle_ValueContaining(String title, Pageable pageable);
+	public Page<Board> findBoardsByCondition(Long userId,
+											 String userNickname,
+											 String title,
+											 String content,
+											 String titleOrContent,
+											 LocalDateTime dateTimeFrom,
+											 LocalDateTime dateTimeTo,
+											 Pageable pageable) {
+		return boardQueryDslRepository.findBoardsByCondition(userId, userNickname, title, content, titleOrContent, dateTimeFrom, dateTimeTo, pageable);
+	}
 
-	Page<Board> findByTitle_ValueContainingAndCreatedAtBetween(String title,
-															   LocalDateTime dateTimeFrom, LocalDateTime dateTimeTo,
-															   Pageable pageable);
+	public Board findById(Long boardId) {
+		return boardJpaRepository.findById(boardId)
+								 .orElseThrow();
+	}
 
-	Page<Board> findByTitle_ValueContainingAndCreatedAtBefore(String title,
-															  LocalDateTime dateTimeTo,
-															  Pageable pageable);
+	public Board save(Board board) {
+		return boardJpaRepository.save(board);
+	}
 
-	Page<Board> findByTitle_ValueContainingAndCreatedAtAfter(String title,
-															 LocalDateTime dateTimeFrom,
-															 Pageable pageable);
-
-
-	Page<Board> findByContent_ValueContaining(String content, Pageable pageable);
-
-	Page<Board> findByContent_ValueContainingAndCreatedAtBetween(String content,
-																 LocalDateTime dateTimeFrom,
-																 LocalDateTime dateTimeTo,
-																 Pageable pageable);
-
-	Page<Board> findByContent_ValueContainingAndCreatedAtBefore(String content,
-																LocalDateTime dateTimeTo,
-																Pageable pageable);
-
-	Page<Board> findByContent_ValueContainingAndCreatedAtAfter(String content,
-															   LocalDateTime dateTimeFrom,
-															   Pageable pageable);
-
-
-	Page<Board> findByTitle_ValueContainingOrContent_ValueContaining(String title, String content,
-																	 Pageable pageable);
-
-	Page<Board> findByTitle_ValueContainingAndCreatedAtBetweenOrContent_ValueContainingAndCreatedAtBetween(String title,
-																										   LocalDateTime timeFrom,
-																										   LocalDateTime timeTo,
-																										   String content,
-																										   LocalDateTime dateTimeFrom,
-																										   LocalDateTime dateTimeTo,
-																										   Pageable pageable);
-
-	Page<Board> findByTitle_ValueContainingAndCreatedAtBeforeOrContent_ValueContainingAndCreatedAtBefore(String title,
-																										 LocalDateTime timeTo,
-																										 String content,
-																										 LocalDateTime dateTimeTo,
-																										 Pageable pageable);
-
-	Page<Board> findByTitle_ValueContainingAndCreatedAtAfterOrContent_ValueContainingAndCreatedAtAfter(String title,
-																									   LocalDateTime timeFrom,
-																									   String content,
-																									   LocalDateTime dateTimeFrom,
-																									   Pageable pageable);
+	public void delete(Board board) {
+		boardJpaRepository.delete(board);
+	}
 
 }
