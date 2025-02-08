@@ -32,7 +32,7 @@ public class BoardService {
 
 	public Page<Board> getBoards(BoardSearchParams searchParams,
 								 Pageable pageable) {
-		return boardRepository.findBoardsByCondition(searchParams, pageable);
+		return boardRepository.findWithCondition(searchParams, pageable);
 	}
 
 	@Transactional
