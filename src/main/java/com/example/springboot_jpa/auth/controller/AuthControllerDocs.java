@@ -1,14 +1,20 @@
 package com.example.springboot_jpa.auth.controller;
 
+import com.example.springboot_jpa.auth.annotation.LoginUser;
 import com.example.springboot_jpa.auth.controller.request.AuthRequest;
 import com.example.springboot_jpa.auth.controller.request.LoginRequest;
+import com.example.springboot_jpa.auth.controller.request.PasswordChangeRequest;
 import com.example.springboot_jpa.auth.controller.response.AuthResponse;
+import com.example.springboot_jpa.user.domain.User;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -21,6 +27,16 @@ public interface AuthControllerDocs {
 	})
 	@PostMapping
 	ResponseEntity<AuthResponse> signup(@RequestBody AuthRequest authRequest);
+
+
+	@Operation(summary = "비밀번호 변경", description = "비밀번호 변경 요청을 보낸다.")
+	@ApiResponses(value = {
+			@ApiResponse(description = "비밀번호 변경 성공", responseCode = "200")
+	})
+	@PostMapping
+	@PatchMapping("/password")
+	ResponseEntity<Void> changePassword(@Valid @RequestBody PasswordChangeRequest passwordChangeRequest,
+										@Parameter(hidden = true) @LoginUser User loginUser);
 
 	@Operation(summary = "로그인", description = "ID/PW를 이용해 로그인 요청을 보낸다.")
 	@ApiResponses(value = {

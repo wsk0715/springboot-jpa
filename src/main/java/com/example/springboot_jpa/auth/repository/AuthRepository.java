@@ -8,4 +8,6 @@ public interface AuthRepository extends JpaRepository<Auth, Long> {
 
 	Auth findByLoginId(AuthLoginId loginId);
 
+	Auth findByUserId(Long id);
+
 }

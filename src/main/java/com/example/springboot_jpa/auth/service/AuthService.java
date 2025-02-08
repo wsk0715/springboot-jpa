@@ -1,12 +1,15 @@
 package com.example.springboot_jpa.auth.service;
 
 import com.example.springboot_jpa.auth.controller.request.LoginRequest;
+import com.example.springboot_jpa.auth.controller.request.PasswordChangeRequest;
 import com.example.springboot_jpa.auth.domain.Auth;
 import com.example.springboot_jpa.auth.domain.vo.AuthLoginId;
+import com.example.springboot_jpa.auth.domain.vo.AuthPassword;
 import com.example.springboot_jpa.auth.repository.AuthRepository;
 import com.example.springboot_jpa.common.util.NicknameUtil;
 import com.example.springboot_jpa.credential.service.CredentialService;
 import com.example.springboot_jpa.exception.type.status4xx.BadRequestException;
+import com.example.springboot_jpa.exception.type.status4xx.ForbiddenException;
 import com.example.springboot_jpa.exception.type.status4xx.UnauthorizedException;
 import com.example.springboot_jpa.user.domain.User;
 import com.example.springboot_jpa.user.domain.vo.Nickname;
@@ -16,6 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +55,19 @@ public class AuthService {
 		userService.save(user);
 
 		return user;
+	}
+
+	@Transactional
+	public void updatePassword(PasswordChangeRequest passwordChangeRequest, User loginUser) {
+		// 1. 비밀번호 검증
+		Auth dbAuth = authRepository.findByUserId(loginUser.getId());
+		AuthPassword dbCurrentPassword = dbAuth.getPassword();
+		if (!dbCurrentPassword.isMatches(passwordChangeRequest.currentPassword())) {
+			throw new ForbiddenException("비밀번호가 일치하지 않습니다. 다시 시도해주세요.");
+		}
+
+		// 2. 비밀번호 변경
+		dbAuth.updatePassword(AuthPassword.of(passwordChangeRequest.newPassword()));
 	}
 
 	public void login(LoginRequest loginRequest, HttpServletResponse response) {
