@@ -58,7 +58,7 @@ class NicknameTest {
 	@DisplayName("닉네임이 최대 길이를 초과하면 예외가 발생한다.")
 	void of_nicknameExceedsMaxLength() {
 		// given: 최대 길이를 초과하는 닉네임 준비
-		String tooLongNickname = "a".repeat(Nickname.MAX_NICKNAME_LENGTH + 1);
+		String tooLongNickname = "a".repeat(Nickname.NICKNAME_MAX_LENGTH + 1);
 
 		// when & then: 예외 발생 확인
 		assertThrows(SpringbootJpaException.class, () -> {

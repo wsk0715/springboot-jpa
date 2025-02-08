@@ -65,10 +65,10 @@ class AuthPasswordTest {
 		AuthPassword authPassword = AuthPassword.of(originalPassword);
 
 		// when & then: 동일한 비밀번호로 검증 시 true 반환
-		assertTrue(authPassword.isEquals(originalPassword));
+		assertTrue(authPassword.isMatches(originalPassword));
 
 		// when & then: 다른 비밀번호로 검증 시 false 반환
-		assertFalse(authPassword.isEquals("differentPassword123"));
+		assertFalse(authPassword.isMatches("differentPassword123"));
 	}
 
 	@Test
