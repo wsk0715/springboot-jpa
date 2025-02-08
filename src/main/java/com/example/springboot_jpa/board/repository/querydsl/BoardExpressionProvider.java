@@ -4,42 +4,53 @@ import static com.example.springboot_jpa.board.domain.QBoard.board;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
 public class BoardExpressionProvider {
 
 	public BooleanExpression userIdEq(Long userId) {
-		return userId != null ? board.user.id.eq(userId) : null;
+		return Optional.ofNullable(userId)
+					   .map(board.user.id::eq)
+					   .orElse(null);
 	}
 
 	public BooleanExpression userNicknameEq(String nickname) {
-		return nickname != null ? board.user.nickname.value.eq(nickname) : null;
+		return Optional.ofNullable(nickname)
+					   .map(board.user.nickname.value::eq)
+					   .orElse(null);
 	}
 
 	public BooleanExpression titleOrContentContains(String titleOrContent, String title, String content) {
-		if (titleOrContent != null) {
-			return board.title.value.contains(titleOrContent)
-									.or(board.content.value.contains(titleOrContent));
-		} else {
-			return titleContains(title).and(contentContains(content));
-		}
+		return Optional.ofNullable(titleOrContent)
+					   .map(value -> board.title.value.contains(value)
+													  .or(board.content.value.contains(value)))
+					   .orElseGet(() -> titleContains(title).and(contentContains(content)));
 	}
 
 	public BooleanExpression titleContains(String title) {
-		return title != null ? board.title.value.contains(title) : null;
+		return Optional.ofNullable(title)
+					   .map(board.title.value::contains)
+					   .orElse(null);
 	}
 
 	public BooleanExpression contentContains(String content) {
-		return content != null ? board.content.value.contains(content) : null;
+		return Optional.ofNullable(content)
+					   .map(board.content.value::contains)
+					   .orElse(null);
 	}
 
 	public BooleanExpression createdAtGoe(LocalDateTime dateTimeFrom) {
-		return dateTimeFrom != null ? board.createdAt.goe(dateTimeFrom) : null;
+		return Optional.ofNullable(dateTimeFrom)
+					   .map(board.createdAt::goe)
+					   .orElse(null);
 	}
 
 	public BooleanExpression createdAtLoe(LocalDateTime dateTimeTo) {
-		return dateTimeTo != null ? board.createdAt.loe(dateTimeTo) : null;
+		return Optional.ofNullable(dateTimeTo)
+					   .map(board.createdAt::loe)
+					   .orElse(null);
 	}
 
 }
